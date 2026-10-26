@@ -1,0 +1,27 @@
+# Private team material — never commit
+resources weve gathered/
+
+# Dependencies and builds
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+local.settings.json
+.azure/
+
+# Logs and OS
+logs/
+*.log
+.DS_Store
+Thumbs.db
+
+# Hardware: copyrighted datasheets stay local
+hardware/datasheets/

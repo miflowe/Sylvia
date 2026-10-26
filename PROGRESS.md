@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 4 Wildfire data + Home
-**Next action:** Step 4: ingestion Functions (FIRMS, CWFIS fire danger/active fires/perimeters, ECCC AQHI, PurpleAir in pilot boxes, Open-Meteo) into `observations`; then the Home dashboard. FIRMS_MAP_KEY and PURPLEAIR_API_KEY are in `apps/web/.env.local`; add them to azd env + Functions app settings.
+**Current step:** 5 Map
+**Next action:** Step 5: Azure Maps map with layers (hotspots, fire perimeters from `observations.shape`, AQHI stations, PurpleAir, sightings, Nodes placeholder) and sensor detail cards. Needs a Maps key for the browser: use an Entra/SAS token route or a domain-restricted key.
 
 ## Build order
 - [x] 1 Foundation
@@ -28,7 +28,12 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Saved scans: `/api/scans` (+ `[id]`, `[id]/photo`), photos in private Blob `photos/{device}/{scan}.jpg` (30-day lifecycle), anonymous device id header `x-sylvia-device` (`apps/web/src/lib/device.ts`); My plants on Profile
   - [x] Opt-in sightings: `/api/sightings`, curated invasive only, ~1 km rounding, no device link, cellId partition
   - [x] Garden centres: `/api/nurseries` → Azure Maps POI category 9361032 + curated badges (`matchCurated`). Azure Maps data is noisy (e.g. arborists, a lighting shop); curated nurseries fix this once the team fills `nurseries.csv`
-- [ ] 4 Wildfire data ingestion + Home
+- [x] 4 Wildfire data + Home
+  - [x] Ingestion Functions (`apps/functions/src/functions/ingest.ts`, parsers in `src/lib/feeds.ts` with tests): FIRMS VIIRS ×3 (15 min), CWFIS `m3_polygons_current` perimeters (hourly), ECCC AQHI latest (hourly), PurpleAir pilot areas (15 min). Manual run: POST `/api/ingest?feed=` with the function key
+  - [x] `observations` container: per-item TTL + spatial index on `/location`
+  - [x] Pilot areas (user choice): Northwestern Ontario + Kamloops–Okanagan (`PILOT_AREAS` in `packages/core/src/observations.ts`)
+  - [x] `/api/conditions`: CWFIS fire danger point query (GRIDCODE 0 = Low … 4 = Extreme, verified from legend), nearest AQHI ≤120 km, PurpleAir median ≤10 km, hotspots ≤50 km/24 h, perimeters ≤100 km, Open-Meteo weather, Sylvia summary (gpt-4o + Content Safety)
+  - [x] `/api/places` (Azure Maps search + reverse) and the Home dashboard with place picker and "sensitive to smoke" toggle (device only)
 - [ ] 5 Map
 - [ ] 6 Alerts + Replay mode
 - [ ] 7 Profile + Communities
@@ -37,6 +42,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - [ ] 10 Pitch kit (deck, video scripts, findings template)
 
 ## Waiting on the user / team
+- PurpleAir: the key in `.env.local` is a WRITE key. Put the READ key in `PURPLEAIR_API_KEY` (local file), then run `azd env set PURPLEAIR_API_KEY <read key>` and `azd provision`.
 - Fill `data/curation/nurseries.csv` with Grow Me Instead / FireSmart BC retailers: the Azure Maps garden-centre results alone are unreliable.
 - Verify the draft plant rows in `data/curation/` against their sources (see its README), then run `pnpm data:check`.
 - Optional: `gh auth login` (GitHub CLI isn't signed in; git push works without it).
@@ -55,6 +61,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-26: Step 4 live: feeds ingesting on timers (533 hotspots, 394 perimeters, 75 AQHI stations at first run); Home dashboard deployed.
 - 2026-10-26: Step 3 complete and live (saved scans, sightings, garden centres).
 - 2026-10-26: Step 3 core live: Sprout identifies, judges and suggests swaps on Azure. Local dev: `node scripts/dev-env.mjs` fills `apps/web/.env.local`; Pl@ntNet key also in azd env.
 - 2026-10-26: Step 2 done. First import: barberry look-alikes in CA-ON = black chokeberry, common ninebark, kinnikinnick.

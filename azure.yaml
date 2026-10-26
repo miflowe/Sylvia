@@ -1,0 +1,20 @@
+# Azure Developer CLI: `azd up` provisions infra/ and deploys both services.
+name: sylvia
+metadata:
+  template: sylvia@0.1.0
+services:
+  web:
+    project: ./apps/web
+    language: js
+    host: containerapp
+    docker:
+      path: ./Dockerfile
+      context: ../..
+  functions:
+    project: ./apps/functions
+    language: js
+    host: function
+hooks:
+  prepackage:
+    shell: sh
+    run: pnpm install --frozen-lockfile && pnpm --filter @sylvia/functions build

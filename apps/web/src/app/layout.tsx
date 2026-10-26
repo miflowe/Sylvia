@@ -5,8 +5,8 @@ import { ServiceWorker } from "@/components/ServiceWorker";
 import "./globals.css";
 
 const serif = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-serif" });
-const sans = Atkinson_Hyperlegible_Next({ subsets: ["latin"], variable: "--font-sans" });
-const mono = Atkinson_Hyperlegible_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const sans = Atkinson_Hyperlegible_Next({ subsets: ["latin"], variable: "--font-sans", adjustFontFallback: false, fallback: ["system-ui", "Segoe UI", "sans-serif"] });
+const mono = Atkinson_Hyperlegible_Mono({ subsets: ["latin"], variable: "--font-mono", adjustFontFallback: false, fallback: ["ui-monospace", "Menlo", "monospace"] });
 
 export const metadata: Metadata = {
   title: "Sylvia",

@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 1 Foundation
-**Next action:** Add CI workflow, Dockerfile and Bicep + azd skeleton (`infra/`).
+**Next action:** Write the team interview kit (`docs/kits/interview-kit.md`). Bicep is unvalidated until `az` is installed: run `az bicep build -f infra/main.bicep` first thing after.
 
 ## Build order
 - [ ] 1 Foundation
@@ -11,8 +11,8 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Monorepo scaffold (pnpm workspaces, TypeScript, Vitest, ESLint)
   - [x] Design tokens → CSS variables (`packages/ui`); run `pnpm tokens` after editing `packages/ui/tokens.json`
   - [x] PWA shell + 5-tab nav (Home, Map, Sprout, Alerts, Profile). `public/icon.svg` is a placeholder until the design system has Sylvia app icons
-  - [ ] CI (GitHub Actions: lint, test, build)
-  - [ ] Bicep + azd skeleton (`infra/`)
+  - [x] CI (GitHub Actions: lint, test, build)
+  - [x] Bicep + azd skeleton (`infra/`, `azure.yaml`, `apps/web/Dockerfile`). NOT yet validated: needs `az bicep build` + `azd provision --preview`
   - [ ] Interview kit for the team (`docs/kits/interview-kit.md`)
   - [ ] First deploy to Azure for Students (blocked: user installs `az`/`azd` and signs in)
   - [ ] Check Foundry model quota on the Students subscription

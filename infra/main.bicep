@@ -25,6 +25,10 @@ param enableCosmos bool = true
 @description('Cosmos DB region; defaults to the primary region.')
 param cosmosLocation string = location
 
+@secure()
+@description('Pl@ntNet API key, from azd env PLANTNET_API_KEY.')
+param plantnetApiKey string = ''
+
 @description('Web container image tag published by GitHub Actions.')
 param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -47,6 +51,7 @@ module resources 'resources.bicep' = {
     enableCosmos: enableCosmos
     cosmosLocation: cosmosLocation
     webImage: webImage
+    plantnetApiKey: plantnetApiKey
   }
 }
 

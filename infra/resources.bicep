@@ -12,6 +12,10 @@ param cosmosLocation string = location
 @description('Region for Azure AI Foundry models (Sweden Central has vision quota on Azure for Students).')
 param aiLocation string = 'swedencentral'
 
+@secure()
+@description('Pl@ntNet API key (azd env PLANTNET_API_KEY). Second-opinion plant identification.')
+param plantnetApiKey string = ''
+
 @description('Web container image, e.g. ghcr.io/miflowe/sylvia-web:<sha>. Placeholder until the first image is published.')
 param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -194,6 +198,12 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
     managedEnvironmentId: appsEnv.id
     configuration: {
       ingress: { external: true, targetPort: webImage == placeholderImage ? 80 : 3000, transport: 'auto' }
+      secrets: [
+        { name: 'ai-key', value: ai.listKeys().key1 }
+        { name: 'cosmos-key', value: enableCosmos ? cosmos!.listKeys().primaryMasterKey : 'cosmos-disabled' }
+        { name: 'search-key', value: search.listQueryKeys().value[0].key }
+        { name: 'plantnet-key', value: empty(plantnetApiKey) ? 'not-set' : plantnetApiKey }
+      ]
     }
     template: {
       containers: [
@@ -206,6 +216,10 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
             { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
             { name: 'SEARCH_ENDPOINT', value: 'https://${search.name}.search.windows.net' }
+            { name: 'AZURE_AI_KEY', secretRef: 'ai-key' }
+            { name: 'COSMOS_KEY', secretRef: 'cosmos-key' }
+            { name: 'SEARCH_KEY', secretRef: 'search-key' }
+            { name: 'PLANTNET_API_KEY', secretRef: 'plantnet-key' }
           ]
         }
       ]

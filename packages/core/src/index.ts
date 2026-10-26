@@ -3,3 +3,5 @@ export * from "./alerts";
 export * from "./flammability";
 export * from "./plants";
 export * from "./gbif";
+export * from "./identify";
+export * from "./sprout";

@@ -1,0 +1,53 @@
+.wrap { display: grid; gap: var(--space-4); }
+.head { display: grid; gap: var(--space-2); }
+.head :global(.display) { margin-bottom: 0; }
+.headRow { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); align-items: center; }
+.link { background: none; border: 0; padding: 0; color: var(--pine); font: var(--type-label); text-decoration: underline; cursor: pointer; min-height: var(--size-target); }
+.toggle { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-target); font: var(--type-body-sm); cursor: pointer; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--pine); }
+
+.loading { color: var(--ink-muted); }
+.card { display: grid; gap: var(--space-2); padding: var(--space-4); background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-lg); min-width: 0; }
+.card p { margin: 0; }
+.card :global(.eyebrow) { margin: 0; }
+.sylvia { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--moss-soft); }
+.sylvia p { margin: 0; }
+.sylvia p + p { margin-top: var(--space-2); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
+.big { font: var(--type-title); }
+.reading { font: var(--type-reading); font-size: 28px; font-variant-numeric: tabular-nums; }
+.source { font: var(--type-body-sm); color: var(--ink-muted); }
+.source a { color: inherit; }
+
+/* Official CWFIS fire danger colours, always labelled. */
+.scale { list-style: none; margin: var(--space-1) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.step { height: 10px; border-radius: 3px; position: relative; opacity: 0.35; }
+.step span { position: absolute; left: -9999px; }
+.step[aria-current="true"] { opacity: 1; height: 14px; margin-top: -2px; outline: 2px solid var(--ink); outline-offset: 1px; }
+.fdr0 { background: #2b6fd6; }
+.fdr1 { background: #2f9e44; }
+.fdr2 { background: #e8c21a; }
+.fdr3 { background: #e8771a; }
+.fdr4 { background: #c92a2a; }
+
+.facts { display: grid; gap: var(--space-2); margin: 0; }
+.facts dt { font: var(--type-body-sm); color: var(--ink-muted); }
+.facts dd { margin: 0; font-weight: 700; }
+.wx { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+.wx dt { font: var(--type-body-sm); color: var(--ink-muted); }
+.wx dd { margin: 0; }
+.wx .reading { font-size: 20px; }
+
+.primary {
+  min-height: 56px; padding: 0 var(--space-5); border-radius: var(--radius-md); border: 0; background: var(--pine);
+  color: var(--on-pine); font: var(--type-label); font-size: 17px; cursor: pointer;
+}
+.primary:disabled { opacity: 0.7; }
+.secondary { justify-self: start; min-height: var(--size-target); padding: 0 var(--space-5); border-radius: var(--radius-md); border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: var(--type-label); cursor: pointer; }
+.error { color: var(--ember); margin: 0; }
+.search { display: grid; gap: var(--space-2); }
+.label { font: var(--type-label); }
+.input { min-height: var(--size-target); padding: 0 var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--line-strong); background: var(--paper-sunk); color: var(--ink); font: var(--type-body); }
+.results { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.results button { width: 100%; text-align: left; min-height: var(--size-target); padding: 0 var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink); font: var(--type-body); cursor: pointer; }

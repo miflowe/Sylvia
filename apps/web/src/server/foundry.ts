@@ -110,6 +110,26 @@ If the facts say the information is not yet reviewed, don't overstate certainty.
   return res.choices[0]!.message.content.trim();
 }
 
+/** Sylvia's short Home summary of local conditions. Calm, factual, never an alert. */
+export async function writeSummary(facts: string): Promise<string> {
+  const system = `You are Sylvia, a calm, plain-spoken guide in a Canadian wildfire-resilience app. Speak in the first person.
+Using ONLY the facts provided, write 2 short sentences about today's conditions for this person's home and one practical suggestion.
+Canadian spelling. Grade 8 reading level. No exclamation marks, no emoji. Do not tell anyone to evacuate or give routes; you are not an alert.
+Satellite heat detections are unconfirmed; never call them fires.
+The suggestion must fit the conditions. Only suggest smoke precautions (windows, indoor air, masks) when air quality is Moderate or worse or a sensor shows smoke.
+On a calm day, suggest a prevention step instead, like clearing dry leaves and debris within 1.5 metres of the house or scanning garden plants with Sprout.
+If the person is sensitive to smoke and air quality is Moderate or worse, tailor the suggestion to that.`;
+  const res = await call<ChatResponse>(`/openai/deployments/gpt-4o/chat/completions?api-version=${OPENAI_API}`, {
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: facts },
+    ],
+    temperature: 0.3,
+    max_tokens: 140,
+  });
+  return res.choices[0]!.message.content.trim();
+}
+
 export async function embedText(text: string): Promise<number[]> {
   const res = await call<{ data: { embedding: number[] }[] }>(
     `/openai/deployments/text-embedding-3-large/embeddings?api-version=${OPENAI_API}`,

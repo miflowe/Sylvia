@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 3 Sprout
-**Next action:** Step 3 Sprout: photo upload (Blob SAS) → gpt-4o identification limited to the region's species list + Pl@ntNet second opinion → verdict from Cosmos (VASCAN fallback outside pilots) → swaps (curated first, then `native-plants` search) → explanation → Content Safety → results UI. Needs the Pl@ntNet key in `apps/web/.env.local`.
+**Next action:** Step 3b: saved scans (Blob + `scans` container, device id), opt-in sightings (`sightings`, rounded location) and nursery search (Azure Maps POI + curated badges). Then step 4.
 
 ## Build order
 - [x] 1 Foundation
@@ -21,7 +21,11 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Curation sheets `data/curation/*.csv` + team guide `data/curation/README.md`. 16 species, 17 verdicts, 9 swaps, ALL DRAFT (team must verify against sources)
   - [x] `pnpm data:check` (validate) · `pnpm data:import` (Cosmos + embeddings + `native-plants` index; keys come from az CLI at run time)
   - [x] 11 Cosmos containers + AI Search free tier (`srch-6x6suo5lxjc5o`, Canada Central) provisioned; first import done
-- [ ] 3 Sprout pipeline + UI
+- [ ] 3 Sprout
+  - [x] Pipeline (`apps/web/src/server/sprout.ts`): gpt-4o vision (region watch list) + Pl@ntNet in parallel → `mergeIdentifications` (noise floor 0.1) → curated verdict or VASCAN fallback → curated swaps + AI Search look-alikes → Sylvia explanation (gpt-4o) → Content Safety. `/api/sprout` (photo) and `/api/sprout/assess` (picked alternative)
+  - [x] Screens (`apps/web/src/app/sprout/`): region picker, camera/upload (canvas re-encode strips EXIF/GPS), confidence chip, "is it one of these?", verdict, Sylvia says, swaps, official report link
+  - [x] Tested with `apps/web/test-fixtures/` (barberry, Scotch broom, ninebark, not-a-plant): all correct locally and live
+  - [ ] Save scans, sightings opt-in, nursery search + badges
 - [ ] 4 Wildfire data ingestion + Home
 - [ ] 5 Map
 - [ ] 6 Alerts + Replay mode
@@ -48,4 +52,5 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-26: Step 3 core live: Sprout identifies, judges and suggests swaps on Azure. Local dev: `node scripts/dev-env.mjs` fills `apps/web/.env.local`; Pl@ntNet key also in azd env.
 - 2026-10-26: Step 2 done. First import: barberry look-alikes in CA-ON = black chokeberry, common ninebark, kinnikinnick.

@@ -1,0 +1,20 @@
+{
+  "name": "@sylvia/functions",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.7.0",
+    "@sylvia/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^22.0.0"
+  }
+}

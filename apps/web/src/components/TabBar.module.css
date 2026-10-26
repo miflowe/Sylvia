@@ -1,0 +1,26 @@
+.bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--paper-raised);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.tab {
+  min-height: var(--size-target);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--space-2) 0;
+  color: var(--ink-muted);
+  text-decoration: none;
+  font: var(--type-label);
+  font-size: 13px;
+}
+
+.tab[aria-current="page"] { color: var(--pine); }

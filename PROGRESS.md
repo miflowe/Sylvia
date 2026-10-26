@@ -3,14 +3,14 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 1 Foundation
-**Next action:** Scaffold the pnpm monorepo (`apps/web`, `apps/functions`, `packages/core`, `packages/ui`).
+**Next action:** Add CI workflow, Dockerfile and Bicep + azd skeleton (`infra/`).
 
 ## Build order
 - [ ] 1 Foundation
   - [x] Repo initialized, remote `miflowe/Sylvia`, resume docs (`CLAUDE.md`, `PROGRESS.md`, `docs/decisions.md`)
-  - [ ] Monorepo scaffold (pnpm workspaces, TypeScript, Vitest, ESLint)
-  - [ ] Design tokens → CSS variables (`packages/ui`)
-  - [ ] PWA shell + 5-tab nav (Home, Map, Sprout, Alerts, Profile)
+  - [x] Monorepo scaffold (pnpm workspaces, TypeScript, Vitest, ESLint)
+  - [x] Design tokens → CSS variables (`packages/ui`); run `pnpm tokens` after editing `packages/ui/tokens.json`
+  - [x] PWA shell + 5-tab nav (Home, Map, Sprout, Alerts, Profile). `public/icon.svg` is a placeholder until the design system has Sylvia app icons
   - [ ] CI (GitHub Actions: lint, test, build)
   - [ ] Bicep + azd skeleton (`infra/`)
   - [ ] Interview kit for the team (`docs/kits/interview-kit.md`)

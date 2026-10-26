@@ -1,0 +1,22 @@
+# Manufacturer datasheets are copyrighted: keep local / club drive. parts.csv has URL + sha256.
+datasheets/
+# Download staging and tool caches
+_staging/
+.venv/
+__pycache__/
+*.pyc
+# KiCad local state and backups
+*.kicad_prl
+*-backups/
+fp-info-cache
+_autosave-*
+*.lck
+# Firmware build output and per-device secrets
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/managed_components/
+firmware/**/secrets.h
+firmware/**/*.pem
+firmware/**/*.key
+firmware/test/host/build/

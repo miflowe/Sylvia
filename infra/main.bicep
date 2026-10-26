@@ -8,8 +8,8 @@ param environmentName string
 @description('Primary region. Canada Central keeps Canadian data in Canada.')
 param location string = 'canadacentral'
 
-@description('Azure Maps has a short list of regions; it stores no user data.')
-param mapsLocation string = 'eastus'
+@description('Azure Maps has a short list of regions, and Azure for Students only allows five; westus2 is in both. Maps stores no user data.')
+param mapsLocation string = 'westus2'
 
 @description('Email for the monthly budget alert. Leave empty to skip the budget.')
 param budgetAlertEmail string = ''

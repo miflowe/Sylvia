@@ -1,0 +1,340 @@
+<title>Sylvia Interview Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;700;800&family=Instrument+Serif&display=swap">
+<style>
+/* Layout: one readable column; field-guide feel. Tokens from the Sylvia design system. */
+:root {
+  --paper: #f6f4ee; --paper-raised: #ffffff; --paper-sunk: #ebe8df;
+  --line: #d8d4c8; --line-strong: #7d8579;
+  --ink: #16241b; --ink-muted: #56625a;
+  --pine: #1f4a33; --on-pine: #f6f4ee; --pine-deep: #143322;
+  --moss: #66904f; --moss-soft: #e2ebd6;
+  --ember: #b8401a; --ember-soft: #fbe9e0;
+  --sky: #255f7a; --sky-soft: #dcebf2;
+  --focus-ring: 0 0 0 2px #f6f4ee, 0 0 0 5px #255f7a;
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, "Segoe UI", sans-serif;
+  --mono: "Atkinson Hyperlegible Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121a15; --paper-raised: #1a241e; --paper-sunk: #0c120e;
+  --line: #2d3b32; --line-strong: #7a8a7f; --ink: #eef1ea; --ink-muted: #a7b3aa;
+  --pine: #86c99f; --on-pine: #0f1a13; --pine-deep: #1f4a33;
+  --moss: #9cc487; --moss-soft: #1d2e1f; --ember: #f2895c; --ember-soft: #3b1c10;
+  --sky: #84bdd8; --sky-soft: #14303d; --focus-ring: 0 0 0 2px #121a15, 0 0 0 5px #84bdd8;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --paper: #121a15; --paper-raised: #1a241e; --paper-sunk: #0c120e;
+  --line: #2d3b32; --line-strong: #7a8a7f; --ink: #eef1ea; --ink-muted: #a7b3aa;
+  --pine: #86c99f; --on-pine: #0f1a13; --pine-deep: #1f4a33;
+  --moss: #9cc487; --moss-soft: #1d2e1f; --ember: #f2895c; --ember-soft: #3b1c10;
+  --sky: #84bdd8; --sky-soft: #14303d; --focus-ring: 0 0 0 2px #121a15, 0 0 0 5px #84bdd8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 17px/26px var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 56px; }
+h1, h2 { font-family: var(--serif); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(40px, 8vw, 60px); line-height: 1.02; letter-spacing: -0.01em; }
+h2 { font-size: 34px; line-height: 40px; }
+h3 { font: 700 19px/26px var(--sans); margin: 0; }
+p { margin: 0; }
+a { color: var(--pine); }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 6px; }
+.eyebrow { font: 600 13px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.muted { color: var(--ink-muted); font-size: 15px; line-height: 22px; }
+section { display: grid; gap: 20px; min-width: 0; }
+.lede { font-size: 19px; line-height: 29px; max-width: 62ch; }
+
+/* Header */
+header { display: grid; gap: 20px; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+.fact { display: grid; gap: 2px; }
+.fact b { font: 600 22px/28px var(--mono); font-variant-numeric: tabular-nums; }
+
+/* Hypotheses */
+.hyp { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.hyp li { display: grid; grid-template-columns: 52px 1fr; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.hyp .code { font: 600 15px/26px var(--mono); color: var(--pine); }
+.hyp .who { grid-column: 2; }
+ol, ul { margin: 0; padding: 0; list-style: none; }
+
+/* Targets */
+.targets { display: grid; gap: 14px; }
+.t-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 6px 16px; align-items: baseline; }
+.t-row .n { font: 600 17px/24px var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.bar { grid-column: 1 / -1; height: 8px; border-radius: 99px; background: var(--paper-sunk); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--moss); border-radius: 99px; }
+.t-row .where { grid-column: 1 / -1; }
+.note { background: var(--sky-soft); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 22px; }
+
+/* Message + copy */
+.panel { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 14px; }
+.panel blockquote { margin: 0; font-size: 17px; line-height: 27px; }
+.btn { justify-self: start; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: 700 15px/20px var(--sans); cursor: pointer; }
+.btn:hover { background: var(--paper-sunk); }
+.btn.primary { background: var(--pine); border-color: var(--pine); color: var(--on-pine); }
+.btn.primary:hover { filter: brightness(1.08); background: var(--pine); }
+
+/* Rules list */
+.rules { display: grid; gap: 10px; }
+.rules li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; }
+.rules svg { margin-top: 3px; color: var(--pine); }
+
+/* Guides */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab { min-height: 44px; padding: 0 16px; border-radius: 99px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: 700 15px/20px var(--sans); cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--pine); border-color: var(--pine); color: var(--on-pine); }
+.guide { display: grid; gap: 14px; }
+.qs { counter-reset: q; display: grid; gap: 12px; }
+.qs li { counter-increment: q; display: grid; grid-template-columns: 30px 1fr; gap: 12px; }
+.qs li::before { content: counter(q); font: 600 15px/26px var(--mono); color: var(--ink-muted); text-align: right; }
+.qs .pay { background: var(--moss-soft); border-radius: 8px; padding: 2px 6px; margin: -2px -6px; }
+.tip { color: var(--ink-muted); font-size: 15px; line-height: 22px; }
+
+/* Survey */
+.survey { display: grid; gap: 10px; counter-reset: s; }
+.survey li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 12px; }
+.survey li::before { content: counter(s); font: 600 15px/26px var(--mono); color: var(--ink-muted); text-align: right; }
+.survey .opts { display: block; color: var(--ink-muted); font-size: 15px; line-height: 22px; }
+
+/* Findings table */
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-raised); }
+table { border-collapse: collapse; font-size: 14px; line-height: 20px; min-width: 900px; width: 100%; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px/16px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); background: var(--paper-sunk); }
+td { color: var(--ink-muted); }
+tr:last-child td { border-bottom: 0; }
+
+/* Deck outputs */
+.deck { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.deck li { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; }
+.deck b { font-weight: 700; }
+
+footer { border-top: 1px solid var(--line); padding-top: 18px; }
+@media (max-width: 480px) { h2 { font-size: 30px; line-height: 36px; } .hyp li { grid-template-columns: 40px 1fr; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Sylvia · Imagine Cup 2027 · Team kit</p>
+    <h1>Customer interview kit</h1>
+    <p class="lede">The Imagine Cup deck has to show how we tested our assumptions with real people. Right now we have no evidence. This kit gets us real quotes, numbers and "would you pay?" answers before the deck is written in December.</p>
+    <div class="facts">
+      <div class="fact"><span class="eyebrow">Goal</span><b>25+ talks</b></div>
+      <div class="fact"><span class="eyebrow">Due</span><b>Dec 6</b></div>
+      <div class="fact"><span class="eyebrow">Provinces</span><b>ON + BC</b></div>
+      <div class="fact"><span class="eyebrow">Length</span><b>~20 min</b></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-hyp">
+    <p class="eyebrow">What we need to learn</p>
+    <h2 id="h-hyp">Seven assumptions to test</h2>
+    <p class="muted">After each conversation, mark the ones it touched as supported, contradicted or unclear in the findings sheet.</p>
+    <ol class="hyp">
+      <li><span class="code">H1</span><span>Residents near forest or bush don't know their local fire danger or air quality day to day.</span><span class="who muted">Residents</span></li>
+      <li><span class="code">H2</span><span>People sensitive to smoke want earlier, more personal warnings than broadcast alerts give them.</span><span class="who muted">Smoke-sensitive residents, caregivers</span></li>
+      <li><span class="code">H3</span><span>Homeowners can't tell invasive or fire-prone plants from safe ones, and would swap if shown a good native alternative.</span><span class="who muted">Residents, gardeners</span></li>
+      <li><span class="code">H4</span><span>A free app that explains what the numbers mean for you would be used weekly in fire season.</span><span class="who muted">Residents</span></li>
+      <li><span class="code">H5</span><span>Nurseries want customers sent to them for native, lower-flammability plants, and would pay referral or listing fees.</span><span class="who muted">Nurseries, garden centres</span></li>
+      <li><span class="code">H6</span><span>Towns and regional districts would pay for a dashboard of resident engagement (sightings, scans, checklist completion) to support FireSmart and invasive-plant programs.</span><span class="who muted">Municipal staff, fire and emergency managers</span></li>
+      <li><span class="code">H7</span><span>Official alerts (Alert Ready, BC Wildfire Service) feel late or too broad to residents.</span><span class="who muted">Residents</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="h-who">
+    <p class="eyebrow">Who to talk to</p>
+    <h2 id="h-who">29 conversations across six groups</h2>
+    <div class="targets">
+      <div class="t-row"><h3>Residents near forest or bush</h3><span class="n">10</span><div class="bar"><span style="width:100%"></span></div><p class="where muted">Cottage country, northern Ontario, BC interior. Family and friends, cottage associations, community Facebook groups, r/ontario and r/britishcolumbia.</p></div>
+      <div class="t-row"><h3>People sensitive to smoke, and caregivers</h3><span class="n">6</span><div class="bar"><span style="width:60%"></span></div><p class="where muted">Asthma, COPD, heart conditions, older adults, parents of young kids. Lung-health communities, seniors' centres, parent groups.</p></div>
+      <div class="t-row"><h3>Gardeners and homeowners who landscape</h3><span class="n">4</span><div class="bar"><span style="width:40%"></span></div><p class="where muted">Horticultural societies, community gardens, master gardeners.</p></div>
+      <div class="t-row"><h3>Nurseries and garden centres</h3><span class="n">4</span><div class="bar"><span style="width:40%"></span></div><p class="where muted">Start with Grow Me Instead and FireSmart BC Plant Program retailers.</p></div>
+      <div class="t-row"><h3>Town and regional district staff</h3><span class="n">3</span><div class="bar"><span style="width:30%"></span></div><p class="where muted">FireSmart BC local coordinators, Ontario municipal emergency management offices, parks staff.</p></div>
+      <div class="t-row"><h3>Experts</h3><span class="n">2</span><div class="bar"><span style="width:20%"></span></div><p class="where muted">Invasive Species Council of BC, Ontario Invasive Plant Council, FireSmart Canada.</p></div>
+    </div>
+    <p class="note">Include Ontario and BC in every group. Imagine Cup scores diversity and inclusion, so deliberately include older adults, newcomers, rural residents and people with disabilities. Reach Indigenous communities through community organizations and follow their protocols. Never cold-call.</p>
+  </section>
+
+  <section aria-labelledby="h-msg">
+    <p class="eyebrow">Reaching out</p>
+    <h2 id="h-msg">Outreach message</h2>
+    <div class="panel">
+      <blockquote id="outreach">Hi [name], I'm [your name], a student at Toronto Metropolitan University. Our team is building Sylvia, a free app that helps people near forests understand wildfire smoke and fire risk, and choose native plants that are less likely to feed a fire. We're entering Microsoft's Imagine Cup and want to learn from people who live this. Could I ask you about 20 minutes of questions, by phone, video or in person? No sales pitch, and your answers stay anonymous.</blockquote>
+      <button class="btn primary" type="button" id="copy-outreach" data-copy="outreach">Copy message</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-rules">
+    <p class="eyebrow">Before every interview</p>
+    <h2 id="h-rules">Ground rules</h2>
+    <ul class="rules">
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Ask permission to take notes. Ask separately before recording anything; no recording without a clear yes.</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Say: "There are no wrong answers, and you can skip any question or stop at any time."</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Don't collect health details beyond what people volunteer, and never write a full name next to health information.</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Ask about what people did in the past, not what they think of our idea. Show the app only at the end, if at all.</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Check with a faculty advisor whether anything needs TMU research-ethics review. Product interviews usually don't; publishing results might.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="h-guides">
+    <p class="eyebrow">Interview guides</p>
+    <h2 id="h-guides">Questions by group</h2>
+    <div class="tabs" role="tablist" aria-label="Interview group">
+      <button class="tab" role="tab" id="tab-residents" aria-controls="residents" aria-selected="true">Residents</button>
+      <button class="tab" role="tab" id="tab-nurseries" aria-controls="nurseries" aria-selected="false">Nurseries</button>
+      <button class="tab" role="tab" id="tab-towns" aria-controls="towns" aria-selected="false">Town staff</button>
+      <button class="tab" role="tab" id="tab-experts" aria-controls="experts" aria-selected="false">Experts</button>
+    </div>
+
+    <div class="guide" role="tabpanel" id="residents" aria-labelledby="tab-residents">
+      <p class="tip">Includes smoke-sensitive people and caregivers. Tests H1, H2, H3, H4, H7.</p>
+      <ol class="qs">
+        <li><span>Tell me about the last time wildfire smoke or a nearby fire affected you. What happened, and what did you do?</span></li>
+        <li><span>How did you first find out? How long after it started?</span></li>
+        <li><span>Where do you check fire or air-quality information today? How often in summer?</span></li>
+        <li><span>What was missing or confusing in that information?</span></li>
+        <li><span>If smoke-sensitive or a caregiver: how does smoke affect you or the person you care for? At what point do you change plans: close windows, stay in, leave?</span></li>
+        <li><span>Have you ever received an official emergency alert (Alert Ready, BC Wildfire Service)? Was it early enough? Specific enough?</span></li>
+        <li><span>What's in your yard? Have you ever wondered whether a plant was invasive or a fire risk? What did you do?</span></li>
+        <li><span>If an app told you a plant in your yard was invasive or highly flammable and suggested a native swap, what would make you actually replace it?</span></li>
+        <li><span>What would make you trust or distrust an app like this?</span></li>
+        <li><span>At the end, show the Sylvia screens: what's the first thing you'd use? What would you never use?</span></li>
+      </ol>
+    </div>
+
+    <div class="guide" role="tabpanel" id="nurseries" aria-labelledby="tab-nurseries" hidden>
+      <p class="tip">Tests H5. The highlighted question is the one the business model slide depends on.</p>
+      <ol class="qs">
+        <li><span>How often do customers ask about native, invasive or fire-resistant plants?</span></li>
+        <li><span>Do you take part in Grow Me Instead, FireSmart or similar programs? What do you get out of them?</span></li>
+        <li><span>How do new customers find you today? What does a new customer cost you?</span></li>
+        <li><span>If an app sent you customers looking for a specific native plant, how would you want that to work?</span></li>
+        <li><span class="pay">Would you pay for that? Per referral, a monthly listing, or neither? Roughly how much would feel fair?</span></li>
+        <li><span>Would you put a QR code or tag on plants that links to the app?</span></li>
+      </ol>
+    </div>
+
+    <div class="guide" role="tabpanel" id="towns" aria-labelledby="tab-towns" hidden>
+      <p class="tip">Tests H6. Bring screenshots of the Communities view if it's ready.</p>
+      <ol class="qs">
+        <li><span>What wildfire-prevention or invasive-plant programs do you run? How do you measure whether residents engage?</span></li>
+        <li><span>How do you reach residents before and during fire season today? What works? What doesn't?</span></li>
+        <li><span>What would you want to see about your residents' activity, anonymized: sightings, plant swaps, checklist completion?</span></li>
+        <li><span class="pay">Would your budget pay for that? Which budget line, roughly how much per year, and who decides?</span></li>
+        <li><span>What would stop you adopting a tool like this: privacy, procurement, liability, IT approval?</span></li>
+      </ol>
+    </div>
+
+    <div class="guide" role="tabpanel" id="experts" aria-labelledby="tab-experts" hidden>
+      <p class="tip">Credibility for the plant data. Ask whether we may name them in the deck.</p>
+      <ol class="qs">
+        <li><span>Which invasive plants are the biggest problem in Ontario or BC, and which are also fire hazards?</span></li>
+        <li><span>Which sources should we trust for invasive status and flammability ratings?</span></li>
+        <li><span>What claims should a public app never make?</span></li>
+        <li><span>Would you review our plant data or recommendations?</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-survey">
+    <p class="eyebrow">For reach beyond interviews</p>
+    <h2 id="h-survey">Three-minute survey</h2>
+    <p class="muted">Build it in Microsoft Forms; that also helps the Microsoft story. Copy the questions below into a new form.</p>
+    <ol class="survey" id="survey-list">
+      <li><span>Province or territory, and community type <span class="opts">City, suburb, small town, rural, cottage</span></span></li>
+      <li><span>Have you been affected by wildfire smoke in the last 3 years? <span class="opts">Never · once · several times · every year</span></span></li>
+      <li><span>Are you, or someone you care for, sensitive to smoke? <span class="opts">Yes · no · prefer not to say</span></span></li>
+      <li><span>How do you get wildfire or air-quality information today? <span class="opts">Choose all that apply</span></span></li>
+      <li><span>How early did you hear about the last fire or smoke event near you? <span class="opts">Before it reached me · as it arrived · after · never</span></span></li>
+      <li><span>Do you know if any plants in your yard are invasive? <span class="opts">Yes · no · not sure</span></span></li>
+      <li><span>Would you use a free app that explains your local fire and smoke risk and suggests safer native plants? <span class="opts">1 (no) to 5 (definitely)</span></span></li>
+      <li><span>What would make you trust it? <span class="opts">Open text</span></span></li>
+      <li><span>Optional: your email to test the app <span class="opts">Store it separately from the answers</span></span></li>
+    </ol>
+    <button class="btn" type="button" id="copy-survey" data-copy="survey-list">Copy survey questions</button>
+  </section>
+
+  <section aria-labelledby="h-log">
+    <p class="eyebrow">Logging what you hear</p>
+    <h2 id="h-log">Findings sheet</h2>
+    <p class="muted">One row per conversation, in a shared Excel or SharePoint sheet. After every five, spend 15 minutes as a team on which assumptions are holding and what surprised you. Then send the sheet to Claude to turn into slides and app changes.</p>
+    <div class="scroll" tabindex="0" aria-label="Findings sheet columns">
+      <table>
+        <thead><tr><th>Date</th><th>Interviewer</th><th>Group</th><th>Province</th><th>Community</th><th>Key quote (word for word)</th><th>Pain observed</th><th>Current workaround</th><th>H#</th><th>Result</th><th>Would pay?</th><th>Follow-up</th></tr></thead>
+        <tbody><tr><td>Nov 4</td><td>A.</td><td>Resident</td><td>BC</td><td>Rural</td><td>"I found out from my neighbour, not the alert."</td><td>Late warning</td><td>Facebook group</td><td>H7</td><td>Supported</td><td>n/a</td><td>Wants to test app</td></tr></tbody>
+      </table>
+    </div>
+    <p class="muted">The example row is illustrative, not a real interview.</p>
+    <button class="btn" type="button" id="copy-columns">Copy column headers</button>
+  </section>
+
+  <section aria-labelledby="h-deck">
+    <p class="eyebrow">Where it ends up</p>
+    <h2 id="h-deck">What goes in the deck</h2>
+    <ul class="deck">
+      <li><b>Who we spoke to</b><span class="muted">"N people across Ontario and BC", broken down by group.</span></li>
+      <li><b>Three or four quotes</b><span class="muted">Word for word, one per pain point.</span></li>
+      <li><b>Assumption scorecard</b><span class="muted">H1–H7 marked supported, contradicted or unclear.</span></li>
+      <li><b>Willingness to pay</b><span class="muted">What nurseries and towns said, for the business model slide.</span></li>
+      <li><b>What we changed</b><span class="muted">Product changes we made because of what we heard.</span></li>
+    </ul>
+  </section>
+
+  <footer><p class="muted">Sylvia · ECEC, Toronto Metropolitan University · Kit version 1, October 2026</p></footer>
+</div>
+
+<script>
+(function () {
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  function show(id) {
+    tabs.forEach((t) => {
+      const on = t.getAttribute("aria-controls") === id;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => show(t.getAttribute("aria-controls")));
+    t.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus(); show(next.getAttribute("aria-controls"));
+    });
+  });
+  const start = location.hash.slice(1);
+  if (tabs.some((t) => t.getAttribute("aria-controls") === start)) show(start);
+
+  function textFor(id) {
+    const el = document.getElementById(id);
+    if (el.tagName === "OL") {
+      return Array.from(el.children).map((li, n) => {
+        const opts = li.querySelector(".opts");
+        const q = li.firstElementChild.childNodes[0].textContent.trim();
+        return (n + 1) + ". " + q + (opts ? " (" + opts.textContent.trim() + ")" : "");
+      }).join("\n");
+    }
+    return el.textContent.trim();
+  }
+  function copy(btn, text) {
+    const label = btn.textContent;
+    const done = (msg) => { btn.textContent = msg; setTimeout(() => (btn.textContent = label), 1800); };
+    navigator.clipboard.writeText(text).then(() => done("Copied"), () => {
+      const range = document.createRange(); const target = document.getElementById(btn.dataset.copy) || btn.previousElementSibling;
+      range.selectNodeContents(target); const s = getSelection(); s.removeAllRanges(); s.addRange(range);
+      done("Selected, press Ctrl+C");
+    });
+  }
+  document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => copy(b, textFor(b.dataset.copy))));
+  document.getElementById("copy-columns").addEventListener("click", (e) => {
+    const cols = Array.from(document.querySelectorAll("thead th")).map((th) => th.textContent).join("\t");
+    copy(e.currentTarget, cols);
+  });
+})();
+</script>

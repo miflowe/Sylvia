@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/functions/*.js",
   "scripts": {
-    "build": "esbuild src/functions/*.ts --bundle --platform=node --target=node22 --format=esm --outdir=dist/functions --external:@azure/functions --alias:@sylvia/core=../../packages/core/src/index.ts --out-extension:.js=.js",
+    "build": "node scripts/stage.mjs",
     "typecheck": "tsc --noEmit",
     "start": "func start"
   },

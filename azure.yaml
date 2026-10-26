@@ -10,10 +10,12 @@ services:
     docker:
       path: ./Dockerfile
       context: ../..
+      remoteBuild: true # build in Azure Container Registry; no Docker needed locally
   functions:
     project: ./apps/functions
     language: js
     host: function
+    dist: deploy
 hooks:
   prepackage:
     shell: sh

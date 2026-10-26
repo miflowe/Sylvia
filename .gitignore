@@ -25,3 +25,7 @@ Thumbs.db
 
 # Hardware: copyrighted datasheets stay local
 hardware/datasheets/
+
+# azd temp files
+infra/validation-*.bicepparam
+apps/functions/package-lock.json

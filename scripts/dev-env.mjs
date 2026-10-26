@@ -22,6 +22,8 @@ const values = {
   COSMOS_KEY: sh(`az cosmosdb keys list -g ${rg} -n ${host(env.COSMOS_ENDPOINT)} --query primaryMasterKey -o tsv`),
   SEARCH_ENDPOINT: env.SEARCH_ENDPOINT,
   SEARCH_KEY: sh(`az search query-key list -g ${rg} --service-name ${host(env.SEARCH_ENDPOINT)} --query [0].key -o tsv`),
+  STORAGE_CONNECTION: sh(`az storage account show-connection-string -g ${rg} -n ${sh(`az storage account list -g ${rg} --query [0].name -o tsv`)} --query connectionString -o tsv`),
+  AZURE_MAPS_KEY: sh(`az maps account keys list -g ${rg} -n ${sh(`az maps account list -g ${rg} --query [0].name -o tsv`)} --query primaryKey -o tsv`),
 };
 
 const file = "apps/web/.env.local";

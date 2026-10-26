@@ -1,13 +1,6 @@
 import "server-only";
-import { CosmosClient, type Container } from "@azure/cosmos";
-import { binomialKey, type RegionVerdict, type Species } from "@sylvia/core";
-import { env } from "./env";
-
-let client: CosmosClient | undefined;
-function container(name: string): Container {
-  client ??= new CosmosClient({ endpoint: env("COSMOS_ENDPOINT"), key: env("COSMOS_KEY") });
-  return client.database("sylvia").container(name);
-}
+import { binomialKey, type Nursery, type RegionVerdict, type Species } from "@sylvia/core";
+import { container } from "./cosmos";
 
 // Curated data changes only on import, so cache it in memory for a few minutes per region.
 const TTL_MS = 5 * 60 * 1000;
@@ -38,4 +31,17 @@ export function findVerdict(data: Awaited<ReturnType<typeof regionData>>, scient
     return s && binomialKey(s.scientificName) === key;
   });
   return matches[0];
+}
+
+const nurseryCache = new Map<string, { at: number; nurseries: Nursery[] }>();
+
+/** Grow Me Instead / FireSmart-recognized nurseries for a region (curated sheet). */
+export async function curatedNurseries(regionCode: string): Promise<Nursery[]> {
+  const hit = nurseryCache.get(regionCode);
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.nurseries;
+  const { resources } = await container("nurseriesCurated")
+    .items.query<Nursery>({ query: "SELECT * FROM c WHERE c.regionCode = @r", parameters: [{ name: "@r", value: regionCode }] }, { partitionKey: regionCode })
+    .fetchAll();
+  nurseryCache.set(regionCode, { at: Date.now(), nurseries: resources });
+  return resources;
 }

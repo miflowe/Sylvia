@@ -203,6 +203,8 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
         { name: 'cosmos-key', value: enableCosmos ? cosmos!.listKeys().primaryMasterKey : 'cosmos-disabled' }
         { name: 'search-key', value: search.listQueryKeys().value[0].key }
         { name: 'plantnet-key', value: empty(plantnetApiKey) ? 'not-set' : plantnetApiKey }
+        { name: 'storage-connection', value: storageConnection }
+        { name: 'maps-key', value: maps.listKeys().primaryKey }
       ]
     }
     template: {
@@ -220,6 +222,8 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'COSMOS_KEY', secretRef: 'cosmos-key' }
             { name: 'SEARCH_KEY', secretRef: 'search-key' }
             { name: 'PLANTNET_API_KEY', secretRef: 'plantnet-key' }
+            { name: 'STORAGE_CONNECTION', secretRef: 'storage-connection' }
+            { name: 'AZURE_MAPS_KEY', secretRef: 'maps-key' }
           ]
         }
       ]

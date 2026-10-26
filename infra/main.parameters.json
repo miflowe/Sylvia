@@ -4,6 +4,9 @@
   "parameters": {
     "environmentName": { "value": "${AZURE_ENV_NAME}" },
     "location": { "value": "${AZURE_LOCATION=canadacentral}" },
-    "budgetAlertEmail": { "value": "${BUDGET_ALERT_EMAIL=}" }
+    "budgetAlertEmail": { "value": "${BUDGET_ALERT_EMAIL=}" },
+    "enableCosmos": { "value": "${ENABLE_COSMOS=true}" },
+    "cosmosLocation": { "value": "${COSMOS_LOCATION=canadacentral}" },
+    "webImage": { "value": "${WEB_IMAGE=mcr.microsoft.com/azuredocs/containerapps-helloworld:latest}" }
   }
 }

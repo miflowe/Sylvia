@@ -1,13 +1,22 @@
-// Foundation resources for Sylvia. AI Search and the Foundry/OpenAI deployment are added in steps 2–3,
-// once model quota on the subscription is confirmed.
+// Sylvia's Azure resources. AI Search is added in step 2.
 
 param environmentName string
 param location string
 param mapsLocation string
 param tags object
 
+@description('Cosmos DB can be switched off while a region has no capacity for this subscription.')
+param enableCosmos bool = true
+param cosmosLocation string = location
+
+@description('Region for Azure AI Foundry models (Sweden Central has vision quota on Azure for Students).')
+param aiLocation string = 'swedencentral'
+
+@description('Web container image, e.g. ghcr.io/miflowe/sylvia-web:<sha>. Placeholder until the first image is published.')
+param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+
 var token = toLower(uniqueString(subscription().id, environmentName, location))
-var acrPullRole = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+var placeholderImage = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 // ---------- Monitoring ----------
 resource logs 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
@@ -90,24 +99,26 @@ resource photoLifecycle 'Microsoft.Storage/storageAccounts/managementPolicies@20
   }
 }
 
+var cosmosEndpoint = enableCosmos ? cosmos!.properties.documentEndpoint : ''
+
 var storageConnection = 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 // ---------- Database: Cosmos DB serverless ----------
-resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
+resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = if (enableCosmos) {
   name: 'cosmos-${token}'
-  location: location
+  location: cosmosLocation
   tags: tags
   kind: 'GlobalDocumentDB'
   properties: {
     databaseAccountOfferType: 'Standard'
     capabilities: [{ name: 'EnableServerless' }]
     consistencyPolicy: { defaultConsistencyLevel: 'Session' }
-    locations: [{ locationName: location, failoverPriority: 0 }]
+    locations: [{ locationName: cosmosLocation, failoverPriority: 0 }]
     minimalTlsVersion: 'Tls12'
   }
 }
 
-resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-05-15' = {
+resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-05-15' = if (enableCosmos) {
   parent: cosmos
   name: 'sylvia'
   properties: { resource: { id: 'sylvia' } }
@@ -124,30 +135,8 @@ resource maps 'Microsoft.Maps/accounts@2023-06-01' = {
 }
 
 // ---------- Web app: Container Apps ----------
-resource registry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
-  name: 'cr${token}'
-  location: location
-  tags: tags
-  sku: { name: 'Basic' }
-  properties: { adminUserEnabled: false }
-}
-
-resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'id-web-${token}'
-  location: location
-  tags: tags
-}
-
-resource webAcrPull 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  scope: registry
-  name: guid(registry.id, webIdentity.id, acrPullRole)
-  properties: {
-    principalId: webIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', acrPullRole)
-  }
-}
-
+// The image is built by GitHub Actions and published to GitHub's container registry: Azure for Students blocks
+// ACR remote builds. scripts/deploy-web.sh points the app at a new image tag.
 resource appsEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: 'cae-${token}'
   location: location
@@ -166,31 +155,67 @@ resource appsEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
 resource web 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-web-${token}'
   location: location
-  tags: union(tags, { 'azd-service-name': 'web' })
-  identity: { type: 'UserAssigned', userAssignedIdentities: { '${webIdentity.id}': {} } }
-  dependsOn: [webAcrPull]
+  tags: tags
+  identity: { type: 'SystemAssigned' }
   properties: {
     managedEnvironmentId: appsEnv.id
     configuration: {
-      ingress: { external: true, targetPort: 3000, transport: 'auto' }
-      registries: [{ server: registry.properties.loginServer, identity: webIdentity.id }]
+      ingress: { external: true, targetPort: webImage == placeholderImage ? 80 : 3000, transport: 'auto' }
     }
     template: {
       containers: [
         {
           name: 'web'
-          // azd replaces this placeholder with the built image on `azd deploy`.
-          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+          image: webImage
           resources: { cpu: json('0.5'), memory: '1Gi' }
           env: [
             { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: insights.properties.ConnectionString }
-            { name: 'COSMOS_ENDPOINT', value: cosmos.properties.documentEndpoint }
+            { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
+            { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
           ]
         }
       ]
       scale: { minReplicas: 0, maxReplicas: 2 }
     }
   }
+}
+
+// ---------- AI: Azure AI Foundry (AI Services) in Sweden Central ----------
+// Vision models are only available to this subscription in Sweden Central. Standard (regional) deployments keep
+// processing in Sweden. The same resource also provides Azure AI Content Safety.
+resource ai 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
+  name: 'ai-${token}'
+  location: aiLocation
+  tags: tags
+  kind: 'AIServices'
+  sku: { name: 'S0' }
+  properties: {
+    customSubDomainName: 'ai-${token}'
+    publicNetworkAccess: 'Enabled'
+  }
+}
+
+resource visionModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
+  parent: ai
+  name: 'gpt-4o'
+  sku: { name: 'Standard', capacity: 30 }
+  properties: { model: { format: 'OpenAI', name: 'gpt-4o', version: '2024-11-20' } }
+}
+
+resource textModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
+  parent: ai
+  name: 'gpt-4o-mini'
+  sku: { name: 'Standard', capacity: 50 }
+  properties: { model: { format: 'OpenAI', name: 'gpt-4o-mini', version: '2024-07-18' } }
+  dependsOn: [visionModel]
+}
+
+resource embeddingModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
+  parent: ai
+  name: 'text-embedding-3-large'
+  sku: { name: 'Standard', capacity: 50 }
+  properties: { model: { format: 'OpenAI', name: 'text-embedding-3-large', version: '1' } }
+  dependsOn: [textModel]
 }
 
 // ---------- Functions: Flex Consumption ----------
@@ -228,15 +253,17 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'AzureWebJobsStorage', value: storageConnection }
         { name: 'DEPLOYMENT_STORAGE_CONNECTION_STRING', value: storageConnection }
         { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: insights.properties.ConnectionString }
-        { name: 'COSMOS_ENDPOINT', value: cosmos.properties.documentEndpoint }
+        { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
+        { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
       ]
     }
   }
 }
 
-output registryEndpoint string = registry.properties.loginServer
+output webAppName string = web.name
+output aiEndpoint string = ai.properties.endpoint
 output keyVaultName string = vault.name
-output cosmosEndpoint string = cosmos.properties.documentEndpoint
+output cosmosEndpoint string = cosmosEndpoint
 output webUrl string = 'https://${web.properties.configuration.ingress.fqdn}'
 output functionsUrl string = 'https://${functions.properties.defaultHostName}'
 output mapsAccountName string = maps.name

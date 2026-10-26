@@ -19,6 +19,15 @@ param budgetAmount int = 40
 
 param budgetStartDate string = '2026-11-01'
 
+@description('False while no Cosmos DB region has capacity for this subscription.')
+param enableCosmos bool = true
+
+@description('Cosmos DB region; defaults to the primary region.')
+param cosmosLocation string = location
+
+@description('Web container image tag published by GitHub Actions.')
+param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+
 var tags = { 'azd-env-name': environmentName, app: 'sylvia' }
 
 resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
@@ -35,6 +44,9 @@ module resources 'resources.bicep' = {
     location: location
     mapsLocation: mapsLocation
     tags: tags
+    enableCosmos: enableCosmos
+    cosmosLocation: cosmosLocation
+    webImage: webImage
   }
 }
 
@@ -54,7 +66,8 @@ resource budget 'Microsoft.Consumption/budgets@2023-11-01' = if (!empty(budgetAl
 
 output AZURE_LOCATION string = location
 output AZURE_RESOURCE_GROUP string = rg.name
-output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.registryEndpoint
+output WEB_APP_NAME string = resources.outputs.webAppName
+output AZURE_AI_ENDPOINT string = resources.outputs.aiEndpoint
 output AZURE_KEY_VAULT_NAME string = resources.outputs.keyVaultName
 output COSMOS_ENDPOINT string = resources.outputs.cosmosEndpoint
 output WEB_URL string = resources.outputs.webUrl

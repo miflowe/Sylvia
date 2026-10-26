@@ -1,16 +1,9 @@
-# Azure Developer CLI: `azd up` provisions infra/ and deploys both services.
+# Azure Developer CLI: `azd up` provisions infra/ and deploys the Functions app.
+# The web app image is built by GitHub Actions (.github/workflows/web-image.yml) and rolled out with scripts/deploy-web.sh.
 name: sylvia
 metadata:
   template: sylvia@0.1.0
 services:
-  web:
-    project: ./apps/web
-    language: js
-    host: containerapp
-    docker:
-      path: ./Dockerfile
-      context: ../..
-      remoteBuild: true # build in Azure Container Registry; no Docker needed locally
   functions:
     project: ./apps/functions
     language: js

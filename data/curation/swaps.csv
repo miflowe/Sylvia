@@ -1,0 +1,10 @@
+region_code,invasive_species_id,native_species_id,why,source_name,source_url,review_status
+CA-ON,berberis-thunbergii,physocarpus-opulifolius,Burgundy-leaved ninebark cultivars give the same deep red colour on a native shrub that feeds bees.,Grow Me Instead (Ontario Invasive Plant Council),https://www.ontarioinvasiveplants.ca/,draft
+CA-ON,euonymus-alatus,aronia-melanocarpa,"Black chokeberry turns the same bright red in fall, and its berries feed birds.",Grow Me Instead (Ontario Invasive Plant Council),https://www.ontarioinvasiveplants.ca/,draft
+CA-ON,vinca-minor,asarum-canadense,Wild ginger makes a dense green carpet in shade without escaping into the woods.,Grow Me Instead (Ontario Invasive Plant Council),https://www.ontarioinvasiveplants.ca/,draft
+CA-ON,vinca-minor,arctostaphylos-uva-ursi,"Kinnikinnick is a low evergreen mat for sunny, dry spots.",Grow Me Instead (Ontario Invasive Plant Council),https://www.ontarioinvasiveplants.ca/,draft
+CA-ON,acer-platanoides,acer-rubrum,Red maple gives the same shade and much better fall colour.,Grow Me Instead (Ontario Invasive Plant Council),https://www.ontarioinvasiveplants.ca/,draft
+CA-BC,cytisus-scoparius,mahonia-aquifolium,Oregon-grape brings bright yellow spring flowers on a native evergreen shrub.,Invasive Species Council of BC,https://bcinvasives.ca/,draft
+CA-BC,hedera-helix,arctostaphylos-uva-ursi,Kinnikinnick is a native evergreen groundcover that stays low and doesn't climb trees.,Invasive Species Council of BC,https://bcinvasives.ca/,draft
+CA-BC,rubus-armeniacus,rubus-parviflorus,"Thimbleberry gives berries and a full, leafy hedge without the thorns or the spread.",Invasive Species Council of BC,https://bcinvasives.ca/,draft
+CA-BC,rubus-armeniacus,physocarpus-capitatus,Pacific ninebark makes a dense native hedge along fences and streams.,Invasive Species Council of BC,https://bcinvasives.ca/,draft

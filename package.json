@@ -2,13 +2,17 @@
   "name": "sylvia",
   "private": true,
   "packageManager": "pnpm@11.1.1",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "pnpm --filter web dev",
     "build": "pnpm -r build",
     "test": "pnpm -r --if-present test",
     "lint": "pnpm -r --if-present lint",
     "typecheck": "pnpm -r --if-present typecheck",
-    "tokens": "pnpm --filter @sylvia/ui tokens"
+    "tokens": "pnpm --filter @sylvia/ui tokens",
+    "data:check": "pnpm --filter @sylvia/data check",
+    "data:import": "pnpm --filter @sylvia/data import"
   }
 }

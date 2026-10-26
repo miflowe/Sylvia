@@ -63,6 +63,7 @@ export const SwapSchema = z.object({
   speciesId: SpeciesIdSchema,
   why: z.string().min(5),
   source: SourceSchema,
+  reviewStatus: z.enum(["draft", "reviewed"]).default("draft"),
 });
 export type Swap = z.infer<typeof SwapSchema>;
 

@@ -24,7 +24,7 @@ const flammabilityText = (v: RegionVerdict) =>
   describeFlammability({
     rating: v.flammability.rating,
     source: v.flammability.source?.name,
-    appliedFromRegion: v.flammability.appliedFromRegion,
+    appliedFromRegion: v.flammability.appliedFromRegion && (REGION_NAMES[v.flammability.appliedFromRegion] ?? v.flammability.appliedFromRegion),
   });
 
 /** Runs the whole Sprout pipeline for one photo. */

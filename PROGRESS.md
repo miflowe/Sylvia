@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 1 Foundation
-**Next action:** Write the team interview kit (`docs/kits/interview-kit.md`). Bicep is unvalidated until `az` is installed: run `az bicep build -f infra/main.bicep` first thing after.
+**Next action:** Step 2 Data: define Cosmos container schemas in `packages/core` + Bicep, then CSV curation templates in `data/`. Meanwhile, the first deploy waits on the user installing `az`/`azd` (then run `az bicep build -f infra/main.bicep` and `azd provision --preview`).
 
 ## Build order
 - [ ] 1 Foundation
@@ -13,7 +13,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] PWA shell + 5-tab nav (Home, Map, Sprout, Alerts, Profile). `public/icon.svg` is a placeholder until the design system has Sylvia app icons
   - [x] CI (GitHub Actions: lint, test, build)
   - [x] Bicep + azd skeleton (`infra/`, `azure.yaml`, `apps/web/Dockerfile`). NOT yet validated: needs `az bicep build` + `azd provision --preview`
-  - [ ] Interview kit for the team (`docs/kits/interview-kit.md`)
+  - [x] Interview kit for the team (`docs/kits/interview-kit.md`)
   - [ ] First deploy to Azure for Students (blocked: user installs `az`/`azd` and signs in)
   - [ ] Check Foundry model quota on the Students subscription
 - [ ] 2 Data: Cosmos schema, curation templates, importers, AI Search index

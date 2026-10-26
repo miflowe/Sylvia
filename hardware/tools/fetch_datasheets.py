@@ -9,6 +9,7 @@ committed so anyone can re-fetch and check them. Only run "stage" for a batch th
 import csv
 import datetime as dt
 import hashlib
+import json
 import pathlib
 import re
 import shutil
@@ -31,6 +32,7 @@ EXTRA = [
     ("RAK3172-9-SM-I", "lcsc:C19723905"),
     ("nRF9151-LACA-R7", "lcsc:C22397843"),
     ("1042", "lcsc:C5249310"),
+    ("ZE07-CO", "https://www.winsen-sensor.com/d/files/manual/ze07-co.pdf"),
 ]
 SKIP = {"CO-B4"}  # quote-only part, no public datasheet
 GENERIC = ("CL05", "CL10", "CL21", "0402WGF", "0603WAF")  # passives: no PDF needed
@@ -89,6 +91,10 @@ def pdf_info(path):
     data = path.read_bytes()
     if not data.startswith(b"%PDF"):
         return None
+    if b"/JavaScript" in data or b"/Launch" in data:
+        print(f"REFUSED {path.name}: contains /JavaScript or /Launch")
+        return None
+    # /EmbeddedFile alone is allowed: Sensirion's SEN6x PDF embeds MathML equation XML (checked 2026-10-25).
     try:
         import pymupdf
         pages = pymupdf.open(path).page_count
@@ -123,6 +129,10 @@ def stage():
         if not info and dest.exists():
             dest.rename(dest.with_suffix(".rejected"))
         report.append((mpn, code, src, info))
+    sources = STAGE / "sources.json"
+    known = json.loads(sources.read_text()) if sources.exists() else {}
+    known.update({safe_name(m): s for m, c, s, i in report if i and c != "cached"})
+    sources.write_text(json.dumps(known, indent=1))
     for mpn, code, src, info in report:
         status = f"{info['pages']} p, {info['bytes'] // 1024} KB" if info else "NOT A PDF"
         print(f"{mpn:28} {code:7} {status:20} {src}")
@@ -132,6 +142,9 @@ def promote():
     FINAL.mkdir(exist_ok=True)
     today = dt.date.today().isoformat()
     srcs = {safe_name(m): u for m, u in targets().items()}
+    sources = STAGE / "sources.json"
+    if sources.exists():
+        srcs.update(json.loads(sources.read_text()))  # the URL actually downloaded
     old = {}
     if MANIFEST.exists():
         old = {r["file"]: r for r in csv.DictReader(MANIFEST.open(encoding="utf-8"))}

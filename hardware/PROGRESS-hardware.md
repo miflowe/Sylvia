@@ -3,8 +3,8 @@
 Single source of truth for the Node design package (plan step 9). Updated after every chunk.
 Resume: read this file, then continue from **Next action**. Never redo a ticked item.
 
-**Current step:** H3 Part library
-**Next action:** Run `tools/fetch_batch1.py` (datasheets → `_staging/batch1/`), inspect, move to `datasheets/`, re-run `tools/build_parts.py` for sha256.
+**Current step:** H5 Schematic-as-code
+**Next action:** Write `kicad/sylvia_node.py` (SKiDL) from `docs/reference-circuits.md`, generate netlist, run ERC.
 
 ## Decisions (user, 2026-10-25)
 - Download batch 1 approved in full (`parts/download-batch-1.md`).
@@ -15,7 +15,12 @@ Resume: read this file, then continue from **Next action**. Never redo a ticked 
 ## Checklist
 - [x] H1 `parts/parts.csv`: all tiers, alternates, key passives, price snapshot (`tools/build_parts.py` regenerates it)
 - [x] H2 Download batch approved by the user (datasheets, CAD, Python tools)
-- [ ] H3 Part library: `datasheets/` (gitignored, sha256 in parts.csv), `kicad/lib/sylvia.kicad_sym`, `sylvia.pretty/`, `3dmodels/`
+- [x] H3 Part library: `datasheets/` (gitignored, sha256 in parts.csv), `kicad/lib/sylvia.kicad_sym`, `sylvia.pretty/`, `3dmodels/`
+  - 48 datasheets (`parts/datasheets.csv` = URL + sha256). Missing: nRF9151 PS (user saves from browser), SWPA6045 (generic inductor).
+  - `tools/build_library.py` → 65 symbols, 59 footprints, 3D models (~10 MB committed; EasyEDA STEP + Sensirion STEP gitignored).
+  - `tools/check_footprints.py` → 15/15 Tier B footprints match datasheet pad count/pitch/EP/numbering (`docs/footprint-check.md`).
+    MAX17048 exposed pad UNVERIFIED (ADI outline 21-0168 not reachable from here).
+  - Placeholder 3D boxes: SPEC 110-102, BQ24650 (RVA), USB-C HRO, WROOM-1U, SCD4x, SHT4x, TO-39, nano-SIM.
 - [ ] H4 Docs: requirements, block diagram, power budget, I2C map, pin map, reference circuits
 - [ ] H5 Schematic-as-code → KiCad netlist, ERC clean
 - [ ] H6 `docs/layout-guide.md` + `docs/review-checklist.md`

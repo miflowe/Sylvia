@@ -20,3 +20,6 @@ firmware/**/secrets.h
 firmware/**/*.pem
 firmware/**/*.key
 firmware/test/host/build/
+# 3D models that can't or needn't be committed (see tools/build_library.py)
+kicad/lib/3dmodels/mfr/
+kicad/lib/3dmodels/easyeda_step/

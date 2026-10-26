@@ -157,7 +157,7 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-web-${token}'
   location: location
   tags: tags
-  identity: { type: 'SystemAssigned' }
+  // No managed identity: this subscription gets an express Container Apps environment, which doesn't support it.
   properties: {
     managedEnvironmentId: appsEnv.id
     configuration: {
@@ -199,16 +199,10 @@ resource ai 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
 resource visionModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
   parent: ai
   name: 'gpt-4o'
-  sku: { name: 'Standard', capacity: 30 }
+  // Used for identification and explanations. gpt-4o-mini can no longer be deployed (deprecated 2026-03-31);
+  // gpt-4o retires 2027-04-14, so swap models before the spring rounds.
+  sku: { name: 'Standard', capacity: 45 }
   properties: { model: { format: 'OpenAI', name: 'gpt-4o', version: '2024-11-20' } }
-}
-
-resource textModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
-  parent: ai
-  name: 'gpt-4o-mini'
-  sku: { name: 'Standard', capacity: 50 }
-  properties: { model: { format: 'OpenAI', name: 'gpt-4o-mini', version: '2024-07-18' } }
-  dependsOn: [visionModel]
 }
 
 resource embeddingModel 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
@@ -216,7 +210,7 @@ resource embeddingModel 'Microsoft.CognitiveServices/accounts/deployments@2024-1
   name: 'text-embedding-3-large'
   sku: { name: 'Standard', capacity: 50 }
   properties: { model: { format: 'OpenAI', name: 'text-embedding-3-large', version: '1' } }
-  dependsOn: [textModel]
+  dependsOn: [visionModel]
 }
 
 // ---------- Functions: Flex Consumption ----------

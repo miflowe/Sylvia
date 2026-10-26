@@ -88,3 +88,18 @@
 .swap p { margin: 0; }
 .swapKind { font: var(--type-eyebrow); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; color: var(--moss); }
 .swapName { font: var(--type-display-sm); font-size: 26px; margin: 0; }
+
+.saveRow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.inlineError { color: var(--ember); font: var(--type-body-sm); margin: 0; }
+.okNote { color: var(--pine); font-weight: 700; margin: 0; }
+.optIn, .nurseries { display: grid; gap: var(--space-3); justify-items: start; padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper-raised); }
+.optIn p, .nurseries p { margin: 0; }
+.nurseryList { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); width: 100%; }
+.nursery { display: grid; gap: var(--space-1); padding-bottom: var(--space-3); border-bottom: 1px solid var(--line); }
+.nursery:last-child { border-bottom: 0; padding-bottom: 0; }
+.nurseryTop { display: flex; justify-content: space-between; gap: var(--space-3); align-items: baseline; }
+.nurseryName { font-weight: 700; min-width: 0; }
+.distance { font: var(--type-data); color: var(--ink-muted); white-space: nowrap; }
+.badges { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.badge { font: var(--type-eyebrow); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; background: var(--moss-soft); color: var(--pine); padding: 3px 8px; border-radius: var(--radius-sm); }
+.secondary:disabled { opacity: 0.6; cursor: default; }

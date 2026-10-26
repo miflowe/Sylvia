@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { SproutCandidate, SproutResult, SproutSwap, SproutVerdict } from "@sylvia/core";
+import { NearbyNurseries, SaveScan, ShareSighting } from "./ResultActions";
 import styles from "./sprout.module.css";
 
 const REGIONS = [
@@ -13,7 +14,7 @@ const regionName = (code: string) => (code === "CA-BC" ? "British Columbia" : "O
 type State =
   | { kind: "idle" }
   | { kind: "checking"; preview: string }
-  | { kind: "result"; preview: string; result: SproutResult }
+  | { kind: "result"; preview: string; photo?: Blob; result: SproutResult }
   | { kind: "error"; preview?: string; message: string };
 
 /** Downscale and re-encode as JPEG. Re-encoding through a canvas also drops EXIF, including GPS location. */
@@ -50,13 +51,14 @@ export function SproutScanner() {
     const preview = URL.createObjectURL(file);
     setState({ kind: "checking", preview });
     try {
+      const photo = await preparePhoto(file);
       const form = new FormData();
-      form.append("image", await preparePhoto(file), "plant.jpg");
+      form.append("image", photo, "plant.jpg");
       form.append("region", region);
       const res = await fetch("/api/sprout", { method: "POST", body: form });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? "Something went wrong.");
-      setState({ kind: "result", preview, result: body });
+      setState({ kind: "result", preview, photo, result: body });
     } catch (e) {
       setState({ kind: "error", preview, message: e instanceof Error ? e.message : "Something went wrong." });
     }
@@ -64,7 +66,7 @@ export function SproutScanner() {
 
   async function pick(candidate: SproutCandidate) {
     if (state.kind !== "result") return;
-    const { result, preview } = state;
+    const { result, preview, photo } = state;
     setState({ kind: "checking", preview });
     try {
       const res = await fetch("/api/sprout/assess", {
@@ -80,6 +82,7 @@ export function SproutScanner() {
       setState({
         kind: "result",
         preview,
+        photo,
         result: {
           ...result,
           ...body,
@@ -159,18 +162,20 @@ export function SproutScanner() {
         </section>
       )}
 
-      {state.kind === "result" && <Result preview={state.preview} result={state.result} onPick={pick} onReset={reset} />}
+      {state.kind === "result" && <Result preview={state.preview} photo={state.photo} result={state.result} onPick={pick} onReset={reset} />}
     </div>
   );
 }
 
 function Result({
   preview,
+  photo,
   result,
   onPick,
   onReset,
 }: {
   preview: string;
+  photo?: Blob;
   result: SproutResult;
   onPick: (c: SproutCandidate) => void;
   onReset: () => void;
@@ -233,11 +238,11 @@ function Result({
         </section>
       )}
 
-      {result.report && (
-        <a className={styles.secondary} href={result.report.url} target="_blank" rel="noreferrer">
-          {result.report.label}
-        </a>
-      )}
+      {result.swaps.length > 0 && <NearbyNurseries regionCode={result.regionCode} />}
+
+      {verdict?.status === "invasive" && <ShareSighting result={result} />}
+
+      <SaveScan result={result} photo={photo} />
 
       <button type="button" className={styles.primaryButton} onClick={onReset}>
         <ScanIcon /> Scan another plant

@@ -104,8 +104,9 @@ var cosmosEndpoint = enableCosmos ? cosmos!.properties.documentEndpoint : ''
 var storageConnection = 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 // ---------- Database: Cosmos DB serverless ----------
+// Named per region: a Cosmos account name stays reserved in its old region for a while after deletion.
 resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = if (enableCosmos) {
-  name: 'cosmos-${token}'
+  name: 'cosmos-${toLower(uniqueString(subscription().id, environmentName, cosmosLocation))}'
   location: cosmosLocation
   tags: tags
   kind: 'GlobalDocumentDB'

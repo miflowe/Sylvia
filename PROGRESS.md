@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 3 Sprout
-**Next action:** Step 3b: saved scans (Blob + `scans` container, device id), opt-in sightings (`sightings`, rounded location) and nursery search (Azure Maps POI + curated badges). Then step 4.
+**Current step:** 4 Wildfire data + Home
+**Next action:** Step 4: ingestion Functions (FIRMS, CWFIS fire danger/active fires/perimeters, ECCC AQHI, PurpleAir in pilot boxes, Open-Meteo) into `observations`; then the Home dashboard. FIRMS_MAP_KEY and PURPLEAIR_API_KEY are in `apps/web/.env.local`; add them to azd env + Functions app settings.
 
 ## Build order
 - [x] 1 Foundation
@@ -21,11 +21,13 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Curation sheets `data/curation/*.csv` + team guide `data/curation/README.md`. 16 species, 17 verdicts, 9 swaps, ALL DRAFT (team must verify against sources)
   - [x] `pnpm data:check` (validate) · `pnpm data:import` (Cosmos + embeddings + `native-plants` index; keys come from az CLI at run time)
   - [x] 11 Cosmos containers + AI Search free tier (`srch-6x6suo5lxjc5o`, Canada Central) provisioned; first import done
-- [ ] 3 Sprout
+- [x] 3 Sprout
   - [x] Pipeline (`apps/web/src/server/sprout.ts`): gpt-4o vision (region watch list) + Pl@ntNet in parallel → `mergeIdentifications` (noise floor 0.1) → curated verdict or VASCAN fallback → curated swaps + AI Search look-alikes → Sylvia explanation (gpt-4o) → Content Safety. `/api/sprout` (photo) and `/api/sprout/assess` (picked alternative)
   - [x] Screens (`apps/web/src/app/sprout/`): region picker, camera/upload (canvas re-encode strips EXIF/GPS), confidence chip, "is it one of these?", verdict, Sylvia says, swaps, official report link
   - [x] Tested with `apps/web/test-fixtures/` (barberry, Scotch broom, ninebark, not-a-plant): all correct locally and live
-  - [ ] Save scans, sightings opt-in, nursery search + badges
+  - [x] Saved scans: `/api/scans` (+ `[id]`, `[id]/photo`), photos in private Blob `photos/{device}/{scan}.jpg` (30-day lifecycle), anonymous device id header `x-sylvia-device` (`apps/web/src/lib/device.ts`); My plants on Profile
+  - [x] Opt-in sightings: `/api/sightings`, curated invasive only, ~1 km rounding, no device link, cellId partition
+  - [x] Garden centres: `/api/nurseries` → Azure Maps POI category 9361032 + curated badges (`matchCurated`). Azure Maps data is noisy (e.g. arborists, a lighting shop); curated nurseries fix this once the team fills `nurseries.csv`
 - [ ] 4 Wildfire data ingestion + Home
 - [ ] 5 Map
 - [ ] 6 Alerts + Replay mode
@@ -35,6 +37,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - [ ] 10 Pitch kit (deck, video scripts, findings template)
 
 ## Waiting on the user / team
+- Fill `data/curation/nurseries.csv` with Grow Me Instead / FireSmart BC retailers: the Azure Maps garden-centre results alone are unreliable.
 - Verify the draft plant rows in `data/curation/` against their sources (see its README), then run `pnpm data:check`.
 - Optional: `gh auth login` (GitHub CLI isn't signed in; git push works without it).
 - Register API keys: NASA FIRMS MAP_KEY, PurpleAir, Pl@ntNet. Put them in `apps/web/.env.local` (never commit).
@@ -52,5 +55,6 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-26: Step 3 complete and live (saved scans, sightings, garden centres).
 - 2026-10-26: Step 3 core live: Sprout identifies, judges and suggests swaps on Azure. Local dev: `node scripts/dev-env.mjs` fills `apps/web/.env.local`; Pl@ntNet key also in azd env.
 - 2026-10-26: Step 2 done. First import: barberry look-alikes in CA-ON = black chokeberry, common ninebark, kinnikinnick.

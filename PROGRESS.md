@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 1 Foundation
-**Next action:** Step 2 Data: Cosmos containers in Bicep + `packages/core` schemas, AI Search (free tier) + `native-plants` index, CSV curation templates in `data/`.
+**Current step:** 3 Sprout
+**Next action:** Step 3 Sprout: photo upload (Blob SAS) → gpt-4o identification limited to the region's species list + Pl@ntNet second opinion → verdict from Cosmos (VASCAN fallback outside pilots) → swaps (curated first, then `native-plants` search) → explanation → Content Safety → results UI. Needs the Pl@ntNet key in `apps/web/.env.local`.
 
 ## Build order
 - [x] 1 Foundation
@@ -16,7 +16,11 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Interview kit for the team (`docs/kits/interview-kit.md`)
   - [x] First deploy (env `sylvia-dev`). Web: https://ca-web-6x6suo5lxjc5o.icysmoke-e61b83ec.canadacentral.azurecontainerapps.io · Functions: https://func-6x6suo5lxjc5o.azurewebsites.net/api/health
   - [x] Foundry: `ai-6x6suo5lxjc5o` in Sweden Central (user approved), deployments `gpt-4o` (Standard, 45K TPM; identification + explanations) and `text-embedding-3-large`. gpt-4o-mini can't be deployed (deprecated). **gpt-4o retires 2027-04-14: swap before spring rounds.**
-- [ ] 2 Data: Cosmos schema, curation templates, importers, AI Search index
+- [x] 2 Data
+  - [x] Schemas in `packages/core/src/plants.ts` (Species, RegionVerdict with swaps, Nursery) + VASCAN fallback (`gbif.ts`)
+  - [x] Curation sheets `data/curation/*.csv` + team guide `data/curation/README.md`. 16 species, 17 verdicts, 9 swaps, ALL DRAFT (team must verify against sources)
+  - [x] `pnpm data:check` (validate) · `pnpm data:import` (Cosmos + embeddings + `native-plants` index; keys come from az CLI at run time)
+  - [x] 11 Cosmos containers + AI Search free tier (`srch-6x6suo5lxjc5o`, Canada Central) provisioned; first import done
 - [ ] 3 Sprout pipeline + UI
 - [ ] 4 Wildfire data ingestion + Home
 - [ ] 5 Map
@@ -27,6 +31,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - [ ] 10 Pitch kit (deck, video scripts, findings template)
 
 ## Waiting on the user / team
+- Verify the draft plant rows in `data/curation/` against their sources (see its README), then run `pnpm data:check`.
 - Optional: `gh auth login` (GitHub CLI isn't signed in; git push works without it).
 - Register API keys: NASA FIRMS MAP_KEY, PurpleAir, Pl@ntNet. Put them in `apps/web/.env.local` (never commit).
 - All 4 team members register on the Imagine Cup site; fix "five people" anywhere it appears.
@@ -43,3 +48,4 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-26: Step 2 done. First import: barberry look-alikes in CA-ON = black chokeberry, common ninebark, kinnikinnick.

@@ -1,4 +1,4 @@
-// Sylvia's Azure resources. AI Search is added in step 2.
+// Sylvia's Azure resources.
 
 param environmentName string
 param location string
@@ -125,6 +125,38 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-05-15
   properties: { resource: { id: 'sylvia' } }
 }
 
+// Containers and partition keys (see docs/decisions.md). Serverless accounts take no throughput settings.
+var cosmosContainers = [
+  { name: 'species', pk: '/id' }
+  { name: 'regionVerdicts', pk: '/regionCode' }
+  { name: 'nurseriesCurated', pk: '/regionCode' }
+  { name: 'observations', pk: '/cellId' }
+  { name: 'officialAlerts', pk: '/regionCode' }
+  { name: 'alerts', pk: '/deviceOrUserId' }
+  { name: 'pushSubscriptions', pk: '/deviceOrUserId' }
+  { name: 'scans', pk: '/deviceOrUserId' }
+  { name: 'checklists', pk: '/deviceOrUserId' }
+  { name: 'sightings', pk: '/cellId' }
+  { name: 'replayEvents', pk: '/eventId' }
+]
+
+resource containers 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-05-15' = [
+  for c in cosmosContainers: if (enableCosmos) {
+    parent: cosmosDb
+    name: c.name
+    properties: { resource: { id: c.name, partitionKey: { paths: [c.pk], kind: 'Hash' } } }
+  }
+]
+
+// ---------- Search: native look-alikes (free tier, one per subscription) ----------
+resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
+  name: 'srch-${token}'
+  location: location
+  tags: tags
+  sku: { name: 'free' }
+  properties: { hostingMode: 'default', partitionCount: 1, replicaCount: 1 }
+}
+
 // ---------- Maps ----------
 resource maps 'Microsoft.Maps/accounts@2023-06-01' = {
   name: 'map-${token}'
@@ -173,6 +205,7 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: insights.properties.ConnectionString }
             { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
             { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
+            { name: 'SEARCH_ENDPOINT', value: 'https://${search.name}.search.windows.net' }
           ]
         }
       ]
@@ -250,6 +283,7 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: insights.properties.ConnectionString }
         { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
         { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
+        { name: 'SEARCH_ENDPOINT', value: 'https://${search.name}.search.windows.net' }
       ]
     }
   }
@@ -257,6 +291,7 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
 
 output webAppName string = web.name
 output aiEndpoint string = ai.properties.endpoint
+output searchEndpoint string = 'https://${search.name}.search.windows.net'
 output keyVaultName string = vault.name
 output cosmosEndpoint string = cosmosEndpoint
 output webUrl string = 'https://${web.properties.configuration.ingress.fqdn}'

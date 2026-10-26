@@ -68,6 +68,7 @@ output AZURE_LOCATION string = location
 output AZURE_RESOURCE_GROUP string = rg.name
 output WEB_APP_NAME string = resources.outputs.webAppName
 output AZURE_AI_ENDPOINT string = resources.outputs.aiEndpoint
+output SEARCH_ENDPOINT string = resources.outputs.searchEndpoint
 output AZURE_KEY_VAULT_NAME string = resources.outputs.keyVaultName
 output COSMOS_ENDPOINT string = resources.outputs.cosmosEndpoint
 output WEB_URL string = resources.outputs.webUrl

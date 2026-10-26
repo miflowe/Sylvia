@@ -12,7 +12,7 @@
     "lint": "pnpm -r --if-present lint",
     "typecheck": "pnpm -r --if-present typecheck",
     "tokens": "pnpm --filter @sylvia/ui tokens",
-    "data:check": "pnpm --filter @sylvia/data check",
-    "data:import": "pnpm --filter @sylvia/data import"
+    "data:check": "pnpm --filter @sylvia/data run check",
+    "data:import": "pnpm --filter @sylvia/data run import"
   }
 }

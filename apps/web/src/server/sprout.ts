@@ -4,6 +4,7 @@ import {
   findForbiddenClaims,
   isPilotRegion,
   mergeIdentifications,
+  NOISE_FLOOR,
   OFFICIAL_REPORTING,
   REGION_NAMES,
   vascanVerdict,
@@ -44,13 +45,10 @@ export async function runSprout(image: Blob, regionCode: RegionCode): Promise<Sp
     identifyWithPlantNet(image),
   ]);
 
-  const result: SproutResult = {
-    regionCode,
-    notPlant: false,
-    identification: { level: "low", agreement: false, needsConfirmation: true, alternatives: [], sources: { vision: !!vision, plantnet: plantnet.length > 0 } },
-    swaps: [],
-  };
-  if (vision && !vision.isPlant && plantnet.length === 0) return { ...result, notPlant: true, photoTip: vision.photoTip ?? undefined };
+  const result = emptyResult(regionCode);
+  const plantnetSure = plantnet.filter((c) => c.score >= NOISE_FLOOR);
+  result.identification.sources = { vision: !!vision, plantnet: plantnetSure.length > 0 };
+  if (vision && !vision.isPlant && plantnetSure.length === 0) return { ...result, notPlant: true, photoTip: vision.photoTip ?? undefined };
 
   const id = mergeIdentifications(vision?.candidates ?? [], plantnet);
   const toCandidate = (c: { scientificName: string; commonName?: string; score: number }) => ({
@@ -59,13 +57,30 @@ export async function runSprout(image: Blob, regionCode: RegionCode): Promise<Sp
     score: Math.round(c.score * 100) / 100,
   });
   result.identification = { ...result.identification, ...id, top: id.top && toCandidate(id.top), alternatives: id.alternatives.map(toCandidate) };
-  result.photoTip = vision?.photoTip ?? undefined;
+  result.photoTip = vision?.photoTip ?? (id.top ? undefined : "Try a closer photo of one leaf, flower or fruit in good light.");
   if (!id.top) return result;
 
+  return { ...result, ...(await assess(id.top.scientificName, regionCode, vision?.appearance, result)) };
+}
+
+/**
+ * Verdict, swaps and explanation for a named species. Used after identification, and when the person picks one
+ * of the alternatives.
+ */
+export async function assess(
+  scientificName: string,
+  regionCode: RegionCode,
+  appearance?: string,
+  base?: SproutResult,
+): Promise<Pick<SproutResult, "verdict" | "swaps" | "report" | "explanation">> {
+  const regionName = REGION_NAMES[regionCode] ?? regionCode;
+  const data = await regionData(regionCode);
+  const out: Pick<SproutResult, "verdict" | "swaps" | "report" | "explanation"> = { swaps: [] };
+
   // Verdict: curated first, VASCAN (native / introduced only) otherwise.
-  const curated = findVerdict(data, id.top.scientificName);
+  const curated = findVerdict(data, scientificName);
   if (curated) {
-    result.verdict = {
+    out.verdict = {
       speciesId: curated.speciesId,
       status: curated.status,
       confidence: curated.confidence,
@@ -77,8 +92,8 @@ export async function runSprout(image: Blob, regionCode: RegionCode): Promise<Sp
       reviewed: curated.review.status === "reviewed",
     };
   } else {
-    const fb = await vascanVerdict(id.top.scientificName, regionCode).catch(() => undefined);
-    result.verdict = {
+    const fb = await vascanVerdict(scientificName, regionCode).catch(() => undefined);
+    out.verdict = {
       status: fb?.status ?? "unknown",
       confidence: "lower",
       flammability: "Flammability not rated",
@@ -88,13 +103,31 @@ export async function runSprout(image: Blob, regionCode: RegionCode): Promise<Sp
     } satisfies SproutVerdict;
   }
 
-  if (result.verdict.status === "invasive") {
-    result.report = OFFICIAL_REPORTING[regionCode];
-    result.swaps = await swapsFor(curated, data, vision?.appearance, regionCode);
+  if (out.verdict.status === "invasive") {
+    out.report = OFFICIAL_REPORTING[regionCode];
+    out.swaps = await swapsFor(curated, data, appearance, regionCode);
   }
 
-  result.explanation = await explain(result, regionName, isPilotRegion(regionCode));
-  return result;
+  const forFacts: SproutResult = {
+    ...(base ?? emptyResult(regionCode)),
+    ...out,
+    identification: base?.identification ?? {
+      ...emptyResult(regionCode).identification,
+      level: "high",
+      top: { scientificName, score: 1 },
+    },
+  };
+  out.explanation = await explain(forFacts, regionName, isPilotRegion(regionCode));
+  return out;
+}
+
+function emptyResult(regionCode: string): SproutResult {
+  return {
+    regionCode,
+    notPlant: false,
+    identification: { level: "low", agreement: false, needsConfirmation: true, alternatives: [], sources: { vision: false, plantnet: false } },
+    swaps: [],
+  };
 }
 
 async function swapsFor(

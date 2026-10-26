@@ -1,15 +1,13 @@
 import "server-only";
 
-const KEYS = [
-  "AZURE_AI_ENDPOINT",
-  "AZURE_AI_KEY",
-  "COSMOS_ENDPOINT",
-  "COSMOS_KEY",
-  "SEARCH_ENDPOINT",
-  "SEARCH_KEY",
-  "PLANTNET_API_KEY",
-] as const;
-type Key = (typeof KEYS)[number];
+type Key =
+  | "AZURE_AI_ENDPOINT"
+  | "AZURE_AI_KEY"
+  | "COSMOS_ENDPOINT"
+  | "COSMOS_KEY"
+  | "SEARCH_ENDPOINT"
+  | "SEARCH_KEY"
+  | "PLANTNET_API_KEY";
 
 /** Reads a required setting; fails loudly so a missing key is obvious in logs, not a silent bad answer. */
 export function env(key: Key): string {

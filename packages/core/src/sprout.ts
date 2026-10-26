@@ -12,6 +12,8 @@ export interface SproutResult {
     top?: SproutCandidate;
     alternatives: SproutCandidate[];
     sources: { vision: boolean; plantnet: boolean };
+    /** Set when the person picked this species from the alternatives. */
+    confirmedByUser?: boolean;
   };
   verdict?: SproutVerdict;
   swaps: SproutSwap[];

@@ -9,7 +9,8 @@ const SAFETY_API = "2024-09-01";
 async function call<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${env("AZURE_AI_ENDPOINT")}${path}`, {
     method: "POST",
-    headers: { "api-key": env("AZURE_AI_KEY"), "content-type": "application/json" },
+    // OpenAI routes read api-key; Content Safety reads Ocp-Apim-Subscription-Key.
+    headers: { "api-key": env("AZURE_AI_KEY"), "Ocp-Apim-Subscription-Key": env("AZURE_AI_KEY"), "content-type": "application/json" },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(30000),
   });

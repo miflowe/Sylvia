@@ -36,6 +36,11 @@ describe("mergeIdentifications", () => {
     expect(r.level).toBe("medium");
   });
 
+  it("ignores noise-level guesses", () => {
+    const r = mergeIdentifications([], [{ scientificName: "Roystonea borinquena", score: 0.01 }, { scientificName: "Zea mays", score: 0.05 }]);
+    expect(r.top).toBeUndefined();
+  });
+
   it("handles no answers and genus-only answers", () => {
     expect(mergeIdentifications([], []).top).toBeUndefined();
     expect(mergeIdentifications([{ scientificName: "Acer", score: 0.9 }], []).top).toBeUndefined();

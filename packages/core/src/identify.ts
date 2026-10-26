@@ -44,10 +44,13 @@ export function binomialKey(scientificName: string): string {
 }
 
 const SINGLE_SOURCE_WEIGHT = 0.6;
+/** Below this, a source is guessing; Pl@ntNet returns long tails of 0.01 scores for non-plants. */
+export const NOISE_FLOOR = 0.1;
 
 export function mergeIdentifications(vision: Candidate[], plantnet: Candidate[]): Identification {
   const merged = new Map<string, MergedCandidate>();
   const add = (c: Candidate, source: "vision" | "plantnet") => {
+    if (!(c.score >= NOISE_FLOOR)) return;
     const key = binomialKey(c.scientificName);
     if (!key.includes(" ")) return; // genus-only answers aren't useful for a verdict
     const m = merged.get(key) ?? { key, scientificName: c.scientificName, score: 0 };
@@ -69,7 +72,10 @@ export function mergeIdentifications(vision: Candidate[], plantnet: Candidate[])
   }
   const ranked = [...merged.values()].sort((a, b) => b.score - a.score);
   const top = ranked[0];
-  const topOf = (list: Candidate[]) => (list.length ? binomialKey([...list].sort((a, b) => b.score - a.score)[0]!.scientificName) : undefined);
+  const topOf = (list: Candidate[]) => {
+    const best = list.filter((c) => c.score >= NOISE_FLOOR).sort((a, b) => b.score - a.score)[0];
+    return best && binomialKey(best.scientificName);
+  };
   const agreement = !!top && topOf(vision) === top.key && topOf(plantnet) === top.key;
   const level: ConfidenceLevel = !top ? "low" : agreement && top.score >= 0.6 ? "high" : top.score >= 0.35 ? "medium" : "low";
 

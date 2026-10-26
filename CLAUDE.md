@@ -15,6 +15,8 @@ Product decisions live in `docs/decisions.md` (the approved plan). Don't change 
   (gitignored), GitHub Actions secrets or Key Vault.
 - `resources weve gathered/` is private team material: gitignored, never commit it.
 - Long commands run in the background and log to `logs/`.
+- Stage explicit paths (`git add apps packages infra docs ...`), never `git add -A`: other sessions may be
+  working in `hardware/` in this same folder.
 
 ## Layout
 - `apps/web`: Next.js PWA (App Router, TypeScript)

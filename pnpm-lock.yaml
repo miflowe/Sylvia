@@ -10,6 +10,9 @@ importers:
 
   apps/functions:
     dependencies:
+      '@azure/cosmos':
+        specifier: ^4.5.0
+        version: 4.10.1
       '@azure/functions':
         specifier: ^4.7.0
         version: 4.17.0
@@ -23,6 +26,9 @@ importers:
       typescript:
         specifier: ^5.9.0
         version: 5.9.3
+      vitest:
+        specifier: ^3.2.0
+        version: 3.2.7(@types/node@22.20.5)(tsx@4.23.15)
 
   apps/web:
     dependencies:

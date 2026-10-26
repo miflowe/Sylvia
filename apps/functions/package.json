@@ -7,14 +7,17 @@
   "scripts": {
     "build": "node scripts/stage.mjs",
     "typecheck": "tsc --noEmit",
-    "start": "func start"
+    "start": "func start",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@azure/functions": "^4.7.0"
+    "@azure/functions": "^4.7.0",
+    "@azure/cosmos": "^4.5.0"
   },
   "devDependencies": {
     "typescript": "^5.9.0",
     "@types/node": "^22.0.0",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "vitest": "^3.2.0"
   }
 }

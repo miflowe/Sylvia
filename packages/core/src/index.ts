@@ -7,3 +7,4 @@ export * from "./identify";
 export * from "./sprout";
 export * from "./geo";
 export * from "./records";
+export * from "./observations";

@@ -29,6 +29,12 @@ param cosmosLocation string = location
 @description('Pl@ntNet API key, from azd env PLANTNET_API_KEY.')
 param plantnetApiKey string = ''
 
+@secure()
+param firmsMapKey string = ''
+
+@secure()
+param purpleairApiKey string = ''
+
 @description('Web container image tag published by GitHub Actions.')
 param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -52,6 +58,8 @@ module resources 'resources.bicep' = {
     cosmosLocation: cosmosLocation
     webImage: webImage
     plantnetApiKey: plantnetApiKey
+    firmsMapKey: firmsMapKey
+    purpleairApiKey: purpleairApiKey
   }
 }
 

@@ -16,6 +16,12 @@ param aiLocation string = 'swedencentral'
 @description('Pl@ntNet API key (azd env PLANTNET_API_KEY). Second-opinion plant identification.')
 param plantnetApiKey string = ''
 
+@secure()
+param firmsMapKey string = ''
+
+@secure()
+param purpleairApiKey string = ''
+
 @description('Web container image, e.g. ghcr.io/miflowe/sylvia-web:<sha>. Placeholder until the first image is published.')
 param webImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -130,25 +136,39 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-05-15
 }
 
 // Containers and partition keys (see docs/decisions.md). Serverless accounts take no throughput settings.
+// `geo` adds a spatial index on /location for "within N km" queries; `ttl` lets items expire (-1 = per item).
 var cosmosContainers = [
-  { name: 'species', pk: '/id' }
-  { name: 'regionVerdicts', pk: '/regionCode' }
-  { name: 'nurseriesCurated', pk: '/regionCode' }
-  { name: 'observations', pk: '/cellId' }
-  { name: 'officialAlerts', pk: '/regionCode' }
-  { name: 'alerts', pk: '/deviceOrUserId' }
-  { name: 'pushSubscriptions', pk: '/deviceOrUserId' }
-  { name: 'scans', pk: '/deviceOrUserId' }
-  { name: 'checklists', pk: '/deviceOrUserId' }
-  { name: 'sightings', pk: '/cellId' }
-  { name: 'replayEvents', pk: '/eventId' }
+  { name: 'species', pk: '/id', geo: false, ttl: null }
+  { name: 'regionVerdicts', pk: '/regionCode', geo: false, ttl: null }
+  { name: 'nurseriesCurated', pk: '/regionCode', geo: true, ttl: null }
+  { name: 'observations', pk: '/cellId', geo: true, ttl: -1 }
+  { name: 'officialAlerts', pk: '/regionCode', geo: true, ttl: -1 }
+  { name: 'alerts', pk: '/deviceOrUserId', geo: false, ttl: null }
+  { name: 'pushSubscriptions', pk: '/deviceOrUserId', geo: true, ttl: null }
+  { name: 'scans', pk: '/deviceOrUserId', geo: false, ttl: null }
+  { name: 'checklists', pk: '/deviceOrUserId', geo: false, ttl: null }
+  { name: 'sightings', pk: '/cellId', geo: true, ttl: null }
+  { name: 'replayEvents', pk: '/eventId', geo: false, ttl: null }
 ]
+
+var geoIndexing = {
+  indexingMode: 'consistent'
+  includedPaths: [{ path: '/*' }]
+  excludedPaths: [{ path: '/shape/*' }, { path: '/"_etag"/?' }]
+  spatialIndexes: [{ path: '/location/?', types: ['Point', 'Polygon'] }]
+}
 
 resource containers 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-05-15' = [
   for c in cosmosContainers: if (enableCosmos) {
     parent: cosmosDb
     name: c.name
-    properties: { resource: { id: c.name, partitionKey: { paths: [c.pk], kind: 'Hash' } } }
+    properties: {
+      resource: union(
+        { id: c.name, partitionKey: { paths: [c.pk], kind: 'Hash' } },
+        c.geo ? { indexingPolicy: geoIndexing } : {},
+        c.ttl == null ? {} : { defaultTtl: c.ttl }
+      )
+    }
   }
 ]
 
@@ -300,8 +320,11 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'DEPLOYMENT_STORAGE_CONNECTION_STRING', value: storageConnection }
         { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: insights.properties.ConnectionString }
         { name: 'COSMOS_ENDPOINT', value: cosmosEndpoint }
+        { name: 'COSMOS_KEY', value: enableCosmos ? cosmos!.listKeys().primaryMasterKey : '' }
         { name: 'AZURE_AI_ENDPOINT', value: ai.properties.endpoint }
         { name: 'SEARCH_ENDPOINT', value: 'https://${search.name}.search.windows.net' }
+        { name: 'FIRMS_MAP_KEY', value: firmsMapKey }
+        { name: 'PURPLEAIR_API_KEY', value: empty(purpleairApiKey) ? 'not-set' : purpleairApiKey }
       ]
     }
   }

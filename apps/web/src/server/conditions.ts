@@ -95,7 +95,7 @@ async function weather(at: LatLon): Promise<Conditions["weather"]> {
   });
 }
 
-export async function getConditions(at: LatLon, placeName: string, regionCode: string | undefined, sensitive: boolean): Promise<Conditions> {
+export async function getConditions(at: LatLon, placeName: string, regionCode: string | undefined, sensitive: boolean, withSummary = true): Promise<Conditions> {
   const dayAgo = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
   const [danger, wx, hotspots, perimeters, aqhis, pms] = await Promise.all([
     fireDanger(at),
@@ -153,6 +153,7 @@ export async function getConditions(at: LatLon, placeName: string, regionCode: s
     c.pm25Note = "No street-level smoke sensors reporting within 10 km.";
   }
 
+  if (!withSummary) return c;
   c.summary = await cached(`sum:${gridKey(at)}:${sensitive}`, 30 * 60 * 1000, async () => {
     try {
       const text = await writeSummary(conditionsFacts(c, placeName, sensitive));

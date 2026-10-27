@@ -67,3 +67,55 @@ export const MIN_GROUP = 5;
 export function safeCount(n: number): number | `fewer than ${typeof MIN_GROUP}` {
   return n >= MIN_GROUP ? n : `fewer than ${MIN_GROUP}`;
 }
+
+type Count = number | `fewer than ${typeof MIN_GROUP}`;
+
+/** What a community page shows. All counts pass through safeCount; averages only appear for groups of 5 or more. */
+export interface CommunityStats {
+  id: string;
+  name: string;
+  sample: boolean;
+  now: {
+    fireDanger: string | null;
+    aqhi?: { value: number; risk: string; station: string };
+    hotspots24h: number;
+    fireAreasThisSeason: number;
+    officialOrders: number;
+    officialAlerts: number;
+    notices: { kind: "order" | "alert"; areaName: string; agency: string }[];
+  };
+  readiness: {
+    homesWithAlerts: Count;
+    homesUsingChecklist: Count;
+    averageChecklistPercent?: number;
+    mostDone: string[];
+    leastDone: string[];
+  };
+  sightings: { total: Count; bySpecies: { name: string; count: Count }[]; since: string };
+  generatedAt: string;
+}
+
+/** Labelled example for interviews with town staff. Never mixed with real data. */
+export const SAMPLE_COMMUNITY: Omit<CommunityStats, "generatedAt"> = {
+  id: "central-okanagan",
+  name: "Central Okanagan",
+  sample: true,
+  now: { fireDanger: "High", aqhi: { value: 5, risk: "Moderate", station: "Kelowna" }, hotspots24h: 14, fireAreasThisSeason: 6, officialOrders: 1, officialAlerts: 3, notices: [] },
+  readiness: {
+    homesWithAlerts: 1240,
+    homesUsingChecklist: 655,
+    averageChecklistPercent: 47,
+    mostDone: ["official-alerts", "lawn-short", "gutters-clear"],
+    leastDone: ["vents-screened", "noncombustible-ring", "branches-pruned"],
+  },
+  sightings: {
+    total: 183,
+    bySpecies: [
+      { name: "Scotch broom", count: 71 },
+      { name: "Himalayan blackberry", count: 48 },
+      { name: "English ivy", count: 33 },
+      { name: "Common periwinkle", count: 19 },
+    ],
+    since: "2026-01-01",
+  },
+};

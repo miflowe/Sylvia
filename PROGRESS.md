@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 6 Alerts + Replay
-**Next action:** Step 6: alert rules (Level 1–2 unverified advisories from AQHI/PurpleAir/hotspots/fire areas near a saved place; sensitivity lowers thresholds), official order relay (NAAD Alert Ready CAP + BC evacuation orders → Level 3 naming the agency), web push (VAPID keys in Key Vault/azd env), alert history, and labelled Replay mode for a real summer-2026 BC fire.
+**Current step:** 7 Profile + Communities
+**Next action:** Real-device push test with the user (Android + installed iPhone), then step 7: FireSmart checklist on Profile, optional Entra External ID sign-in, Communities page for one pilot town.
 
 ## Build order
 - [x] 1 Foundation
@@ -39,7 +39,13 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Map screen (`apps/web/src/app/map/`): layer chips with counts, home marker, detail cards for fire areas, satellite heat, AQHI, smoke sensors, sightings; "Sylvia Nodes · coming soon" placeholder
   - [x] Azure Maps SDK 3.7.4 served from `public/vendor` (copied by `apps/web/scripts/copy-atlas.mjs` in dev/build): bundling it breaks under Turbopack
   - [x] Maps account CORS: only the web app's origin + localhost (`webOrigin` param from azd `WEB_URL`). A SAS-token approach needs a role assignment, which the user hasn't approved
-- [ ] 6 Alerts + Replay mode
+- [x] 6 Alerts + Replay
+  - [x] Rules (`packages/core/src/rules.ts`, 12 tests): L1 heat ≤25 km/12 h, L2 ≥2 detections ≤10 km/6 h ("be ready to leave if officials tell you to"), smoke via AQHI/PM2.5 with lower thresholds when sensitive; official BC/Alert Ready **alerts → Level 2 Official**, **orders → Level 3**, naming the agency; an official order suppresses Sylvia's own hotspot warning
+  - [x] Official relay (`apps/functions/src/lib/officials.ts`): BC Evacuation Orders and Alerts FeatureServer + Alert Ready (NAAD) Atom feed → `officialAlerts`, every 5 min; home matching by point-in-polygon
+  - [x] Per-home evaluation + web push (`apps/functions/src/lib/alerting.ts`): every 15 min and after each official ingest, 12 h dedupe by key, expired subscriptions removed. VAPID keys in `.env.local` + azd env (never in git)
+  - [x] Alerts tab: turn on/off (home area stored rounded ~1 km; deleted when turned off), test notification, level guide, history (`AlertBanner` uses the reserved alert colours + level number + word + icon)
+  - [x] Replay: Quilpituk Creek wildfire (Aug 2026) from archived FIRMS VIIRS + BC historical orders (K51402). Inputs in `data/replay/quilpituk-creek-2026/`, rebuild with `pnpm data:replay`. 6 frames → L1 heat (21 km N) → L2 official alert → L3 official order. BC publishes order dates only; frames say so
+  - [ ] Real-device push test (needs the user's phone)
 - [ ] 7 Profile + Communities
 - [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
@@ -65,6 +71,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-27: Step 6 live: official relay + alert evaluation timers, web push, Alerts tab, Replay (verified live via API).
 - 2026-10-27: Step 5 live: map with all layers and detail cards.
 - 2026-10-26: Step 4 live: feeds ingesting on timers (533 hotspots, 394 perimeters, 75 AQHI stations at first run); Home dashboard deployed.
 - 2026-10-26: Step 3 complete and live (saved scans, sightings, garden centres).

@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** All Claude build steps done; waiting on team inputs
-**Next action:** Fill the deck's [placeholders] from interview findings (slide 8 validation, slide 10 prices, cover/roadmap team names, slide 9 video links), then film with `docs/kits/video-scripts.md`. Open items: sign-in (waits on the $5k-credit tenant), iPhone push test, committing the hardware session's `hardware/` files.
+**Next action:** Fill the deck's [placeholders] from interview findings (slide 8 validation, slide 10 prices, cover/roadmap team names, slide 9 video links), then film with `docs/kits/video-scripts.md`. Open items: sign-in (waits on the $5k-credit tenant), iPhone push test.
 
 ## Build order
 - [x] 1 Foundation
@@ -58,7 +58,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Accessibility: `apps/web/e2e/a11y.spec.ts`, axe WCAG 2.1 A/AA on 8 screens × light/dark = 16 checks, 0 violations (map canvas excluded)
   - [x] End-to-end: `apps/web/e2e/flows.spec.ts`, 7 flows at Pixel 7 size, all passing against real Azure. Run with `pnpm --filter web e2e` (dev server on :3000 or `E2E_BASE_URL`)
   - [x] Lighthouse (live, mobile): Home 97/100/100/100, Sprout 99/100/100/100, Alerts 98/100/100/100, Privacy 99/100/100/100 (perf/a11y/best practices/SEO). Lighthouse can't spawn Chrome here; start Chromium via Playwright with `--remote-debugging-port=9222` and pass `--port=9222`
-- [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
+- [x] 9 Node design package (built in its own session, committed 5f94b49; status in `hardware/PROGRESS-hardware.md`)
 - [x] 10 Pitch kit
   - [x] Deck (15 slides, Sylvia design system, live-app screenshots): https://claude.ai/artifact/QE4dyNRhjT4gMhhc4VTuGQ. Bracketed placeholders: team names, interview count/quotes/results (slide 8), prices (slide 10), demo/app links (slide 9). Private until shared from its Share menu; downloads as PPTX/PDF
   - [x] `docs/kits/video-scripts.md`: 2:00 demo shot list + 3:00 pitch script, one take each (no editing allowed)

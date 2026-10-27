@@ -30,7 +30,7 @@ export async function turnOnAlerts(home: Place, sensitive: boolean): Promise<voi
 }
 
 async function saveSubscription(subscription: PushSubscription, home: Place, sensitive: boolean) {
-  const res = await fetch("/api/push/subscribe", withDevice({
+  const res = await fetch("/api/push/subscribe", await withDevice({
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ subscription: subscription.toJSON(), home, sensitive }),
@@ -49,5 +49,5 @@ export async function syncAlerts(home: Place, sensitive: boolean): Promise<void>
 export async function turnOffAlerts(): Promise<void> {
   const reg = await navigator.serviceWorker.getRegistration();
   await (await reg?.pushManager.getSubscription())?.unsubscribe();
-  await fetch("/api/push/subscribe", withDevice({ method: "DELETE" }));
+  await fetch("/api/push/subscribe", await withDevice({ method: "DELETE" }));
 }

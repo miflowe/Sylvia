@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { RegionCodeSchema } from "@sylvia/core";
 import { container } from "@/server/cosmos";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 
 export const runtime = "nodejs";
 
@@ -17,7 +17,7 @@ const Body = z.object({
  * which is what's needed to match nearby fire activity and official orders.
  */
 export async function POST(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   const body = Body.safeParse(await req.json().catch(() => undefined));
   if (!device || !body.success) return NextResponse.json({ error: "Couldn't turn on alerts." }, { status: 400 });
   const lat = Math.round(body.data.home.lat * 100) / 100;
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
 /** Turn alerts off: deletes the subscription and the stored home area. Alert history stays until removed. */
 export async function DELETE(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return NextResponse.json({ error: "Missing device id." }, { status: 400 });
   await container("pushSubscriptions").item(device, device).delete().catch(() => {});
   return new NextResponse(null, { status: 204 });

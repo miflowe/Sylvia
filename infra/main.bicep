@@ -33,6 +33,10 @@ param webOrigin string = ''
 
 param vapidPublicKey string = ''
 
+param authTenantSubdomain string = ''
+param authTenantId string = ''
+param authClientId string = ''
+
 @secure()
 param vapidPrivateKey string = ''
 
@@ -68,6 +72,9 @@ module resources 'resources.bicep' = {
     firmsMapKey: firmsMapKey
     webOrigin: webOrigin
     vapidPublicKey: vapidPublicKey
+    authTenantSubdomain: authTenantSubdomain
+    authTenantId: authTenantId
+    authClientId: authClientId
     vapidPrivateKey: vapidPrivateKey
     purpleairApiKey: purpleairApiKey
   }

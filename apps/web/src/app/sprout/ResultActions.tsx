@@ -29,7 +29,7 @@ export function SaveScan({ result, photo }: { result: SproutResult; photo?: Blob
         }),
       );
       if (photo) form.append("image", photo, "plant.jpg");
-      const res = await fetch("/api/scans", withDevice({ method: "POST", body: form }));
+      const res = await fetch("/api/scans", await withDevice({ method: "POST", body: form }));
       if (!res.ok) throw new Error((await res.json()).error ?? "Couldn't save.");
       setStatus("done");
     } catch (e) {

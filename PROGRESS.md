@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 7 Profile + Communities
-**Next action:** Step 7: FireSmart checklist on Profile, optional Entra External ID sign-in, Communities page for one pilot town. (iPhone push test still open.)
+**Next action:** When the user sends the Entra External ID tenant subdomain, tenant ID and client ID: `azd env set AUTH_TENANT_SUBDOMAIN/AUTH_TENANT_ID/AUTH_CLIENT_ID`, add the same three to `apps/web/.env.local`, `scripts/deploy-web.sh`, then test sign-in → link → second device → delete. Then step 8.
 
 ## Build order
 - [x] 1 Foundation
@@ -48,6 +48,10 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Real-device push test on Android (2026-10-27): test notification + 3 replay notifications delivered via FCM
   - [ ] Real-device push test on an installed iPhone (iOS 16.4+)
 - [ ] 7 Profile + Communities
+  - [x] FireSmart checklist on Profile (`packages/core/src/firesmart.ts`, 15 items in 5 zones, paraphrased from FireSmart Canada); `/api/checklist` stores only ticks + percent + community tag (no coordinates)
+  - [x] Central Okanagan community view `/communities/central-okanagan` (`apps/web/src/server/community.ts`): right-now conditions + official notices, homes with alerts on, checklist adoption, invasive sightings; counts under 5 hidden; labelled **sample data** switch for town interviews (`SAMPLE_COMMUNITY`)
+  - [x] Optional sign-in code (Entra External ID, MSAL redirect + PKCE, `jose` token verification): `ownerId()` = account (`u-<oid>`) when signed in, else device; `/api/auth/link` moves device data on first sign-in; `/api/auth/account` DELETE removes everything. Hidden until AUTH_* env vars are set
+  - [ ] Sign-in live test (waiting on the user's tenant setup, see `docs/setup/sign-in.md`)
 - [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
 - [ ] 10 Pitch kit (deck, video scripts, findings template)
@@ -72,6 +76,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-27: Step 7 deployed (checklist, Communities, sign-in code switched off until configured).
 - 2026-10-27: Step 6 live: official relay + alert evaluation timers, web push, Alerts tab, Replay (verified live via API).
 - 2026-10-27: Step 5 live: map with all layers and detail cards.
 - 2026-10-26: Step 4 live: feeds ingesting on timers (533 hotspots, 394 perimeters, 75 AQHI stations at first run); Home dashboard deployed.

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 import { clearReplays, listEvents } from "@/server/replay";
 
 export const runtime = "nodejs";
@@ -12,7 +12,7 @@ export async function GET() {
 
 /** Clear this device's replay alerts. */
 export async function DELETE(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return NextResponse.json({ error: "Missing device id." }, { status: 400 });
   return NextResponse.json({ removed: await clearReplays(device) });
 }

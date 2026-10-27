@@ -25,6 +25,11 @@ param vapidPublicKey string = ''
 @secure()
 param vapidPrivateKey string = ''
 
+@description('Entra External ID sign-in (optional; none are secrets). Empty = sign-in hidden.')
+param authTenantSubdomain string = ''
+param authTenantId string = ''
+param authClientId string = ''
+
 @secure()
 param firmsMapKey string = ''
 
@@ -263,6 +268,9 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'STORAGE_CONNECTION', secretRef: 'storage-connection' }
             { name: 'AZURE_MAPS_KEY', secretRef: 'maps-key' }
             { name: 'VAPID_PUBLIC_KEY', value: vapidPublicKey }
+            { name: 'AUTH_TENANT_SUBDOMAIN', value: authTenantSubdomain }
+            { name: 'AUTH_TENANT_ID', value: authTenantId }
+            { name: 'AUTH_CLIENT_ID', value: authClientId }
             { name: 'VAPID_PRIVATE_KEY', secretRef: 'vapid-private' }
             { name: 'VAPID_SUBJECT', value: empty(webOrigin) ? 'https://github.com/miflowe/Sylvia' : webOrigin }
           ]

@@ -27,7 +27,7 @@ export function AlertsCenter() {
   const [message, setMessage] = useState("");
 
   const refresh = useCallback(async () => {
-    const res = await fetch("/api/alerts", withDevice());
+    const res = await fetch("/api/alerts", await withDevice());
     if (!res.ok) return setAlerts([]);
     const body = (await res.json()) as { alerts: AlertItem[]; subscribed: boolean };
     setAlerts(body.alerts);
@@ -71,7 +71,7 @@ export function AlertsCenter() {
 
   async function test() {
     setMessage("");
-    const res = await fetch("/api/push/test", withDevice({ method: "POST" }));
+    const res = await fetch("/api/push/test", await withDevice({ method: "POST" }));
     setMessage(res.ok ? "Test sent. It should appear in a few seconds." : "The test didn't go through. Try turning alerts off and on again.");
   }
 

@@ -46,7 +46,7 @@ export function ReplayPanel({ onAlerts }: { onAlerts?: () => void }) {
     try {
       sensitive = JSON.parse(localStorage.getItem("sylvia.sensitive") ?? "false");
     } catch {}
-    const res = await fetch("/api/replay/step", withDevice({
+    const res = await fetch("/api/replay/step", await withDevice({
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ eventId: event.id, frame: index, runId: id, sensitive }),
@@ -78,7 +78,7 @@ export function ReplayPanel({ onAlerts }: { onAlerts?: () => void }) {
 
   async function clear() {
     setPlaying(false);
-    const res = await fetch("/api/replay", withDevice({ method: "DELETE" }));
+    const res = await fetch("/api/replay", await withDevice({ method: "DELETE" }));
     const { removed } = res.ok ? await res.json() : { removed: 0 };
     setRunId(undefined);
     setFrame(-1);

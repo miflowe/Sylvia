@@ -14,7 +14,8 @@ export function FireSmartChecklist() {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
-    fetch("/api/checklist", withDevice())
+    withDevice()
+      .then((init) => fetch("/api/checklist", init))
       .then((r) => (r.ok ? r.json() : { done: {} }))
       .then((b: { done: Record<string, boolean> }) => {
         setDone(b.done);
@@ -32,7 +33,7 @@ export function FireSmartChecklist() {
       try {
         home = JSON.parse(localStorage.getItem("sylvia.place") ?? "null") ?? undefined;
       } catch {}
-      const res = await fetch("/api/checklist", withDevice({
+      const res = await fetch("/api/checklist", await withDevice({
         method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ done: next, home: home && { lat: home.lat, lon: home.lon } }),

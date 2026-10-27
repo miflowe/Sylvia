@@ -29,3 +29,11 @@ export async function getPhoto(device: string, scanId: string): Promise<Buffer |
 export async function deletePhoto(device: string, scanId: string): Promise<void> {
   await container().getBlockBlobClient(blobName(device, scanId)).deleteIfExists();
 }
+
+/** Moves a photo to a new owner (used when a device's data joins an account). */
+export async function movePhoto(fromOwner: string, toOwner: string, scanId: string): Promise<void> {
+  const photo = await getPhoto(fromOwner, scanId);
+  if (!photo) return;
+  await putPhoto(toOwner, scanId, photo);
+  await deletePhoto(fromOwner, scanId);
+}

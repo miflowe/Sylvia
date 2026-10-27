@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 import { getEvent, runFrame } from "@/server/replay";
 
 export const runtime = "nodejs";
@@ -9,7 +9,7 @@ const Body = z.object({ eventId: z.string().max(80), frame: z.number().int().min
 
 /** POST { eventId, frame, runId, sensitive }: run one frame of a replay for this device. */
 export async function POST(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   const body = Body.safeParse(await req.json().catch(() => undefined));
   if (!device || !body.success) return NextResponse.json({ error: "Couldn't run that replay step." }, { status: 400 });
   const event = await getEvent(body.data.eventId);

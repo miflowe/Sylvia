@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { container } from "@/server/cosmos";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /** This device's alert history, newest first, plus whether alerts are on. */
 export async function GET(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return NextResponse.json({ error: "Missing device id." }, { status: 400 });
   const [{ resources: alerts }, { resource: sub }] = await Promise.all([
     container("alerts")

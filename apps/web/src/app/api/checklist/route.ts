@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { CHECKLIST, checklistProgress, communityFor } from "@sylvia/core";
 import { container } from "@/server/cosmos";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,7 +14,7 @@ const Body = z.object({
 });
 
 export async function GET(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return NextResponse.json({ error: "Missing device id." }, { status: 400 });
   const { resource } = await container("checklists").item(device, device).read<{ done: Record<string, boolean>; updatedAt: string }>();
   return NextResponse.json({ done: resource?.done ?? {}, updatedAt: resource?.updatedAt ?? null });
@@ -25,7 +25,7 @@ export async function GET(req: Request) {
  * (e.g. Central Okanagan); the coordinates themselves are not stored.
  */
 export async function PUT(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   const body = Body.safeParse(await req.json().catch(() => undefined));
   if (!device || !body.success) return NextResponse.json({ error: "Couldn't save your checklist." }, { status: 400 });
   const done = Object.fromEntries(Object.entries(body.data.done).filter(([k, v]) => ids.has(k) && v));

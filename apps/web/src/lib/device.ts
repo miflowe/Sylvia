@@ -18,8 +18,14 @@ export function getDeviceId(): string {
   }
 }
 
-export function withDevice(init: RequestInit = {}): RequestInit {
-  return { ...init, headers: { ...(init.headers ?? {}), "x-sylvia-device": getDeviceId() } };
+/** Request options with the device id, plus the account's ID token when signed in (the account then owns the data). */
+export async function withDevice(init: RequestInit = {}): Promise<RequestInit> {
+  const { idToken } = await import("./auth");
+  const token = await idToken();
+  return {
+    ...init,
+    headers: { ...(init.headers ?? {}), "x-sylvia-device": getDeviceId(), ...(token ? { authorization: `Bearer ${token}` } : {}) },
+  };
 }
 
 /** One-off location fix, only when the person taps a button that needs it. */

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { SavedScan } from "@sylvia/core";
-import { getDeviceId, withDevice } from "@/lib/device";
+import { withDevice } from "@/lib/device";
 import styles from "./profile.module.css";
 
 const STATUS = { invasive: "Invasive", native: "Native", introduced: "Not native", unknown: "No record" } as const;
@@ -10,17 +10,16 @@ const REGION = { "CA-ON": "Ontario", "CA-BC": "BC" } as Record<string, string>;
 export function SavedScans() {
   const [scans, setScans] = useState<SavedScan[] | undefined>();
   const [error, setError] = useState("");
-  const [device, setDevice] = useState("");
 
   useEffect(() => {
-    setDevice(getDeviceId());
-    fetch("/api/scans", withDevice())
+    withDevice()
+      .then((init) => fetch("/api/scans", init))
       .then(async (r) => (r.ok ? setScans(await r.json()) : Promise.reject()))
       .catch(() => setError("I couldn't load your saved plants. Check your connection and try again."));
   }, []);
 
   async function remove(id: string) {
-    const res = await fetch(`/api/scans/${id}`, withDevice({ method: "DELETE" }));
+    const res = await fetch(`/api/scans/${id}`, await withDevice({ method: "DELETE" }));
     if (res.ok) setScans((s) => s?.filter((x) => x.id !== id));
   }
 
@@ -38,12 +37,7 @@ export function SavedScans() {
         <ul className={styles.list}>
           {scans.map((s) => (
             <li key={s.id} className={styles.item}>
-              {s.hasPhoto ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={`/api/scans/${s.id}/photo?d=${device}`} alt="" className={styles.thumb} onError={(e) => (e.currentTarget.style.visibility = "hidden")} />
-              ) : (
-                <span className={styles.thumb} aria-hidden="true" />
-              )}
+              {s.hasPhoto ? <Thumb id={s.id} /> : <span className={styles.thumb} aria-hidden="true" />}
               <div className={styles.text}>
                 <p className={styles.name}>{s.commonName ?? s.scientificName}</p>
                 <p className={`${styles.status} ${styles[`status_${s.status}`]}`}>
@@ -64,4 +58,23 @@ export function SavedScans() {
       <p className="muted">Photos are deleted after 30 days. The plant details stay until you remove them.</p>
     </section>
   );
+}
+
+/** Photos need the owner's headers, so they're fetched and shown as a local blob URL. */
+function Thumb({ id }: { id: string }) {
+  const [src, setSrc] = useState<string | undefined>();
+  useEffect(() => {
+    let url: string | undefined;
+    withDevice()
+      .then((init) => fetch(`/api/scans/${id}/photo`, init))
+      .then(async (r) => {
+        if (r.ok) setSrc((url = URL.createObjectURL(await r.blob())));
+      })
+      .catch(() => {});
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [id]);
+  // eslint-disable-next-line @next/next/no-img-element
+  return src ? <img src={src} alt="" className={styles.thumb} /> : <span className={styles.thumb} aria-hidden="true" />;
 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { SavedScanInputSchema, type SavedScan } from "@sylvia/core";
 import { container } from "@/server/cosmos";
-import { deviceId } from "@/server/device";
+import { ownerId } from "@/server/device";
 import { putPhoto } from "@/server/storage";
 
 export const runtime = "nodejs";
@@ -12,7 +12,7 @@ const noDevice = () => NextResponse.json({ error: "Missing device id." }, { stat
 
 /** The device's saved scans, newest first. */
 export async function GET(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return noDevice();
   const { resources } = await container("scans")
     .items.query<SavedScan>(
@@ -25,7 +25,7 @@ export async function GET(req: Request) {
 
 /** Save a scan: multipart with `scan` (JSON) and optional `image` (JPEG, ≤4 MB). */
 export async function POST(req: Request) {
-  const device = deviceId(req);
+  const device = await ownerId(req);
   if (!device) return noDevice();
   const form = await req.formData().catch(() => undefined);
   let raw: unknown;

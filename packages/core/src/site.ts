@@ -2,6 +2,6 @@
 export const SITE = {
   name: "Sylvia",
   team: "Sylvia team, Electrical and Computer Engineering Club (ECEC), Toronto Metropolitan University",
-  contactEmail: "",
+  contactEmail: "sylvia.wildfire@gmail.com",
   policyDate: "October 27, 2026",
 } as const;

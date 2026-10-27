@@ -49,6 +49,7 @@ function bearing(from: LatLon, to: LatLon): number {
 
 const day = (iso: string) => iso.slice(0, 10);
 const hoursAgo = (now: string, iso: string) => Math.max(1, Math.round((Date.parse(now) - Date.parse(iso)) / HOUR));
+const hours = (n: number) => `${n} hour${n === 1 ? "" : "s"}`;
 
 export function evaluateAlerts(input: RuleInput): Alert[] {
   const { now, home, sensitive } = input;
@@ -97,7 +98,7 @@ export function evaluateAlerts(input: RuleInput): Alert[] {
     out.push({
       level: 2,
       title: "Fire activity near you",
-      body: `Be ready to leave if officials tell you to. Satellites detected heat ${Math.round(h.km)} km ${compass(bearing(home, h.location))} of your home in the last ${hoursAgo(now, h.observedAt)} hours (${close.length} detections). This is not confirmed. Check official alerts.`,
+      body: `Be ready to leave if officials tell you to. Satellites detected heat ${Math.round(h.km)} km ${compass(bearing(home, h.location))} of your home in the last ${hours(hoursAgo(now, h.observedAt))} (${close.length} detections). This is not confirmed. Check official alerts.`,
       sources: [{ name: SOURCES.firms.name, url: SOURCES.firms.url, observedAt: h.observedAt }],
       key: `hotspot:2:${day(now)}`,
       replay,
@@ -107,7 +108,7 @@ export function evaluateAlerts(input: RuleInput): Alert[] {
     out.push({
       level: 1,
       title: "Heat detected nearby",
-      body: `Watch for smoke and check official alerts. Satellites detected heat ${Math.round(h.km)} km ${compass(bearing(home, h.location))} of your home about ${hoursAgo(now, h.observedAt)} hours ago. It may be a controlled burn or another heat source.`,
+      body: `Watch for smoke and check official alerts. Satellites detected heat ${Math.round(h.km)} km ${compass(bearing(home, h.location))} of your home about ${hours(hoursAgo(now, h.observedAt))} ago. It may be a controlled burn or another heat source.`,
       sources: [{ name: SOURCES.firms.name, url: SOURCES.firms.url, observedAt: h.observedAt }],
       key: `hotspot:1:${day(now)}`,
       replay,

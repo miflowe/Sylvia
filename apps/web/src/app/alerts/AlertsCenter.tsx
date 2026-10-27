@@ -5,6 +5,7 @@ import type { Place } from "@sylvia/core";
 import { AlertBanner, type AlertItem } from "@/components/AlertBanner";
 import { pushSupport, turnOffAlerts, turnOnAlerts, type PushSupport } from "@/lib/alerts";
 import { withDevice } from "@/lib/device";
+import { ReplayPanel } from "./ReplayPanel";
 import styles from "./alerts.module.css";
 
 function load<T>(key: string): T | undefined {
@@ -16,7 +17,7 @@ function load<T>(key: string): T | undefined {
   }
 }
 
-export function AlertsCenter({ replay }: { replay?: React.ReactNode }) {
+export function AlertsCenter() {
   const [place, setPlace] = useState<Place | undefined>();
   const [sensitive, setSensitive] = useState(false);
   const [support, setSupport] = useState<PushSupport>("ok");
@@ -124,7 +125,7 @@ export function AlertsCenter({ replay }: { replay?: React.ReactNode }) {
         <p className="muted">Sylvia adds to official alerts and never replaces them. Keep Alert Ready and local alerts on.</p>
       </section>
 
-      {replay}
+      <ReplayPanel onAlerts={refresh} />
 
       <section aria-labelledby="history" className={styles.history}>
         <h2 id="history" className={styles.cardTitle}>Alert history</h2>

@@ -13,6 +13,7 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "tokens": "pnpm --filter @sylvia/ui tokens",
     "data:check": "pnpm --filter @sylvia/data run check",
-    "data:import": "pnpm --filter @sylvia/data run import"
+    "data:import": "pnpm --filter @sylvia/data run import",
+    "data:replay": "pnpm --filter @sylvia/data run replay --upload"
   }
 }

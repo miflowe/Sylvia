@@ -22,7 +22,7 @@ export function AlertBanner({ alert, now = Date.now() }: { alert: AlertItem; now
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           {icon[alert.level]}
         </svg>
-        Level {alert.level} · {level.name} · {alert.official ? "Official" : "Unverified"}
+        Level {alert.level} · {alert.official ? (alert.level === 3 ? "Official order" : "Official alert") : `${level.name} · Unverified`}
         {alert.replay && <span className={styles.replay}>Replay</span>}
       </p>
       <h3 className={styles.title}>{alert.title}</h3>

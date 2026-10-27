@@ -29,6 +29,8 @@ describe("alert rules", () => {
     expect(a).toMatchObject({ level: 1, title: "Heat detected nearby" });
     expect(a!.official).toBeUndefined();
     expect(a!.body).toMatch(/20 km N/);
+    expect(a!.body).toMatch(/about 3 hours ago/);
+    expect(evaluateAlerts({ ...base, hotspots: [at(20, 1)] })[0]!.body).toMatch(/about 1 hour ago/);
   });
 
   it("warns at Level 2 for two recent detections within 10 km, without telling people to evacuate", () => {

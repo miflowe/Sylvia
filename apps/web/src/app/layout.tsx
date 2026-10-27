@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Instrument_Serif } from "next/font/google";
+import { Figtree } from "next/font/google";
 import { TabBar } from "@/components/TabBar";
 import { ServiceWorker } from "@/components/ServiceWorker";
 import "./globals.css";
 
-const serif = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-serif" });
-const sans = Atkinson_Hyperlegible_Next({ subsets: ["latin"], variable: "--font-sans", adjustFontFallback: false, fallback: ["system-ui", "Segoe UI", "sans-serif"] });
-const mono = Atkinson_Hyperlegible_Mono({ subsets: ["latin"], variable: "--font-mono", adjustFontFallback: false, fallback: ["ui-monospace", "Menlo", "monospace"] });
+const sans = Figtree({ subsets: ["latin"], variable: "--font-sans", fallback: ["system-ui", "Segoe UI", "sans-serif"] });
 
 export const metadata: Metadata = {
   title: "Sylvia",
@@ -24,7 +22,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="en-CA" className={sans.variable}>
       <body>
         {children}
         <TabBar />

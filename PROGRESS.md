@@ -85,6 +85,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
 - 2026-10-27: Team email live on /privacy. Step 10 pitch kit done (deck + scripts + findings template).
+- 2026-10-27: UI refresh (user picked "friendly rounded"): one typeface, Figtree, for everything; no monospace or uppercase labels; borderless soft cards; rounder corners. Deck and design-system artifact still use the old fonts.
 - 2026-10-27: Step 8 done and deployed: legal pages, icons, offline, a11y 0 violations, 7 e2e flows, Lighthouse ≥97.
 - 2026-10-27: Step 7 deployed (checklist, Communities, sign-in code switched off until configured).
 - 2026-10-27: Step 6 live: official relay + alert evaluation timers, web push, Alerts tab, Replay (verified live via API).

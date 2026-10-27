@@ -4,9 +4,8 @@
 .l1 { background: var(--alert-advisory); color: var(--on-alert-amber); }
 .l2 { background: var(--alert-warning); color: var(--on-alert-amber); }
 .l3 { background: var(--alert-evacuate); color: var(--on-alert-evacuate); box-shadow: var(--shadow-lg); }
-.eyebrow { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; font: var(--type-eyebrow); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; }
-.replay { padding: 2px 6px; border-radius: var(--radius-sm); border: 1.5px solid currentColor; }
-/* Alerts never use the serif. */
+.eyebrow { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; font: var(--type-eyebrow); }
+.replay { padding: 2px 8px; border-radius: var(--radius-full); border: 1.5px solid currentColor; }
 .title { font: var(--type-alert-title); letter-spacing: var(--type-alert-title-tracking); }
 .body { font: var(--type-body); }
 .meta { font: var(--type-body-sm); opacity: 0.9; }

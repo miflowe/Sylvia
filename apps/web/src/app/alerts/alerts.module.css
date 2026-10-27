@@ -1,9 +1,9 @@
 .wrap { display: grid; gap: var(--space-5); }
 .head { display: grid; gap: var(--space-2); }
 .head :global(.display) { margin: 0; }
-.card, .levels { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper-raised); }
+.card, .levels { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--paper-raised); }
 .card p, .levels p { margin: 0; }
-.cardTitle { font: var(--type-title); margin: 0; }
+.cardTitle { font: var(--type-title); letter-spacing: var(--type-title-tracking); margin: 0; }
 .row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .primary, .secondary { min-height: var(--size-target); padding: 0 var(--space-5); border-radius: var(--radius-md); font: var(--type-label); cursor: pointer; }
 .primary { border: 0; background: var(--pine); color: var(--on-pine); }
@@ -19,4 +19,4 @@
 .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
 .step { display: grid; grid-template-columns: 92px 1fr; gap: var(--space-3); font: var(--type-body-sm); padding: var(--space-2) 0; border-top: 1px solid var(--line); }
 .step[aria-current="step"] { font-weight: 700; }
-.stepTime { font: var(--type-data); color: var(--ink-muted); }
+.stepTime { font: var(--type-data); font-variant-numeric: tabular-nums; color: var(--ink-muted); }

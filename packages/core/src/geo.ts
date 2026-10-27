@@ -51,3 +51,22 @@ export function matchCurated<T extends { name: string; location: LatLon }>(
     return d <= 0.3 || (d <= 2 && name.length >= 3 && name === normalizeName(c.name));
   });
 }
+
+type Ring = number[][]; // [lon, lat] pairs
+export type AreaGeometry = { type: "Polygon"; coordinates: Ring[] } | { type: "MultiPolygon"; coordinates: Ring[][] };
+
+function inRing(p: LatLon, ring: Ring): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i]!;
+    const [xj, yj] = ring[j]!;
+    if (yi! > p.lat !== yj! > p.lat && p.lon < ((xj! - xi!) * (p.lat - yi!)) / (yj! - yi!) + xi!) inside = !inside;
+  }
+  return inside;
+}
+
+/** Ray casting, so ring orientation doesn't matter (ArcGIS and CAP rings wind differently). Holes are respected. */
+export function pointInArea(p: LatLon, area: AreaGeometry): boolean {
+  const polygons = area.type === "Polygon" ? [area.coordinates] : area.coordinates;
+  return polygons.some(([outer, ...holes]) => !!outer && inRing(p, outer) && !holes.some((h) => inRing(p, h)));
+}

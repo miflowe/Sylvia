@@ -9,7 +9,9 @@ type Key =
   | "SEARCH_KEY"
   | "PLANTNET_API_KEY"
   | "STORAGE_CONNECTION"
-  | "AZURE_MAPS_KEY";
+  | "AZURE_MAPS_KEY"
+  | "VAPID_PUBLIC_KEY"
+  | "VAPID_PRIVATE_KEY";
 
 /** Reads a required setting; fails loudly so a missing key is obvious in logs, not a silent bad answer. */
 export function env(key: Key): string {

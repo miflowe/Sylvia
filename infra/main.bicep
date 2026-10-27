@@ -31,6 +31,11 @@ param plantnetApiKey string = ''
 
 param webOrigin string = ''
 
+param vapidPublicKey string = ''
+
+@secure()
+param vapidPrivateKey string = ''
+
 @secure()
 param firmsMapKey string = ''
 
@@ -62,6 +67,8 @@ module resources 'resources.bicep' = {
     plantnetApiKey: plantnetApiKey
     firmsMapKey: firmsMapKey
     webOrigin: webOrigin
+    vapidPublicKey: vapidPublicKey
+    vapidPrivateKey: vapidPrivateKey
     purpleairApiKey: purpleairApiKey
   }
 }

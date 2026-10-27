@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { FIRE_DANGER, type Conditions, type Place } from "@sylvia/core";
+import { syncAlerts } from "@/lib/alerts";
 import { getLocation } from "@/lib/device";
 import styles from "./home.module.css";
 
@@ -70,10 +71,12 @@ export function HomeDashboard() {
     save(PLACE_KEY, p);
     setConditions(undefined);
     setPlace(p);
+    syncAlerts(p, sensitive).catch(() => {});
   };
   const toggleSensitive = () => {
     save(SENSITIVE_KEY, !sensitive);
     setSensitive(!sensitive);
+    if (place) syncAlerts(place, !sensitive).catch(() => {});
   };
 
   if (!ready) return null;

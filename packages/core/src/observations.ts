@@ -88,3 +88,26 @@ export function pm25Label(pm: number): string {
   if (pm <= 225.4) return "Very unhealthy";
   return "Hazardous";
 }
+
+/** An official alert or order, stored in `officialAlerts` (partition: regionCode). */
+export interface OfficialNoticeDoc {
+  id: string;
+  regionCode: string;
+  kind: "order" | "alert";
+  agency: string;
+  areaName: string;
+  event: string;
+  issuedAt: string;
+  expiresAt?: string;
+  url: string;
+  area: import("./geo").AreaGeometry;
+  bbox: [number, number, number, number];
+  location: { type: "Point"; coordinates: [number, number] };
+  source: { name: string; url: string };
+  ttl: number;
+}
+
+export const OFFICIAL_SOURCES = {
+  bc: { name: "BC Emergency Management (EmergencyInfoBC)", url: "https://www.emergencyinfobc.gov.bc.ca/" },
+  alertReady: { name: "Alert Ready (NAAD)", url: "https://www.alertready.ca/" },
+} as const;

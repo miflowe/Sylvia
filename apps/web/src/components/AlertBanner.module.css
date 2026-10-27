@@ -1,0 +1,13 @@
+.banner { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); }
+.banner p, .banner h3 { margin: 0; }
+.l0 { background: var(--alert-clear); color: var(--on-alert-clear); }
+.l1 { background: var(--alert-advisory); color: var(--on-alert-amber); }
+.l2 { background: var(--alert-warning); color: var(--on-alert-amber); }
+.l3 { background: var(--alert-evacuate); color: var(--on-alert-evacuate); box-shadow: var(--shadow-lg); }
+.eyebrow { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; font: var(--type-eyebrow); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; }
+.replay { padding: 2px 6px; border-radius: var(--radius-sm); border: 1.5px solid currentColor; }
+/* Alerts never use the serif. */
+.title { font: var(--type-alert-title); letter-spacing: var(--type-alert-title-tracking); }
+.body { font: var(--type-body); }
+.meta { font: var(--type-body-sm); opacity: 0.9; }
+.link { color: inherit; font: var(--type-label); text-decoration: underline; }

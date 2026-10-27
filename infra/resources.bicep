@@ -19,6 +19,12 @@ param plantnetApiKey string = ''
 @description('The web app address (azd env WEB_URL), allowed to call Azure Maps from browsers.')
 param webOrigin string = ''
 
+@description('Web push public key (azd env VAPID_PUBLIC_KEY).')
+param vapidPublicKey string = ''
+
+@secure()
+param vapidPrivateKey string = ''
+
 @secure()
 param firmsMapKey string = ''
 
@@ -236,6 +242,7 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
         { name: 'plantnet-key', value: empty(plantnetApiKey) ? 'not-set' : plantnetApiKey }
         { name: 'storage-connection', value: storageConnection }
         { name: 'maps-key', value: maps.listKeys().primaryKey }
+        { name: 'vapid-private', value: empty(vapidPrivateKey) ? 'not-set' : vapidPrivateKey }
       ]
     }
     template: {
@@ -255,6 +262,9 @@ resource web 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'PLANTNET_API_KEY', secretRef: 'plantnet-key' }
             { name: 'STORAGE_CONNECTION', secretRef: 'storage-connection' }
             { name: 'AZURE_MAPS_KEY', secretRef: 'maps-key' }
+            { name: 'VAPID_PUBLIC_KEY', value: vapidPublicKey }
+            { name: 'VAPID_PRIVATE_KEY', secretRef: 'vapid-private' }
+            { name: 'VAPID_SUBJECT', value: empty(webOrigin) ? 'https://github.com/miflowe/Sylvia' : webOrigin }
           ]
         }
       ]
@@ -336,6 +346,9 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'SEARCH_ENDPOINT', value: 'https://${search.name}.search.windows.net' }
         { name: 'FIRMS_MAP_KEY', value: firmsMapKey }
         { name: 'PURPLEAIR_API_KEY', value: empty(purpleairApiKey) ? 'not-set' : purpleairApiKey }
+        { name: 'VAPID_PUBLIC_KEY', value: vapidPublicKey }
+        { name: 'VAPID_PRIVATE_KEY', value: vapidPrivateKey }
+        { name: 'VAPID_SUBJECT', value: empty(webOrigin) ? 'https://github.com/miflowe/Sylvia' : webOrigin }
       ]
     }
   }

@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** 7 Profile + Communities
-**Next action:** Real-device push test with the user (Android + installed iPhone), then step 7: FireSmart checklist on Profile, optional Entra External ID sign-in, Communities page for one pilot town.
+**Next action:** Step 7: FireSmart checklist on Profile, optional Entra External ID sign-in, Communities page for one pilot town. (iPhone push test still open.)
 
 ## Build order
 - [x] 1 Foundation
@@ -45,7 +45,8 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Per-home evaluation + web push (`apps/functions/src/lib/alerting.ts`): every 15 min and after each official ingest, 12 h dedupe by key, expired subscriptions removed. VAPID keys in `.env.local` + azd env (never in git)
   - [x] Alerts tab: turn on/off (home area stored rounded ~1 km; deleted when turned off), test notification, level guide, history (`AlertBanner` uses the reserved alert colours + level number + word + icon)
   - [x] Replay: Quilpituk Creek wildfire (Aug 2026) from archived FIRMS VIIRS + BC historical orders (K51402). Inputs in `data/replay/quilpituk-creek-2026/`, rebuild with `pnpm data:replay`. 6 frames → L1 heat (21 km N) → L2 official alert → L3 official order. BC publishes order dates only; frames say so
-  - [ ] Real-device push test (needs the user's phone)
+  - [x] Real-device push test on Android (2026-10-27): test notification + 3 replay notifications delivered via FCM
+  - [ ] Real-device push test on an installed iPhone (iOS 16.4+)
 - [ ] 7 Profile + Communities
 - [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)

@@ -51,7 +51,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] FireSmart checklist on Profile (`packages/core/src/firesmart.ts`, 15 items in 5 zones, paraphrased from FireSmart Canada); `/api/checklist` stores only ticks + percent + community tag (no coordinates)
   - [x] Central Okanagan community view `/communities/central-okanagan` (`apps/web/src/server/community.ts`): right-now conditions + official notices, homes with alerts on, checklist adoption, invasive sightings; counts under 5 hidden; labelled **sample data** switch for town interviews (`SAMPLE_COMMUNITY`)
   - [x] Optional sign-in code (Entra External ID, MSAL redirect + PKCE, `jose` token verification): `ownerId()` = account (`u-<oid>`) when signed in, else device; `/api/auth/link` moves device data on first sign-in; `/api/auth/account` DELETE removes everything. Hidden until AUTH_* env vars are set
-  - [ ] Sign-in live test (waiting on the user's tenant setup, see `docs/setup/sign-in.md`)
+  - [ ] Sign-in live test. BLOCKED: the TMU directory (Azure for Students tenant 360b39cf…) sets allowedToCreateTenants=false and allowedToCreateApps=false, so students can't create an External ID tenant or an app registration there. Options: wait for the $5k-credit subscription (likely in a tenant you control), the External ID 30-day trial with a personal Microsoft account, or ask TMU IT
 - [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
 - [ ] 10 Pitch kit (deck, video scripts, findings template)

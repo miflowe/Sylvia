@@ -7,6 +7,7 @@
     "budgetAlertEmail": { "value": "${BUDGET_ALERT_EMAIL=}" },
     "enableCosmos": { "value": "${ENABLE_COSMOS=true}" },
     "cosmosLocation": { "value": "${COSMOS_LOCATION=canadacentral}" },
+    "webOrigin": { "value": "${WEB_URL=}" },
     "firmsMapKey": { "value": "${FIRMS_MAP_KEY=}" },
     "purpleairApiKey": { "value": "${PURPLEAIR_API_KEY=}" },
     "plantnetApiKey": { "value": "${PLANTNET_API_KEY=}" },

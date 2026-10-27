@@ -1,0 +1,110 @@
+"use client";
+import { useEffect, useRef } from "react";
+import { aqhiCategory, pm25Label, SOURCES } from "@sylvia/core";
+import styles from "./map.module.css";
+
+export type Selected =
+  | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; position?: number[] }
+  | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; position?: number[] }
+  | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
+  | { kind: "pm25"; value: number; observedAt: string; position?: number[] }
+  | { kind: "sighting"; commonName: string; date: string; position?: number[] };
+
+const SATELLITES: Record<string, string> = { N20: "NOAA-20", N21: "NOAA-21", N: "Suomi NPP" };
+const CONFIDENCE: Record<string, string> = { l: "low", n: "nominal", h: "high" };
+
+const when = (iso: string) =>
+  new Date(iso).toLocaleString("en-CA", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+const day = (iso: string) => new Date(iso).toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" });
+
+/** Bottom sheet with the details, source and time for whatever was tapped on the map. */
+export function DetailCard({ item, onClose }: { item: Selected; onClose: () => void }) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    ref.current?.focus();
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
+  }, [item, onClose]);
+
+  let title = "";
+  let body: React.ReactNode = null;
+  let source: { name: string; url: string } = SOURCES.firms;
+  switch (item.kind) {
+    case "hotspot":
+      title = "Heat detected by satellite";
+      body = (
+        <>
+          <dl className={styles.dl}>
+            <div><dt>Detected</dt><dd>{when(item.observedAt)}</dd></div>
+            <div><dt>Satellite</dt><dd>{SATELLITES[item.satellite] ?? item.satellite}</dd></div>
+            <div><dt>Confidence</dt><dd>{CONFIDENCE[item.confidence] ?? item.confidence}</dd></div>
+            {item.frp !== null && <div><dt>Heat output</dt><dd>{item.frp} MW</dd></div>}
+          </dl>
+          <p className={styles.note}>Not a confirmed fire. Satellites also pick up controlled burns, flares and other heat sources. Check official sources.</p>
+        </>
+      );
+      break;
+    case "fire":
+      title = "Mapped fire area";
+      source = SOURCES.cwfis;
+      body = (
+        <>
+          <dl className={styles.dl}>
+            {item.areaHa !== null && <div><dt>Area</dt><dd>{Math.round(item.areaHa).toLocaleString("en-CA")} ha</dd></div>}
+            {item.firstSeen && <div><dt>First seen</dt><dd>{day(item.firstSeen)}</dd></div>}
+            <div><dt>Last active</dt><dd>{day(item.lastSeen)}</dd></div>
+          </dl>
+          <p className={styles.note}>Outline estimated from satellite detections. It is not an official fire perimeter or evacuation zone.</p>
+        </>
+      );
+      break;
+    case "aqhi": {
+      title = item.label || "Air quality station";
+      source = SOURCES.aqhi;
+      const cat = aqhiCategory(item.value);
+      body = (
+        <>
+          <p className={styles.reading}>AQHI {item.value} · {cat.risk} risk</p>
+          <p>{cat.general}</p>
+          <p className="muted">Sensitive to smoke: {cat.atRisk}</p>
+          <p className="muted">Observed {when(item.observedAt)}</p>
+        </>
+      );
+      break;
+    }
+    case "pm25":
+      title = "Smoke sensor";
+      source = SOURCES.purpleair;
+      body = (
+        <>
+          <p className={styles.reading}>PM2.5 {item.value} µg/m³ · {pm25Label(item.value)}</p>
+          <p className="muted">10-minute average, last reported {when(item.observedAt)}. Community sensors aren&apos;t official monitors.</p>
+        </>
+      );
+      break;
+    case "sighting":
+      title = `Reported: ${item.commonName}`;
+      source = { name: "Sylvia community sightings", url: "/sprout" };
+      body = (
+        <>
+          <p>Invasive plant reported on {day(item.date)}.</p>
+          <p className="muted">Location rounded to about 1 km. Not verified by experts.</p>
+        </>
+      );
+      break;
+  }
+
+  return (
+    <section ref={ref} tabIndex={-1} className={styles.sheet} aria-label={title}>
+      <div className={styles.sheetHead}>
+        <h2 className={styles.sheetTitle}>{title}</h2>
+        <button type="button" className={styles.close} onClick={onClose} aria-label="Close">×</button>
+      </div>
+      {body}
+      <p className={styles.source}>
+        Source: <a href={source.url} target={source.url.startsWith("/") ? undefined : "_blank"} rel="noreferrer">{source.name}</a>
+      </p>
+    </section>
+  );
+}

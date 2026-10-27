@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "node scripts/copy-atlas.mjs && next dev --turbopack",
+    "build": "node scripts/copy-atlas.mjs && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
@@ -14,6 +14,7 @@
     "@azure/storage-blob": "^12.34.0",
     "@sylvia/core": "workspace:*",
     "@sylvia/ui": "workspace:*",
+    "azure-maps-control": "3.7.4",
     "next": "15.5.28",
     "react": "19.1.0",
     "react-dom": "19.1.0",

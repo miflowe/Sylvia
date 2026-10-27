@@ -29,6 +29,8 @@ param cosmosLocation string = location
 @description('Pl@ntNet API key, from azd env PLANTNET_API_KEY.')
 param plantnetApiKey string = ''
 
+param webOrigin string = ''
+
 @secure()
 param firmsMapKey string = ''
 
@@ -59,6 +61,7 @@ module resources 'resources.bicep' = {
     webImage: webImage
     plantnetApiKey: plantnetApiKey
     firmsMapKey: firmsMapKey
+    webOrigin: webOrigin
     purpleairApiKey: purpleairApiKey
   }
 }

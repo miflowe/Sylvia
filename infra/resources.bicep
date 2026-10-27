@@ -16,6 +16,9 @@ param aiLocation string = 'swedencentral'
 @description('Pl@ntNet API key (azd env PLANTNET_API_KEY). Second-opinion plant identification.')
 param plantnetApiKey string = ''
 
+@description('The web app address (azd env WEB_URL), allowed to call Azure Maps from browsers.')
+param webOrigin string = ''
+
 @secure()
 param firmsMapKey string = ''
 
@@ -188,7 +191,15 @@ resource maps 'Microsoft.Maps/accounts@2023-06-01' = {
   tags: tags
   kind: 'Gen2'
   sku: { name: 'G2' }
-  properties: { disableLocalAuth: false }
+  properties: {
+    disableLocalAuth: false
+    // The browser map uses the key, so only Sylvia's own web address (and local dev) may call Azure Maps from a browser.
+    cors: {
+      corsRules: [
+        { allowedOrigins: empty(webOrigin) ? ['http://localhost:3000'] : [webOrigin, 'http://localhost:3000'] }
+      ]
+    }
+  }
 }
 
 // ---------- Web app: Container Apps ----------

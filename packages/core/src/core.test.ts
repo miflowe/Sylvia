@@ -14,9 +14,9 @@ describe("alert authority", () => {
     expect(verificationLabel({ level: 2, title: "Smoke", body: "", sources: src })).toMatch(/Unverified/);
   });
   it("accepts a relayed official order", () => {
-    const a = { level: 3 as const, title: "Evacuation order", body: "", sources: src, issuingAgency: "BC Wildfire Service" };
+    const a = { level: 3 as const, title: "Evacuation order", body: "", sources: src, official: true, issuingAgency: "BC Wildfire Service" };
     expect(() => assertAlertAuthority(a)).not.toThrow();
-    expect(verificationLabel(a)).toBe("Official order · BC Wildfire Service");
+    expect(verificationLabel(a)).toBe("Official · BC Wildfire Service");
   });
 });
 

@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 5 Map
-**Next action:** Step 5: Azure Maps map with layers (hotspots, fire perimeters from `observations.shape`, AQHI stations, PurpleAir, sightings, Nodes placeholder) and sensor detail cards. Needs a Maps key for the browser: use an Entra/SAS token route or a domain-restricted key.
+**Current step:** 6 Alerts + Replay
+**Next action:** Step 6: alert rules (Level 1–2 unverified advisories from AQHI/PurpleAir/hotspots/fire areas near a saved place; sensitivity lowers thresholds), official order relay (NAAD Alert Ready CAP + BC evacuation orders → Level 3 naming the agency), web push (VAPID keys in Key Vault/azd env), alert history, and labelled Replay mode for a real summer-2026 BC fire.
 
 ## Build order
 - [x] 1 Foundation
@@ -34,7 +34,11 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Pilot areas (user choice): Northwestern Ontario + Kamloops–Okanagan (`PILOT_AREAS` in `packages/core/src/observations.ts`)
   - [x] `/api/conditions`: CWFIS fire danger point query (GRIDCODE 0 = Low … 4 = Extreme, verified from legend), nearest AQHI ≤120 km, PurpleAir median ≤10 km, hotspots ≤50 km/24 h, perimeters ≤100 km, Open-Meteo weather, Sylvia summary (gpt-4o + Content Safety)
   - [x] `/api/places` (Azure Maps search + reverse) and the Home dashboard with place picker and "sensitive to smoke" toggle (device only)
-- [ ] 5 Map
+- [x] 5 Map
+  - [x] `/api/map?bbox&zoom` (Cosmos `ST_WITHIN`; fire outlines only at zoom ≥ 6) and `/api/map/key`
+  - [x] Map screen (`apps/web/src/app/map/`): layer chips with counts, home marker, detail cards for fire areas, satellite heat, AQHI, smoke sensors, sightings; "Sylvia Nodes · coming soon" placeholder
+  - [x] Azure Maps SDK 3.7.4 served from `public/vendor` (copied by `apps/web/scripts/copy-atlas.mjs` in dev/build): bundling it breaks under Turbopack
+  - [x] Maps account CORS: only the web app's origin + localhost (`webOrigin` param from azd `WEB_URL`). A SAS-token approach needs a role assignment, which the user hasn't approved
 - [ ] 6 Alerts + Replay mode
 - [ ] 7 Profile + Communities
 - [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
@@ -61,6 +65,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-27: Step 5 live: map with all layers and detail cards.
 - 2026-10-26: Step 4 live: feeds ingesting on timers (533 hotspots, 394 perimeters, 75 AQHI stations at first run); Home dashboard deployed.
 - 2026-10-26: Step 3 complete and live (saved scans, sightings, garden centres).
 - 2026-10-26: Step 3 core live: Sprout identifies, judges and suggests swaps on Azure. Local dev: `node scripts/dev-env.mjs` fills `apps/web/.env.local`; Pl@ntNet key also in azd env.

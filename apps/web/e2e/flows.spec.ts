@@ -11,7 +11,7 @@ test("first visit asks where home is, then shows conditions", async ({ page }) =
   await page.getByPlaceholder(/Kenora, Kamloops/).fill("Kamloops");
   await page.getByRole("button", { name: /Kamloops/ }).first().click();
   await expect(page.getByText("Official fire danger")).toBeVisible();
-  await expect(page.getByText("Air Quality Health Index")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Air quality" })).toBeVisible();
   await expect(page.getByText(/adds to official alerts/)).toBeVisible();
 });
 

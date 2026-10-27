@@ -1,6 +1,9 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { SavedScan } from "@sylvia/core";
+import { Icon } from "@/components/Icon";
+import { ScanThumb } from "@/components/ScanThumb";
 import { withDevice } from "@/lib/device";
 import styles from "./profile.module.css";
 
@@ -25,56 +28,42 @@ export function SavedScans() {
 
   return (
     <section className={styles.section} aria-labelledby="my-plants">
-      <h2 id="my-plants" className={styles.title}>My plants</h2>
-      {error && <p role="alert">{error}</p>}
+      <h2 id="my-plants" className="sectionTitle">My plants</h2>
+      {error && <p role="alert" className="card">{error}</p>}
       {!scans && !error && <p className="muted">Loading…</p>}
       {scans?.length === 0 && (
-        <p className="muted">
-          Plants you save from Sprout show up here. <a href="/sprout">Scan a plant</a>
-        </p>
+        <Link href="/sprout" className={styles.empty}>
+          <span className="listIcon"><Icon name="camera" size={20} /></span>
+          <span className="listText">
+            <span className="listTitle">Scan your first plant</span>
+            <span className="listSub">Plants you save from Sprout show up here</span>
+          </span>
+          <Icon name="chevronRight" size={20} className="chevron" />
+        </Link>
       )}
       {scans && scans.length > 0 && (
-        <ul className={styles.list}>
+        <ul className="list">
           {scans.map((s) => (
-            <li key={s.id} className={styles.item}>
-              {s.hasPhoto ? <Thumb id={s.id} /> : <span className={styles.thumb} aria-hidden="true" />}
-              <div className={styles.text}>
+            <li key={s.id} className={`listRow ${styles.plant}`}>
+              <ScanThumb id={s.id} hasPhoto={s.hasPhoto} className={styles.thumb} />
+              <div className="listText">
                 <p className={styles.name}>{s.commonName ?? s.scientificName}</p>
                 <p className={`${styles.status} ${styles[`status_${s.status}`]}`}>
                   {STATUS[s.status]} · {REGION[s.regionCode] ?? s.regionCode}
                 </p>
                 {s.status === "invasive" && s.swaps.length > 0 && (
-                  <p className="muted">Swap for {s.swaps.map((w) => w.commonName).join(" or ")}</p>
+                  <p className="listSub">Swap for {s.swaps.map((w) => w.commonName).join(" or ")}</p>
                 )}
-                <p className="muted">{new Date(s.createdAt).toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" })}</p>
+                <p className="listSub">{new Date(s.createdAt).toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" })}</p>
               </div>
               <button type="button" className={styles.remove} onClick={() => remove(s.id)} aria-label={`Remove ${s.commonName ?? s.scientificName}`}>
-                Remove
+                <Icon name="trash" size={20} />
               </button>
             </li>
           ))}
         </ul>
       )}
-      <p className="muted">Photos are deleted after 30 days. The plant details stay until you remove them.</p>
+      <p className={styles.note}>Photos are deleted after 30 days. The plant details stay until you remove them.</p>
     </section>
   );
-}
-
-/** Photos need the owner's headers, so they're fetched and shown as a local blob URL. */
-function Thumb({ id }: { id: string }) {
-  const [src, setSrc] = useState<string | undefined>();
-  useEffect(() => {
-    let url: string | undefined;
-    withDevice()
-      .then((init) => fetch(`/api/scans/${id}/photo`, init))
-      .then(async (r) => {
-        if (r.ok) setSrc((url = URL.createObjectURL(await r.blob())));
-      })
-      .catch(() => {});
-    return () => {
-      if (url) URL.revokeObjectURL(url);
-    };
-  }, [id]);
-  // eslint-disable-next-line @next/next/no-img-element
-  return src ? <img src={src} alt="" className={styles.thumb} /> : <span className={styles.thumb} aria-hidden="true" />;
 }

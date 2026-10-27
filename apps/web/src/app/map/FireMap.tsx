@@ -72,7 +72,7 @@ export function FireMap() {
         if (!map) return;
         // Development only: lets tests drive the map from the browser console.
         if (process.env.NODE_ENV !== "production") (window as unknown as { __sylviaMap?: Atlas.Map }).__sylviaMap = map;
-        map.controls.add([new atlas.control.ZoomControl(), new atlas.control.CompassControl()], { position: atlas.ControlPosition.TopRight });
+        map.controls.add([new atlas.control.ZoomControl(), new atlas.control.CompassControl()], { position: atlas.ControlPosition.BottomRight });
 
         const sources = Object.fromEntries(LAYERS.map((l) => [l.id, new atlas.source.DataSource()])) as Record<LayerId, Atlas.source.DataSource>;
         Object.values(sources).forEach((s) => map!.sources.add(s));

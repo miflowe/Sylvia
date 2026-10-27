@@ -45,17 +45,20 @@ export function FireSmartChecklist() {
   const p = checklistProgress(done);
   return (
     <section className={styles.section} aria-labelledby="firesmart">
-      <div className={styles.titleRow}>
-        <h2 id="firesmart" className={styles.title}>FireSmart checklist</h2>
-        <span className={styles.progressText} aria-live="polite">{p.done} of {p.total} done{saved && ` · ${saved}`}</span>
+      <h2 id="firesmart" className="sectionTitle">FireSmart checklist</h2>
+      <div className={styles.progressCard}>
+        <div className={styles.progressTop}>
+          <span className={styles.progressBig}>{p.percent}%</span>
+          <span className={styles.progressText} aria-live="polite">{p.done} of {p.total} done{saved && ` · ${saved}`}</span>
+        </div>
+        <div className={styles.progress} role="progressbar" aria-valuenow={p.percent} aria-valuemin={0} aria-valuemax={100} aria-label="Checklist progress">
+          <span style={{ width: `${p.percent}%` }} />
+        </div>
+        <p className={styles.progressNote}>
+          Small steps around your home make it much harder for embers to start a fire. Based on{" "}
+          <a href={FIRESMART_SOURCE.url} target="_blank" rel="noreferrer">{FIRESMART_SOURCE.name}</a> guidance.
+        </p>
       </div>
-      <div className={styles.progress} role="progressbar" aria-valuenow={p.percent} aria-valuemin={0} aria-valuemax={100} aria-label="Checklist progress">
-        <span style={{ width: `${p.percent}%` }} />
-      </div>
-      <p className="muted">
-        Small steps around your home make it much harder for embers to start a fire. Based on{" "}
-        <a href={FIRESMART_SOURCE.url} target="_blank" rel="noreferrer">{FIRESMART_SOURCE.name}</a> guidance.
-      </p>
       {!loaded && <p className="muted">Loading…</p>}
       {loaded &&
         zones.map((zone) => (

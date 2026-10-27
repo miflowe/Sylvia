@@ -3,24 +3,38 @@
   inset: auto 0 0 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: var(--paper-raised);
+  padding: var(--space-2) var(--space-2) max(var(--space-2), env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper-raised) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  backdrop-filter: saturate(1.6) blur(16px);
   border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom);
   z-index: 10;
 }
 
 .tab {
-  min-height: var(--size-target);
+  min-height: 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: var(--space-2) 0;
+  gap: 4px;
   color: var(--ink-muted);
   text-decoration: none;
   font: var(--type-label);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
-.tab[aria-current="page"] { color: var(--pine); }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  transition: background 0.2s;
+}
+
+.tab[aria-current="page"] { color: var(--pine); font-weight: 700; }
+.tab[aria-current="page"] .pill { background: var(--moss-soft); }
+@media (prefers-reduced-motion: reduce) { .pill { transition: none; } }

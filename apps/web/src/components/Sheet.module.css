@@ -1,0 +1,26 @@
+.sheet {
+  margin: auto auto 0;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85dvh;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--paper-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+.sheet::backdrop { background: #0008; }
+.sheet[open] { animation: up 0.22s ease-out; }
+@keyframes up { from { transform: translateY(24px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .sheet[open] { animation: none; } }
+
+.inner { display: grid; gap: var(--space-3); padding: var(--space-2) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom)); }
+.inner p { margin: 0; }
+.grabber { justify-self: center; width: 40px; height: 5px; border-radius: var(--radius-full); background: var(--line); }
+.head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.title { margin: 0; font: var(--type-title); letter-spacing: var(--type-title-tracking); }
+.close {
+  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+  border-radius: 50%; border: 0; background: var(--paper-sunk); color: var(--ink); cursor: pointer;
+}

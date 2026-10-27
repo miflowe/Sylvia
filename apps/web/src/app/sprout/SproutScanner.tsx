@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import type { SproutCandidate, SproutResult, SproutSwap, SproutVerdict } from "@sylvia/core";
+import Link from "next/link";
+import type { SavedScan, SproutCandidate, SproutResult, SproutSwap, SproutVerdict } from "@sylvia/core";
+import { Icon } from "@/components/Icon";
+import { ScanThumb } from "@/components/ScanThumb";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import { withDevice } from "@/lib/device";
 import { NearbyNurseries, SaveScan, ShareSighting } from "./ResultActions";
 import styles from "./sprout.module.css";
 
@@ -100,18 +105,15 @@ export function SproutScanner() {
   };
 
   return (
-    <div className={styles.wrap}>
-      <header className={styles.head}>
-        <p className="eyebrow">Sprout</p>
-        <h1 className="display">Is this plant safe to keep?</h1>
-        <div className={styles.regions} role="radiogroup" aria-label="Your region">
+    <>
+      <ScreenHeader caption="Sprout" title="Is this plant safe to keep?">
+        <div className="segmented" role="radiogroup" aria-label="Your region">
           {REGIONS.map((r) => (
             <button
               key={r.code}
               type="button"
               role="radio"
               aria-checked={region === r.code}
-              className={styles.region}
               onClick={() => chooseRegion(r.code)}
               disabled={state.kind === "checking"}
             >
@@ -119,7 +121,7 @@ export function SproutScanner() {
             </button>
           ))}
         </div>
-      </header>
+      </ScreenHeader>
 
       <input
         ref={input}
@@ -132,15 +134,20 @@ export function SproutScanner() {
       />
 
       {state.kind === "idle" && (
-        <section className={styles.start}>
-          <label htmlFor="sprout-photo" className={styles.primary}>
-            <ScanIcon /> Take or choose a photo
+        <>
+          <label htmlFor="sprout-photo" className={styles.scanCard}>
+            <span className={styles.scanIcon}>
+              <Icon name="camera" size={34} />
+            </span>
+            <span className={styles.scanTitle}>Scan a plant</span>
+            <span className={styles.scanSub}>Take a photo or choose one</span>
           </label>
           <p className="muted">
             Fill the frame with one plant. A clear leaf, flower or fruit works best. I&apos;ll tell you if it&apos;s invasive or
             fire-prone in {regionName(region)}, and what to plant instead.
           </p>
-        </section>
+          <RecentScans />
+        </>
       )}
 
       {state.kind === "checking" && (
@@ -156,14 +163,48 @@ export function SproutScanner() {
       {state.kind === "error" && (
         <section className={styles.errorBox} role="alert">
           <p>{state.message}</p>
-          <button type="button" className={styles.secondary} onClick={reset}>
+          <button type="button" className="btn btnOutline" onClick={reset}>
             Try another photo
           </button>
         </section>
       )}
 
       {state.kind === "result" && <Result preview={state.preview} photo={state.photo} result={state.result} onPick={pick} onReset={reset} />}
-    </div>
+    </>
+  );
+}
+
+const STATUS = { invasive: "Invasive", native: "Native", introduced: "Not native", unknown: "No record" } as const;
+
+/** The last few saved plants, so Sprout opens on something useful. */
+function RecentScans() {
+  const [scans, setScans] = useState<SavedScan[]>([]);
+  useEffect(() => {
+    withDevice()
+      .then((init) => fetch("/api/scans", init))
+      .then((r) => (r.ok ? r.json() : []))
+      .then((s: SavedScan[]) => setScans(s.slice(0, 3)))
+      .catch(() => {});
+  }, []);
+  if (scans.length === 0) return null;
+  return (
+    <section aria-labelledby="recent-scans" className={styles.recent}>
+      <h2 id="recent-scans" className="sectionTitle">Recent plants</h2>
+      <ul className="list">
+        {scans.map((s) => (
+          <li key={s.id}>
+            <Link href="/profile" className="listRow">
+              <ScanThumb id={s.id} hasPhoto={s.hasPhoto} className={styles.recentThumb} />
+              <span className="listText">
+                <span className="listTitle">{s.commonName ?? s.scientificName}</span>
+                <span className={`${styles.recentStatus} ${styles[`status_${s.status}`]}`}>{STATUS[s.status]}</span>
+              </span>
+              <Icon name="chevronRight" size={20} className="chevron" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -186,7 +227,7 @@ function Result({
       <section className={styles.errorBox}>
         <p>{result.notPlant ? "I don't see a plant in that photo." : "I couldn't tell what plant this is."}</p>
         {result.photoTip && <p className="muted">{result.photoTip}</p>}
-        <button type="button" className={styles.secondary} onClick={onReset}>
+        <button type="button" className="btn btnOutline" onClick={onReset}>
           Try another photo
         </button>
       </section>
@@ -197,7 +238,7 @@ function Result({
     <div className={styles.result} aria-live="polite">
       <section className={styles.idCard}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={preview} alt="Your photo" className={styles.thumb} />
+        <img src={preview} alt="Your photo" className={styles.hero} />
         <div className={styles.idText}>
           <ConfidenceChip level={id.level} confirmed={!!id.confirmedByUser} />
           <h2 className={styles.plantName}>{name}</h2>
@@ -224,14 +265,21 @@ function Result({
 
       {result.explanation && (
         <section className={styles.sylvia}>
-          <p className="eyebrow">Sylvia says</p>
-          <p>{result.explanation}</p>
+          <span className={styles.avatar} aria-hidden="true">
+            <Icon name="leaf" size={20} />
+          </span>
+          <div>
+            <p className={styles.sylviaLabel}>Sylvia says</p>
+            <p>{result.explanation}</p>
+          </div>
         </section>
       )}
 
+      <SaveScan result={result} photo={photo} />
+
       {result.swaps.length > 0 && (
         <section className={styles.swaps}>
-          <h3 className={styles.sectionTitle}>Plant one of these instead</h3>
+          <h3 className="sectionTitle">Plant one of these instead</h3>
           {result.swaps.map((s) => (
             <SwapCard key={s.speciesId} swap={s} />
           ))}
@@ -242,10 +290,8 @@ function Result({
 
       {verdict?.status === "invasive" && <ShareSighting result={result} />}
 
-      <SaveScan result={result} photo={photo} />
-
-      <button type="button" className={styles.primaryButton} onClick={onReset}>
-        <ScanIcon /> Scan another plant
+      <button type="button" className="btn btnOutline btnBlock" onClick={onReset}>
+        <Icon name="camera" size={20} /> Scan another plant
       </button>
     </div>
   );
@@ -311,12 +357,6 @@ function SwapCard({ swap: s }: { swap: SproutSwap }) {
 }
 
 const svg = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.75, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
-const ScanIcon = () => (
-  <svg {...svg}>
-    <path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3" />
-    <path d="M12 16V10M12 10c0-2.5 2-4 5-4 0 2.5-2 4-5 4zM12 13c0-2-1.6-3.2-4-3.2 0 2 1.6 3.2 4 3.2z" />
-  </svg>
-);
 const LeafIcon = () => (
   <svg {...svg}>
     <path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7" />

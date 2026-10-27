@@ -98,18 +98,18 @@ export function ReplayPanel({ onAlerts }: { onAlerts?: () => void }) {
 
       {!running ? (
         <div className={styles.row}>
-          <button type="button" className={styles.primary} onClick={start}>Start replay</button>
-          <button type="button" className={styles.secondary} onClick={clear}>Clear replay alerts</button>
+          <button type="button" className="btn btnPrimary" onClick={start}>Start replay</button>
+          <button type="button" className="btn btnOutline" onClick={clear}>Clear replay alerts</button>
         </div>
       ) : (
         <div className={styles.row}>
-          <button type="button" className={styles.primary} onClick={() => runStep(frame + 1)} disabled={busy || done || playing}>
+          <button type="button" className="btn btnPrimary" onClick={() => runStep(frame + 1)} disabled={busy || done || playing}>
             {done ? "Replay finished" : busy ? "Running…" : "Next moment"}
           </button>
-          <button type="button" className={styles.secondary} onClick={() => setPlaying((p) => !p)} disabled={done}>
+          <button type="button" className="btn btnOutline" onClick={() => setPlaying((p) => !p)} disabled={done}>
             {playing ? "Pause" : "Play automatically"}
           </button>
-          <button type="button" className={styles.secondary} onClick={clear}>Reset</button>
+          <button type="button" className="btn btnOutline" onClick={clear}>Reset</button>
         </div>
       )}
 

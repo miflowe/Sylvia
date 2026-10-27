@@ -22,8 +22,8 @@ export function CommunityView({ id }: { id: string }) {
   return (
     <div className={styles.wrap}>
       <header className={styles.head}>
-        <p className="eyebrow">Community view · for towns and regional districts</p>
-        <h1 className="display">{s?.name ?? "Community"}</h1>
+        <p className="screenCaption">Community view · for towns and regional districts</p>
+        <h1 className="screenTitle">{s?.name ?? "Community"}</h1>
         <p className="muted">
           Anonymous totals from Sylvia users whose home is in this area. Groups smaller than {MIN_GROUP} are hidden so no household can be
           singled out. No names, addresses or exact locations are shown or stored.

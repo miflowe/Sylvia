@@ -40,10 +40,10 @@ export function SaveScan({ result, photo }: { result: SproutResult; photo?: Blob
 
   return (
     <div className={styles.saveRow}>
-      <button type="button" className={styles.secondary} onClick={save} disabled={status === "busy" || status === "done"}>
+      <button type="button" className="btn btnPrimary btnBlock" onClick={save} disabled={status === "busy" || status === "done"}>
         {status === "done" ? "Saved to My plants" : status === "busy" ? "Saving…" : "Save to My plants"}
       </button>
-      {status === "done" && <a href="/profile">View</a>}
+      {status === "done" && <a href="/profile">See My plants</a>}
       {status === "error" && <span role="alert" className={styles.inlineError}>{error}</span>}
     </div>
   );
@@ -73,7 +73,7 @@ export function ShareSighting({ result }: { result: SproutResult }) {
 
   return (
     <section className={styles.optIn}>
-      <h3 className={styles.sectionTitle}>Help map invasive plants</h3>
+      <h3 className="sectionTitle">Help map invasive plants</h3>
       <p>
         Add this sighting to Sylvia&apos;s &quot;reported nearby&quot; map. I&apos;ll store the plant, the date and your location
         rounded to about 1 km. Nothing links it to you or this device.
@@ -81,7 +81,7 @@ export function ShareSighting({ result }: { result: SproutResult }) {
       {status === "done" ? (
         <p className={styles.okNote}>Thanks. Your sighting is on the map.</p>
       ) : (
-        <button type="button" className={styles.secondary} onClick={share} disabled={status === "busy"}>
+        <button type="button" className="btn btnOutline" onClick={share} disabled={status === "busy"}>
           {status === "busy" ? "Sharing…" : "Share this sighting"}
         </button>
       )}
@@ -122,9 +122,9 @@ export function NearbyNurseries({ regionCode }: { regionCode: string }) {
 
   return (
     <section className={styles.nurseries}>
-      <h3 className={styles.sectionTitle}>Where to buy</h3>
+      <h3 className="sectionTitle">Where to buy</h3>
       {status !== "done" && (
-        <button type="button" className={styles.secondary} onClick={find} disabled={status === "busy"}>
+        <button type="button" className="btn btnOutline" onClick={find} disabled={status === "busy"}>
           {status === "busy" ? "Searching…" : "Find garden centres near me"}
         </button>
       )}

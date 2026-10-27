@@ -30,14 +30,14 @@ export function AccountCard() {
   if (!enabled) return null;
   return (
     <section className={styles.section} aria-labelledby="account">
-      <h2 id="account" className={styles.title}>{account ? `Signed in${account.name ? ` as ${account.name}` : ""}` : "Use Sylvia on more than one device"}</h2>
+      <h2 id="account" className="sectionTitle">{account ? `Signed in${account.name ? ` as ${account.name}` : ""}` : "Use Sylvia on more than one device"}</h2>
       {account ? (
         <>
           <p className="muted">Your saved plants, checklist and alert settings follow you to any device where you sign in.</p>
           <div className={styles.buttons}>
-            <button type="button" className={styles.remove} onClick={() => signOut()}>Sign out</button>
+            <button type="button" className="btn btnOutline" onClick={() => signOut()}>Sign out</button>
             {!confirming ? (
-              <button type="button" className={styles.remove} onClick={() => setConfirming(true)}>Delete my data</button>
+              <button type="button" className="btn btnOutline" onClick={() => setConfirming(true)}>Delete my data</button>
             ) : (
               <button type="button" className={styles.danger} onClick={deleteData}>Yes, delete everything</button>
             )}

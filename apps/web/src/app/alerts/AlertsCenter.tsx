@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { Place } from "@sylvia/core";
 import { AlertBanner, type AlertItem } from "@/components/AlertBanner";
+import { Icon } from "@/components/Icon";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import { pushSupport, turnOffAlerts, turnOnAlerts, type PushSupport } from "@/lib/alerts";
 import { withDevice } from "@/lib/device";
 import { ReplayPanel } from "./ReplayPanel";
@@ -16,6 +18,12 @@ function load<T>(key: string): T | undefined {
     return undefined;
   }
 }
+
+const LEVELS = [
+  { n: 1, name: "Advisory", text: "Smoke or heat detected nearby. From Sylvia, unverified." },
+  { n: 2, name: "Warning", text: "Fire activity close to home, or an official evacuation alert. Be ready to leave." },
+  { n: 3, name: "Official order", text: "A government evacuation order for your area, passed on word for word with the agency named." },
+] as const;
 
 export function AlertsCenter() {
   const [place, setPlace] = useState<Place | undefined>();
@@ -75,64 +83,91 @@ export function AlertsCenter() {
     setMessage(res.ok ? "Test sent. It should appear in a few seconds." : "The test didn't go through. Try turning alerts off and on again.");
   }
 
-  return (
-    <div className={styles.wrap}>
-      <header className={styles.head}>
-        <p className="eyebrow">Alerts</p>
-        <h1 className="display">Early warnings for your home</h1>
-      </header>
+  // Replays are practice, so the status line only looks at real alerts from the last day.
+  const latest = alerts?.find((a) => !a.replay);
+  const recent = latest?.createdAt && Date.now() - Date.parse(latest.createdAt) < 24 * 3600 * 1000 ? latest : undefined;
 
-      <section className={styles.card} aria-labelledby="alerts-setup">
-        <h2 id="alerts-setup" className={styles.cardTitle}>
-          {subscribed ? `Alerts are on${place ? ` for ${place.name}` : ""}` : "Turn on alerts"}
-        </h2>
+  return (
+    <>
+      <ScreenHeader caption="Alerts" title="Early warnings" />
+
+      <section className={styles.status} aria-live="polite">
+        <span className={`${styles.statusIcon} ${recent ? styles[`l${recent.level}`] : ""}`}>
+          <Icon name={recent ? "bell" : "shieldCheck"} size={26} />
+        </span>
+        <div>
+          <p className={styles.statusTitle}>
+            {alerts === undefined ? "Checking…" : recent ? `Level ${recent.level}: ${recent.title}` : "No Sylvia alerts in the last day"}
+          </p>
+          <p className="muted">{place ? `For ${place.name}` : "Set your home on the Home tab"} · keep Alert Ready on too</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="alerts-setup" className={styles.group}>
+        <h2 id="alerts-setup" className="sectionTitle">Notifications</h2>
         {!place ? (
-          <p>
+          <p className="card">
             First, set your home on the <Link href="/">Home</Link> tab.
           </p>
         ) : support === "needs-install" ? (
-          <p>On iPhone, add Sylvia to your Home Screen first: tap Share, then &quot;Add to Home Screen&quot;, and open Sylvia from there.</p>
+          <p className="card">On iPhone, add Sylvia to your Home Screen first: tap Share, then &quot;Add to Home Screen&quot;, and open Sylvia from there.</p>
         ) : support === "unsupported" ? (
-          <p>This browser can&apos;t receive notifications. Try Chrome, Edge, Firefox or Safari on a recent phone.</p>
+          <p className="card">This browser can&apos;t receive notifications. Try Chrome, Edge, Firefox or Safari on a recent phone.</p>
         ) : (
           <>
-            <p className="muted">
-              I&apos;ll notify you about fire activity, smoke and official evacuation orders near your home. To do that I store your home
-              area rounded to about 1 km{sensitive ? " and that you're sensitive to smoke" : ""}. Turning alerts off deletes it.
-            </p>
-            <div className={styles.row}>
-              <button type="button" className={subscribed ? styles.secondary : styles.primary} onClick={toggle} disabled={busy}>
-                {busy ? "One moment…" : subscribed ? "Turn off alerts" : "Turn on alerts"}
-              </button>
+            <ul className="list">
+              <li>
+                <div className="listRow">
+                  <span className="listIcon"><Icon name="bell" size={20} /></span>
+                  <span className="listText">
+                    <span className="listTitle" id="push-label">Push alerts</span>
+                    <span className="listSub">{busy ? "One moment…" : subscribed ? `On for ${place.name}` : "Fire, smoke and official orders"}</span>
+                  </span>
+                  <button type="button" role="switch" aria-checked={subscribed} aria-labelledby="push-label" className="switch" onClick={toggle} disabled={busy} />
+                </div>
+              </li>
               {subscribed && (
-                <button type="button" className={styles.secondary} onClick={test}>
-                  Send a test
-                </button>
+                <li>
+                  <button type="button" className="listRow" onClick={test}>
+                    <span className="listIcon"><Icon name="play" size={18} /></span>
+                    <span className="listText"><span className="listTitle">Send a test</span></span>
+                    <Icon name="chevronRight" size={20} className="chevron" />
+                  </button>
+                </li>
               )}
-            </div>
+            </ul>
+            <p className={styles.note}>
+              To alert you I store your home area rounded to about 1 km{sensitive ? " and that you're sensitive to smoke" : ""}. Turning alerts off deletes it.
+            </p>
           </>
         )}
         {message && <p role="status" className={styles.message}>{message}</p>}
       </section>
 
-      <section className={styles.levels} aria-labelledby="levels">
-        <h2 id="levels" className={styles.cardTitle}>What the levels mean</h2>
-        <ul>
-          <li><b>Level 1 · Advisory.</b> Smoke or heat detected nearby. From Sylvia, unverified.</li>
-          <li><b>Level 2 · Warning.</b> Fire activity close to home, or an official evacuation alert. Be ready to leave.</li>
-          <li><b>Level 3 · Official order.</b> A government evacuation order for your area, passed on word for word with the agency named.</li>
+      <section aria-labelledby="levels" className={styles.group}>
+        <h2 id="levels" className="sectionTitle">What the levels mean</h2>
+        <ul className="list">
+          {LEVELS.map((l) => (
+            <li key={l.n} className="listRow">
+              <span className={`${styles.badge} ${styles[`l${l.n}`]}`} aria-hidden="true">{l.n}</span>
+              <span className="listText">
+                <span className="listTitle">Level {l.n} · {l.name}</span>
+                <span className="listSub">{l.text}</span>
+              </span>
+            </li>
+          ))}
         </ul>
-        <p className="muted">Sylvia adds to official alerts and never replaces them. Keep Alert Ready and local alerts on.</p>
+        <p className={styles.note}>Sylvia adds to official alerts and never replaces them. Keep Alert Ready and local alerts on.</p>
       </section>
 
       <ReplayPanel onAlerts={refresh} />
 
-      <section aria-labelledby="history" className={styles.history}>
-        <h2 id="history" className={styles.cardTitle}>Alert history</h2>
+      <section aria-labelledby="history" className={styles.group}>
+        <h2 id="history" className="sectionTitle">Alert history</h2>
         {alerts === undefined && <p className="muted">Loading…</p>}
-        {alerts?.length === 0 && <p className="muted">No alerts yet. That&apos;s good news.</p>}
+        {alerts?.length === 0 && <p className="card muted">No alerts yet. That&apos;s good news.</p>}
         {alerts?.map((a) => <AlertBanner key={a.id} alert={a} />)}
       </section>
-    </div>
+    </>
   );
 }

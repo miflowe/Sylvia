@@ -1,6 +1,10 @@
 "use client";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { FIRE_DANGER, type Conditions, type Place } from "@sylvia/core";
+import { Icon, type IconName } from "@/components/Icon";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import { Sheet } from "@/components/Sheet";
 import { syncAlerts } from "@/lib/alerts";
 import { getLocation } from "@/lib/device";
 import styles from "./home.module.css";
@@ -32,13 +36,20 @@ function ago(iso?: string): string {
   return new Date(iso).toLocaleDateString("en-CA", { month: "short", day: "numeric" });
 }
 
+/** "Environment and Climate Change Canada (AQHI)" → "AQHI", for tight spaces; the full name is one tap away. */
+const shortSource = (name: string) => name.match(/\(([^)]+)\)\s*$/)?.[1] ?? name;
+
+type Detail = "air" | "fire" | "weather" | "smoke";
+
 export function HomeDashboard() {
   const [place, setPlace] = useState<Place | undefined>();
   const [ready, setReady] = useState(false);
+  const [picking, setPicking] = useState(false);
   const [sensitive, setSensitive] = useState(false);
   const [conditions, setConditions] = useState<Conditions | undefined>();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [detail, setDetail] = useState<Detail | undefined>();
 
   useEffect(() => {
     setPlace(load<Place>(PLACE_KEY));
@@ -71,63 +82,155 @@ export function HomeDashboard() {
     save(PLACE_KEY, p);
     setConditions(undefined);
     setPlace(p);
+    setPicking(false);
     syncAlerts(p, sensitive).catch(() => {});
-  };
-  const toggleSensitive = () => {
-    save(SENSITIVE_KEY, !sensitive);
-    setSensitive(!sensitive);
-    if (place) syncAlerts(place, !sensitive).catch(() => {});
   };
 
   if (!ready) return null;
-  if (!place) return <PlacePicker onChoose={choose} />;
+  if (!place || picking) return <PlacePicker onChoose={choose} onCancel={place ? () => setPicking(false) : undefined} />;
 
+  const c = conditions;
   return (
-    <div className={styles.wrap}>
-      <header className={styles.head}>
-        <p className="eyebrow">Home</p>
-        <h1 className="display">{place.name}</h1>
-        <div className={styles.headRow}>
-          <button type="button" className={styles.link} onClick={() => { localStorage.removeItem(PLACE_KEY); setPlace(undefined); setConditions(undefined); }}>
-            Change place
+    <>
+      <ScreenHeader
+        caption="Your home"
+        title={
+          <button type="button" className={styles.place} onClick={() => setPicking(true)} aria-label={`${place.name}. Change place`}>
+            <span>{place.name}</span>
+            <Icon name="chevronDown" size={22} />
           </button>
-          <label className={styles.toggle}>
-            <input type="checkbox" id="sensitive" checked={sensitive} onChange={toggleSensitive} />
-            <span>I&apos;m sensitive to smoke</span>
-          </label>
-        </div>
-      </header>
+        }
+        action={
+          <Link href="/alerts" className="iconButton" aria-label="Alerts">
+            <Icon name="bell" />
+          </Link>
+        }
+      >
+        {sensitive && (
+          <Link href="/profile" className={styles.chip}>
+            <Icon name="heart" size={16} /> Sensitive to smoke: earlier smoke advice
+          </Link>
+        )}
+      </ScreenHeader>
 
       {error && (
-        <section className={styles.card} role="alert">
+        <section className="card" role="alert">
           <p>{error}</p>
-          <button type="button" className={styles.secondary} onClick={() => refresh(place, sensitive)}>Try again</button>
+          <button type="button" className="btn btnOutline" style={{ marginTop: 12 }} onClick={() => refresh(place, sensitive)}>
+            Try again
+          </button>
         </section>
       )}
-      {!conditions && !error && <p className={styles.loading} aria-live="polite">Checking conditions near {place.name}…</p>}
 
-      {conditions && (
+      {!c && !error && (
         <>
-          {conditions.summary && (
-            <section className={styles.sylvia} aria-live="polite">
-              <p className="eyebrow">Sylvia says</p>
-              <p>{conditions.summary}</p>
-            </section>
-          )}
-          <FireDangerCard c={conditions} />
-          <div className={styles.grid}>
-            <AirCard c={conditions} />
-            <SmokeCard c={conditions} />
+          <p className="sr-only" aria-live="polite">Checking conditions near {place.name}…</p>
+          <div className={`${styles.hero} ${styles.skeleton}`} aria-hidden="true" />
+          <div className={styles.tiles} aria-hidden="true">
+            {[0, 1, 2, 3].map((i) => <div key={i} className={`${styles.tile} ${styles.skeleton}`} />)}
           </div>
-          <FireActivityCard c={conditions} />
-          {conditions.weather && <WeatherCard c={conditions} />}
-          <p className="muted">
-            Sylvia adds to official alerts and never replaces them. In an emergency, call 911. {loading ? "Updating…" : `Updated ${ago(conditions.generatedAt)}.`}{" "}
-            <a href="/terms">Safety notice</a>
-          </p>
         </>
       )}
-    </div>
+
+      {c && (
+        <>
+          <FireDangerHero c={c} />
+
+          {c.summary && (
+            <section className={styles.sylvia} aria-live="polite">
+              <span className={styles.avatar} aria-hidden="true">
+                <Icon name="leaf" size={20} />
+              </span>
+              <div>
+                <p className={styles.sylviaLabel}>Sylvia says</p>
+                <p>{c.summary}</p>
+              </div>
+            </section>
+          )}
+
+          <div className={styles.tiles}>
+            <Tile
+              icon="wind"
+              tone="sky"
+              label="Air quality"
+              value={c.aqhi ? String(c.aqhi.value) : "–"}
+              unit={c.aqhi ? `${c.aqhi.risk} risk` : "No station"}
+              foot={c.aqhi ? `${shortSource(c.aqhi.source.name)} · ${ago(c.aqhi.observedAt)}` : "Within 120 km"}
+              onOpen={() => setDetail("air")}
+            />
+            <Tile
+              icon="flame"
+              tone="ember"
+              label="Fire nearby"
+              value={String(c.hotspots.count)}
+              unit={`heat in ${c.hotspots.radiusKm} km`}
+              foot={`${c.fires.count} fire area${c.fires.count === 1 ? "" : "s"} in ${c.fires.radiusKm} km`}
+              onOpen={() => setDetail("fire")}
+            />
+            <Tile
+              icon="thermometer"
+              tone="ember"
+              label="Weather"
+              value={c.weather ? `${c.weather.tempC}°` : "–"}
+              unit={c.weather ? `${c.weather.humidity}% · ${c.weather.windKmh} km/h ${c.weather.windFrom}` : "Unavailable"}
+              foot={c.weather ? `${shortSource(c.weather.source.name)} · ${ago(c.weather.observedAt)}` : ""}
+              onOpen={c.weather ? () => setDetail("weather") : undefined}
+            />
+            <Tile
+              icon="sensor"
+              tone="sky"
+              label="Smoke sensors"
+              value={c.pm25 ? String(c.pm25.median) : "–"}
+              unit={c.pm25 ? `µg/m³ · ${c.pm25.label}` : "None within 10 km"}
+              foot={c.pm25 ? `${shortSource(c.pm25.source.name)} · ${ago(c.pm25.observedAt)}` : "Street-level PM2.5"}
+              onOpen={() => setDetail("smoke")}
+            />
+          </div>
+
+          <p className={styles.footnote}>
+            Sylvia adds to official alerts and never replaces them. In an emergency, call 911. {loading ? "Updating…" : `Updated ${ago(c.generatedAt)}.`}{" "}
+            <a href="/terms">Safety notice</a>
+          </p>
+
+          <Sheet title={detailTitle[detail ?? "air"]} open={!!detail} onClose={() => setDetail(undefined)}>
+            {detail === "air" && <AirDetail c={c} />}
+            {detail === "fire" && <FireDetail c={c} />}
+            {detail === "weather" && <WeatherDetail c={c} />}
+            {detail === "smoke" && <SmokeDetail c={c} />}
+          </Sheet>
+        </>
+      )}
+    </>
+  );
+}
+
+const detailTitle: Record<Detail, string> = {
+  air: "Air Quality Health Index",
+  fire: "Fire activity",
+  weather: "Weather now",
+  smoke: "Smoke sensors nearby",
+};
+
+function Tile({ icon, tone, label, value, unit, foot, onOpen }: { icon: IconName; tone: "sky" | "ember"; label: string; value: string; unit: string; foot: string; onOpen?: () => void }) {
+  const body = (
+    <>
+      <span className={styles.tileHead}>
+        <span className={`${styles.tileIcon} ${styles[tone]}`}>
+          <Icon name={icon} size={18} />
+        </span>
+        <h2 className={styles.tileLabel}>{label}</h2>
+      </span>
+      <span className={styles.tileValue}>{value}</span>
+      <span className={styles.tileUnit}>{unit}</span>
+      {foot && <span className={styles.tileFoot}>{foot}</span>}
+    </>
+  );
+  return onOpen ? (
+    <button type="button" className={styles.tile} onClick={onOpen}>
+      {body}
+    </button>
+  ) : (
+    <div className={styles.tile}>{body}</div>
   );
 }
 
@@ -140,15 +243,15 @@ function Source({ s, at }: { s: { name: string; url: string }; at?: string }) {
   );
 }
 
-function FireDangerCard({ c }: { c: Conditions }) {
+function FireDangerHero({ c }: { c: Conditions }) {
   const fd = c.fireDanger;
   const index = fd.level ? FIRE_DANGER.indexOf(fd.level) : -1;
   return (
-    <section className={styles.card}>
-      <p className="eyebrow">Official fire danger</p>
+    <section className={styles.hero}>
+      <h2 className={styles.heroLabel}>Official fire danger</h2>
       {fd.level ? (
         <>
-          <p className={styles.big}>{fd.level}</p>
+          <p className={styles.heroValue}>{fd.level}</p>
           <ol className={styles.scale} aria-label={`Fire danger scale, current level ${fd.level}`}>
             {FIRE_DANGER.map((l, i) => (
               <li key={l} className={`${styles.step} ${styles[`fdr${i}`]}`} aria-current={i === index ? "true" : undefined}>
@@ -158,60 +261,35 @@ function FireDangerCard({ c }: { c: Conditions }) {
           </ol>
         </>
       ) : (
-        <p>{fd.reason}.</p>
+        <p className={styles.heroReason}>{fd.reason}.</p>
       )}
-      <Source s={fd.source} />
+      <p className={styles.heroSource}>
+        <a href={fd.source.url} target="_blank" rel="noreferrer">{fd.source.name}</a>
+      </p>
     </section>
   );
 }
 
-function AirCard({ c }: { c: Conditions }) {
+function AirDetail({ c }: { c: Conditions }) {
   const a = c.aqhi;
+  if (!a) return <p>No AQHI station within 120 km of here.</p>;
   return (
-    <section className={styles.card}>
-      <p className="eyebrow">Air Quality Health Index</p>
-      {a ? (
-        <>
-          <p className={styles.big}>
-            <span className={styles.reading}>{a.value}</span> {a.risk} risk
-          </p>
-          <p>{a.message}</p>
-          <p className="muted">{a.station}, {a.distanceKm} km away</p>
-          <Source s={a.source} at={a.observedAt} />
-        </>
-      ) : (
-        <p>No AQHI station within 120 km of here.</p>
-      )}
-    </section>
+    <>
+      <p className={styles.sheetBig}>
+        {a.value} <span>{a.risk} risk</span>
+      </p>
+      <p>{a.message}</p>
+      <p className="muted">{a.station}, {a.distanceKm} km away</p>
+      <Source s={a.source} at={a.observedAt} />
+    </>
   );
 }
 
-function SmokeCard({ c }: { c: Conditions }) {
-  const p = c.pm25;
-  return (
-    <section className={styles.card}>
-      <p className="eyebrow">Smoke sensors nearby</p>
-      {p ? (
-        <>
-          <p className={styles.big}>
-            <span className={styles.reading}>{p.median}</span> µg/m³
-          </p>
-          <p>{p.label} · median of {p.sensors} sensor{p.sensors === 1 ? "" : "s"} within 10 km</p>
-          <Source s={p.source} at={p.observedAt} />
-        </>
-      ) : (
-        <p>{c.pm25Note}</p>
-      )}
-    </section>
-  );
-}
-
-function FireActivityCard({ c }: { c: Conditions }) {
+function FireDetail({ c }: { c: Conditions }) {
   const h = c.hotspots;
   const f = c.fires;
   return (
-    <section className={styles.card}>
-      <p className="eyebrow">Fire activity</p>
+    <>
       <dl className={styles.facts}>
         <div>
           <dt>Heat detected by satellite, last 24 h</dt>
@@ -229,26 +307,43 @@ function FireActivityCard({ c }: { c: Conditions }) {
       <p className="muted">Satellite heat detections are unconfirmed and can include other heat sources.</p>
       <Source s={h.source} at={h.latestAt} />
       <Source s={f.source} />
-    </section>
+      <Link href="/map" className="btn btnOutline">
+        <Icon name="map" size={20} /> See them on the map
+      </Link>
+    </>
   );
 }
 
-function WeatherCard({ c }: { c: Conditions }) {
+function WeatherDetail({ c }: { c: Conditions }) {
   const w = c.weather!;
   return (
-    <section className={styles.card}>
-      <p className="eyebrow">Weather now</p>
+    <>
       <dl className={styles.wx}>
-        <div><dt>Temperature</dt><dd className={styles.reading}>{w.tempC} °C</dd></div>
-        <div><dt>Humidity</dt><dd className={styles.reading}>{w.humidity}%</dd></div>
-        <div><dt>Wind</dt><dd className={styles.reading}>{w.windKmh} km/h {w.windFrom}</dd></div>
+        <div><dt>Temperature</dt><dd>{w.tempC} °C</dd></div>
+        <div><dt>Humidity</dt><dd>{w.humidity}%</dd></div>
+        <div><dt>Wind</dt><dd>{w.windKmh} km/h {w.windFrom}</dd></div>
       </dl>
+      <p className="muted">Dry, windy days help fires spread faster.</p>
       <Source s={w.source} at={w.observedAt} />
-    </section>
+    </>
   );
 }
 
-function PlacePicker({ onChoose }: { onChoose: (p: Place) => void }) {
+function SmokeDetail({ c }: { c: Conditions }) {
+  const p = c.pm25;
+  if (!p) return <p>{c.pm25Note}</p>;
+  return (
+    <>
+      <p className={styles.sheetBig}>
+        {p.median} <span>µg/m³</span>
+      </p>
+      <p>{p.label} · median of {p.sensors} sensor{p.sensors === 1 ? "" : "s"} within 10 km</p>
+      <Source s={p.source} at={p.observedAt} />
+    </>
+  );
+}
+
+function PlacePicker({ onChoose, onCancel }: { onChoose: (p: Place) => void; onCancel?: () => void }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Place[]>([]);
   const [message, setMessage] = useState("");
@@ -278,35 +373,50 @@ function PlacePicker({ onChoose }: { onChoose: (p: Place) => void }) {
   }
 
   return (
-    <div className={styles.wrap}>
-      <header className={styles.head}>
-        <p className="eyebrow">Welcome to Sylvia</p>
-        <h1 className="display">Where&apos;s home?</h1>
+    <>
+      <div className={styles.welcome}>
+        <span className={styles.welcomeMark} aria-hidden="true">
+          <Icon name="leaf" size={36} />
+        </span>
+        <p className="screenCaption">{onCancel ? "Change place" : "Welcome to Sylvia"}</p>
+        <h1 className="screenTitle">Where&apos;s home?</h1>
         <p>I&apos;ll show fire danger, air quality and fire activity near you. Your location stays on this device.</p>
-        <p className="muted">
-          Sylvia is not an emergency service and adds to official alerts. By using it you agree to the <a href="/terms">terms</a> and{" "}
-          <a href="/privacy">privacy policy</a>.
-        </p>
-      </header>
-      <button type="button" className={styles.primary} onClick={useMine} disabled={busy}>
-        {busy ? "Finding you…" : "Use my location"}
+      </div>
+
+      <button type="button" className="btn btnPrimary btnBlock" onClick={useMine} disabled={busy}>
+        <Icon name="locate" size={20} /> {busy ? "Finding you…" : "Use my location"}
       </button>
       {message && <p role="alert" className={styles.error}>{message}</p>}
+
       <div className={styles.search}>
         <label htmlFor="place-search" className={styles.label}>Or search for a town or address</label>
-        <input id="place-search" className={styles.input} value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Kenora, Kamloops, Thunder Bay…" autoComplete="off" />
+        <div className={styles.inputWrap}>
+          <Icon name="search" size={20} className={styles.inputIcon} />
+          <input id="place-search" className={styles.input} value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Kenora, Kamloops, Thunder Bay…" autoComplete="off" />
+        </div>
         {results.length > 0 && (
-          <ul className={styles.results}>
+          <ul className="list">
             {results.map((r) => (
               <li key={`${r.lat},${r.lon}`}>
-                <button type="button" onClick={() => onChoose({ ...r, lat: Math.round(r.lat * 100) / 100, lon: Math.round(r.lon * 100) / 100 })}>
-                  {r.name}
+                <button type="button" className="listRow" onClick={() => onChoose({ ...r, lat: Math.round(r.lat * 100) / 100, lon: Math.round(r.lon * 100) / 100 })}>
+                  <span className="listIcon"><Icon name="pin" size={20} /></span>
+                  <span className="listText"><span className="listTitle">{r.name}</span></span>
+                  <Icon name="chevronRight" size={20} className="chevron" />
                 </button>
               </li>
             ))}
           </ul>
         )}
       </div>
-    </div>
+
+      {onCancel ? (
+        <button type="button" className="btn" onClick={onCancel}>Cancel</button>
+      ) : (
+        <p className="muted">
+          Sylvia is not an emergency service and adds to official alerts. By using it you agree to the <a href="/terms">terms</a> and{" "}
+          <a href="/privacy">privacy policy</a>.
+        </p>
+      )}
+    </>
   );
 }

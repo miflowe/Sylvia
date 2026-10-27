@@ -482,9 +482,9 @@
 		(remove_unused_layers no)
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/lib/3dmodels/Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm_ThermalVias_placeholder.wrl"
-		(offset (xyz 0 0 0))
+	(model "${KIPRJMOD}/lib/3dmodels/VQFN-16_L3.5-W3.5-H1.0-P0.50.wrl"
+		(offset (xyz 0.0000 0.0000 0.0000))
 		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
+		(rotate (xyz 0 0 180))
 	)
 )

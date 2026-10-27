@@ -246,8 +246,8 @@
 		)
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/lib/3dmodels/Sensirion_DFN-4_1.5x1.5mm_P0.8mm_SHT4x_NoCentralPad_placeholder.wrl"
-		(offset (xyz 0 0 0))
+	(model "${KIPRJMOD}/lib/3dmodels/DFN-4_L1.5-W1.5-P0.8.wrl"
+		(offset (xyz 0.0000 0.0000 0.0000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

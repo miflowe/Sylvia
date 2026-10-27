@@ -2,15 +2,15 @@
 
 Rails: **VBAT** (1S2P LiFePO4, 2.5–3.65 V) → **3V3** (always on) → **3V3_SEN** (switched, SEN66) and
 **3V3_ALT → 5V_ALT** (switched + DNP boost, only for the PMSA003I / ZE07-CO alternates).
-Two I2C buses: **I2C0** on-board, 400 kHz, always powered; **I2C1** to the SEN66 cable, 100 kHz (the SEN66 maximum),
+Two I2C buses, both at 100 kHz (LMP91000 and SEN66 limits): **I2C0** on-board, always powered; **I2C1** to the SEN66 cable,
 with its pull-ups on 3V3_SEN so a powered-down sensor is never back-fed through SDA/SCL.
 
 ```mermaid
 flowchart LR
   subgraph PWR[Power]
-    PV[6 V 2 W solar<br/>JST PH] --> TVS[SMF12A TVS<br/>+ B5819W] --> OR((diode OR))
-    USB[USB-C 5 V<br/>TYPE-C-31-M-12] --> ESD[USBLC6-2SC6] --> B2[B5819W] --> OR
-    OR --> CHG[BQ24650<br/>sync buck charger<br/>MPPSET ≈ 4.5 V<br/>float 3.60 V, 400 mA]
+    PV[6 V 2 W solar<br/>JST PH] --> TVS[SMF12A TVS<br/>+ B5819W] -->|IN2| OR[TPS2121<br/>power mux, USB priority]
+    USB[USB-C 5 V<br/>TYPE-C-31-M-12] --> ESD[USBLC6-2SC6] -->|IN1| OR
+    OR --> CHG[BQ24650<br/>sync buck charger<br/>MPPSET 4.44 V<br/>float 3.60 V, 400 mA]
     NTC[10k NTC on cells] --> CHG
     CHG --> FUSE[2 A fuse] --> BAT[(2× LiFePO4 18650<br/>1S2P ~3000 mAh)]
     BAT --> FG[MAX17048<br/>fuel gauge 0x36]
@@ -39,13 +39,13 @@ flowchart LR
   V33 --> MCU & LORA & BME & AFE & ADC
   V33S --> SEN
   V5A --> PMA & ZE
-  MCU <-->|I2C0 400 kHz| BME & AFE & ADC & FG
+  MCU <-->|I2C0 100 kHz| BME & AFE & ADC & FG
   AFE -->|VOUT| ADC
   MCU <-->|I2C1 100 kHz| SEN & PMA
   MCU <-->|UART1 + RST/BOOT0| LORA
   MCU <-->|UART2 + analog| ZE
   MCU -->|USB D+/D-| USB
-  CHG -->|STAT, PG| MCU
+  CHG -->|STAT1, STAT2| MCU
   FG -->|ALRT wake| MCU
   MCU -->|EN| LS1 & LS2
   MCU --> UI[LED · buzzer pads · BOOT/RESET · tamper pads]

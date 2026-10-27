@@ -705,8 +705,8 @@
 		(uuid "5e8289d8-6b8c-42b0-9b0c-4b9d5f574318")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/lib/3dmodels/ESP32-S3-WROOM-1U_placeholder.wrl"
-		(offset (xyz 0 0 0))
+	(model "${KIPRJMOD}/lib/3dmodels/WIRELM-SMD_ESP32-S3-WROOM-1U.wrl"
+		(offset (xyz -0.0007 -0.4749 0.0000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

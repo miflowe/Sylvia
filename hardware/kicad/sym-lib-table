@@ -1,0 +1,4 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "sylvia") (type "KiCad") (uri "${KIPRJMOD}/lib/sylvia.kicad_sym") (options "") (descr "Sylvia Node project symbols (tools/build_library.py)"))
+)

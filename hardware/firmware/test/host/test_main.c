@@ -8,6 +8,7 @@
 #include "detect.h"
 #include "payload.h"
 #include "power_policy.h"
+#include "sensor_math.h"
 
 static int g_checks, g_fail;
 #define CHECK(cond)                                                       \
@@ -75,6 +76,41 @@ static void test_payload(void)
     CHECK(strstr(js, "\"pm25\":123.4") != NULL);
     CHECK(strstr(js, "\"pm1\":0.0") != NULL);
     CHECK(payload_json(&t, "0.1.0", js, 20) == -1);  // too small
+}
+
+static void put_word(uint8_t *p, uint16_t v)
+{
+    p[0] = (uint8_t)(v >> 8);
+    p[1] = (uint8_t)v;
+    p[2] = sensirion_crc8(p, 2);
+}
+
+static void test_sensor_math(void)
+{
+    // SEN66 frame: PM1 12.3, PM2.5 45.6, PM4 50.0, PM10 60.1, RH 55.25 %, T -5.5 C, VOC 101.0, NOx unknown, CO2 612
+    uint8_t f[SEN66_FRAME_LEN];
+    const uint16_t w[9] = {123, 456, 500, 601, 5525, (uint16_t)(int16_t)-1100, 1010, 0x7FFF, 612};
+    for (int i = 0; i < 9; i++) put_word(f + 3 * i, w[i]);
+    sen66_values_t v;
+    CHECK(sen66_parse(f, &v));
+    CHECK(NEAR(v.pm1, 12.3, 1e-4) && NEAR(v.pm25, 45.6, 1e-4) && NEAR(v.pm10, 60.1, 1e-4));
+    CHECK(NEAR(v.rh, 55.25, 1e-4) && NEAR(v.temp_c, -5.5, 1e-4) && NEAR(v.voc_index, 101.0, 1e-4));
+    CHECK(isnan(v.nox_index) && NEAR(v.co2, 612, 1e-4));
+    put_word(f + 24, 0xFFFF);  // CO2 unknown during the first 6 s
+    CHECK(sen66_parse(f, &v) && isnan(v.co2));
+    f[5] ^= 0x01;  // corrupt PM2.5's CRC
+    CHECK(!sen66_parse(f, &v));
+
+    CHECK(ads1115_config_single(0, 0) == 0xC303);  // AIN0, ±4.096 V, single-shot, 8 SPS, comparator off
+    CHECK(ads1115_config_single(1, 4) == 0xD383);
+    CHECK(NEAR(ads1115_volts(32767), 4.096, 1e-3) && NEAR(ads1115_volts(-32768), -4.096, 1e-6));
+
+    // 10 ppm at 4.75 nA/ppm through 350 kOhm = 16.625 mV above the 20 % zero (0.66 V at VREF 3.3 V)
+    CHECK(NEAR(co_ppm(0.66f + 0.016625f, 3.3f, 4.75f, 0.0f, 20.0f), 10.0, 1e-3));
+    CHECK(NEAR(co_ppm(0.66f, 3.3f, 4.75f, 0.0f, 20.0f), 0.0, 1e-4));
+    CHECK(co_ppm(0.66f + 0.016625f, 3.3f, 4.75f, 0.0f, 0.0f) > 10.0f);  // lower span in the cold reads higher ppm
+    CHECK(isnan(co_ppm(NAN, 3.3f, 4.75f, 0.0f, 20.0f)));
+    CHECK(LMP91000_TIACN_350K_10R == 0x1C && LMP91000_REFCN_EXT_20PCT_0BIAS == 0x80);
 }
 
 static void test_policy(void)
@@ -265,6 +301,8 @@ int main(int argc, char **argv)
     test_slope();
     printf("payload\n");
     test_payload();
+    printf("sensor math\n");
+    test_sensor_math();
     printf("power policy\n");
     test_policy();
     printf("scenarios\n");

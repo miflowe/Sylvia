@@ -11,6 +11,7 @@ Sources, in the plan's order of preference:
 EasyEDA symbols come with every pin "unspecified"; PIN_TYPES below assigns real electrical types so
 ERC means something. Every 3D reference is rewritten to ${KIPRJMOD}/lib/3dmodels/.
 """
+import math
 import pathlib
 import re
 import shutil
@@ -92,9 +93,22 @@ EASYEDA = {
     "MLT-8530": ("MLT-8530", "BUZ-SMD_4P-L8.5-W8.5-P8.50-BR"),
     "TS-1187A-B-A-B": ("TS-1187A", "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5"),
     "ZE07-CO": ("ZE07-CO", "SENSOR-TH_ZE07-CO"),
+    "TPS2121RUXR": ("TPS2121RUX", "VQFN-HR-12_L2.5-W2.0-P0.50-BL"),
 }
 # Only the RAK3172 3D model is taken from EasyEDA (KiCad's footprint has none).
-EASYEDA_3D_FOR_OFFICIAL = {"RAK3172": "WIRELM-SMD_32P-L15.5-W15.0-P1.00"}
+# Real EasyEDA 3D models for KiCad footprints that ship without one: (staging batch, EasyEDA footprint, model).
+# The model is placed by fitting the EasyEDA footprint's pads onto the KiCad footprint's pads (fit_transform).
+EASYEDA_3D_FOR_OFFICIAL = {
+    "RAK3172": ("batch1", "WIRELM-SMD_32P-L15.5-W15.0-P1.00", "WIRELM-SMD_32P-L15.5-W15.0-P1.00"),
+    "Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm_ThermalVias":
+        ("batch2", "VQFN-16_L3.6-W3.6-P0.50-BL-EP", "VQFN-16_L3.5-W3.5-H1.0-P0.50"),
+    "USB_C_Receptacle_HRO_TYPE-C-31-M-12": ("batch2", "USB-C_SMD-TYPE-C-31-M-12_1", "USB-C_SMD-TYPE-C-31-M-12_1"),
+    "ESP32-S3-WROOM-1U": ("batch2", "WIRELM-SMD_ESP32-S3-WROOM-1U", "WIRELM-SMD_ESP32-S3-WROOM-1U"),
+    "Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm":
+        ("batch2", "LGA-20_L10.1-W10.1-P1.25-TL_SCD41-D-R2", "LGA-20_L10.1-W10.1-P1.25-TL"),
+    "Sensirion_DFN-4_1.5x1.5mm_P0.8mm_SHT4x_NoCentralPad": ("batch2", "DFN-4_L1.5-W1.5-P0.8-TL-EP", "DFN-4_L1.5-W1.5-P0.8"),
+}
+ALIGN_REPORT = []
 
 PWR_IN = {"GND", "PGND", "AGND", "VSS", "EP", "DAP", "VDD", "VIN", "VINA", "Vin", "VCC", "3V3", "VDDH",
           "VBAT", "VDD_GPIO", "VIO", "BATT"}
@@ -111,6 +125,8 @@ PIN_TYPES = {
     "TPS3840PL27DBV": {"~{RESET}": "output", "CT": "passive", "~{MR}/NC": "input"},
     "TPS61023DRL": {"VOUT": "power_out", "SW": "passive", "FB": "input", "EN": "input"},
     "ZE07-CO": {"RXD": "input", "TXD": "output", "DAC": "output"},
+    "TPS2121RUX": {"OUT": "power_out", "IN1": "power_in", "IN2": "power_in", "PR1": "input", "CP2": "input", "OV1": "input", "OV2": "input",
+                   "ST": "open_collector", "ILM": "passive", "SS": "passive"},
     "MLT-8530": {"+": "passive", "2": "passive", "3": "passive", "4": "passive"},
     "TS-1187A": {"A": "passive", "B": "passive", "C": "passive", "D": "passive"},
 }
@@ -193,10 +209,25 @@ def official_symbols(fp_names):
     return out
 
 
+EASYEDA_STAGES = [HW / "_staging" / b / "cad" for b in ("batch1", "batch2", "batch3")]
+
+
+def easyeda_file(rel):
+    """First staging batch that has this EasyEDA output file."""
+    for stage in EASYEDA_STAGES:
+        if (stage / rel).exists():
+            return stage, stage / rel
+    raise FileNotFoundError(rel)
+
+
 def easyeda_symbols():
-    text = (STAGE / "easyeda.kicad_sym").read_text(encoding="utf-8")
+    blocks = []
+    for stage in EASYEDA_STAGES:
+        f = stage / "easyeda.kicad_sym"
+        if f.exists():
+            blocks += list(top_blocks(f.read_text(encoding="utf-8"), "symbol"))
     out = []
-    for name, block in top_blocks(text, "symbol"):
+    for name, block in blocks:
         if name not in EASYEDA:
             continue
         new, fp = EASYEDA[name]
@@ -204,9 +235,18 @@ def easyeda_symbols():
         b = set_property(b, "Footprint", "sylvia:" + fp)
         overrides = PIN_TYPES.get(new, {})
 
+        seen_out = set()
+
         def fix(m):
             pname = m.group(2)
-            return f"(pin {overrides.get(pname, generic_type(pname))} {m.group(1)}"
+            ptype = overrides.get(pname, generic_type(pname))
+            if ptype == "power_out":
+                # Stacked output pins (e.g. TPS63020 VOUT 4+5): only the first is power_out, as KiCad's own
+                # libraries do, otherwise ERC flags output-to-output on the same net.
+                if pname in seen_out:
+                    ptype = "passive"
+                seen_out.add(pname)
+            return f"(pin {ptype} {m.group(1)}"
 
         b = re.sub(r'\(pin unspecified (line\s*\(at [^)]*\)\s*\(length [^)]*\)\s*\(name "([^"]*)")', fix, b)
         out.append((new, b))
@@ -296,8 +336,7 @@ def copy_official_footprints():
             text = rewrite_models(text, model_map)
             text = placeholder_missing(fp, text)
             if fp in EASYEDA_3D_FOR_OFFICIAL:
-                e = EASYEDA_3D_FOR_OFFICIAL[fp]
-                text = add_model(text, e + ".wrl")
+                text = add_aligned_model(fp, text)
             text = re.sub(r'^\(footprint "[^"]+"', f'(footprint "{fp}"', text)
             (FP_OUT / f"{fp}.kicad_mod").write_text(text, encoding="utf-8")
             names.add(fp)
@@ -319,7 +358,11 @@ def placeholder_missing(fp, text):
     for m in reversed(missing):
         text = text[:m.start()] + text[m.end():]
     if fp in EASYEDA_3D_FOR_OFFICIAL:
-        return text  # a real EasyEDA model gets added instead
+        return text  # a fitted EasyEDA model gets added instead (or a box if the fit fails)
+    return add_placeholder(fp, text)
+
+
+def add_placeholder(fp, text):
     xs, ys = [], []
     for m in re.finditer(r'\((?:start|end|xy) ([-\d.]+) ([-\d.]+)\)[^\n]*?(?:\n[^\n]*?)*?\(layer "F\.CrtYd"\)', text):
         xs.append(float(m.group(1)))
@@ -337,10 +380,10 @@ def placeholder_missing(fp, text):
 PLACEHOLDERS = ["SPEC_110-102_THT"]
 
 
-def copy_easyeda_model(stem):
+def copy_easyeda_model(stem, stage=None):
     """EasyEDA STEP files are huge (~40 MB for this set): footprints use the .wrl (committed); the
     STEP goes to 3dmodels/easyeda_step/ (gitignored) for enclosure CAD."""
-    src = STAGE / "easyeda.3dshapes"
+    src = (stage or STAGE) / "easyeda.3dshapes"
     if (src / (stem + ".wrl")).exists():
         shutil.copy2(src / (stem + ".wrl"), M3D_OUT / (stem + ".wrl"))
     if (src / (stem + ".step")).exists():
@@ -348,22 +391,65 @@ def copy_easyeda_model(stem):
         shutil.copy2(src / (stem + ".step"), M3D_OUT / "easyeda_step" / (stem + ".step"))
 
 
-def add_model(text, model_file):
-    copy_easyeda_model(pathlib.Path(model_file).stem)
-    block = (f'\t(model "{MODEL_PREFIX}{model_file}"\n\t\t(offset (xyz 0 0 0))\n\t\t(scale (xyz 1 1 1))\n'
-             f'\t\t(rotate (xyz 0 0 0))\n\t)\n')
+def pad_centres(text):
+    """Pad name -> (x, y) with y pointing UP (3D model convention). Duplicate names are averaged."""
+    acc = {}
+    for m in re.finditer(r'\(pad "?([^"\s]+)"? \w+ \w+\s*\(at ([-\d.]+) ([-\d.]+)', text):
+        acc.setdefault(m.group(1), []).append((float(m.group(2)), -float(m.group(3))))
+    return {k: (sum(p[0] for p in v) / len(v), sum(p[1] for p in v) / len(v)) for k, v in acc.items()}
+
+
+def fit_transform(src, dst):
+    """Best 90-degree rotation + translation mapping src pads onto dst pads with the same name.
+    Returns (angle_deg, tx, ty, rms_mm, n_pads) or None if fewer than 3 pads match."""
+    names = [n for n in src if n in dst]
+    if len(names) < 3:
+        return None
+    best = None
+    for ang in (0, 90, 180, 270):
+        c, s = round(math.cos(math.radians(ang))), round(math.sin(math.radians(ang)))
+        rot = {n: (c * src[n][0] - s * src[n][1], s * src[n][0] + c * src[n][1]) for n in names}
+        tx = sum(dst[n][0] - rot[n][0] for n in names) / len(names)
+        ty = sum(dst[n][1] - rot[n][1] for n in names) / len(names)
+        rms = math.sqrt(sum((dst[n][0] - rot[n][0] - tx) ** 2 + (dst[n][1] - rot[n][1] - ty) ** 2
+                            for n in names) / len(names))
+        if best is None or rms < best[3]:
+            best = (ang, tx, ty, rms, len(names))
+    return best
+
+
+def add_aligned_model(fp, text):
+    """Attach an EasyEDA model to a KiCad footprint, moved/rotated so the EasyEDA footprint's pads land on
+    the KiCad pads. A bad fit (> 0.2 mm rms) keeps the placeholder box instead."""
+    batch, efp, stem = EASYEDA_3D_FOR_OFFICIAL[fp]
+    stage = HW / "_staging" / batch / "cad"
+    etext = (stage / "easyeda.pretty" / f"{efp}.kicad_mod").read_text(encoding="utf-8")
+    fit = fit_transform(pad_centres(etext), pad_centres(text))
+    if not fit or fit[3] > 0.2:
+        ALIGN_REPORT.append(f"{fp}: no good pad fit ({fit}); placeholder kept")
+        return add_placeholder(fp, text)
+    ang, tx, ty, rms, n = fit
+    om = re.search(r'\(offset \(xyz ([-\d.]+) ([-\d.]+) ([-\d.]+)\)\).*?\(rotate \(xyz ([-\d.]+) ([-\d.]+) ([-\d.]+)\)\)',
+                   etext, re.S)
+    ox, oy, oz, rx, ry, rz = (float(v) for v in om.groups()) if om else (0, 0, 0, 0, 0, 0)
+    c, s = round(math.cos(math.radians(ang))), round(math.sin(math.radians(ang)))
+    nx, ny = c * ox - s * oy + tx, s * ox + c * oy + ty
+    copy_easyeda_model(stem, stage)
+    ALIGN_REPORT.append(f"{fp}: EasyEDA model fitted on {n} pads, rotated {ang} deg, rms {rms:.3f} mm")
+    block = (f'\t(model "{MODEL_PREFIX}{stem}.wrl"\n\t\t(offset (xyz {nx:.4f} {ny:.4f} {oz:.4f}))\n'
+             f'\t\t(scale (xyz 1 1 1))\n\t\t(rotate (xyz {rx:g} {ry:g} {(rz + ang) % 360:g}))\n\t)\n')
     return text[: text.rstrip().rfind(")")] + block + ")\n"
 
 
 def copy_easyeda_footprints():
     names = set()
     for _, (_, fp) in EASYEDA.items():
-        src = STAGE / "easyeda.pretty" / f"{fp}.kicad_mod"
+        stage, src = easyeda_file(f"easyeda.pretty/{fp}.kicad_mod")
         text = src.read_text(encoding="utf-8")
         model_map = {}
         for m in re.finditer(r'\(model "([^"]+)"', text):
             stem = re.split(r"[/\\]", m.group(1))[-1].rsplit(".", 1)[0]
-            copy_easyeda_model(stem)
+            copy_easyeda_model(stem, stage)
             model_map[stem] = stem + ".wrl"
         text = rewrite_models(text, model_map)
         (FP_OUT / f"{fp}.kicad_mod").write_text(text, encoding="utf-8")
@@ -456,6 +542,7 @@ def main():
     n3d = len(list(M3D_OUT.glob("*.*")))
     print(f"{len(seen)} symbols -> {SYM_OUT}\n{len(fp_names)} footprints -> {FP_OUT}\n{n3d} 3D files -> {M3D_OUT}")
     print("placeholder 3D models:", ", ".join(PLACEHOLDERS))
+    print("\n".join(ALIGN_REPORT))
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ datasheet drawing in the footprint editor (see `review-checklist.md`, section B)
 | BQ24650 (RVA VQFN-16) | `Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm_ThermalVias` | 17 / 16 | 0.5 / 0.5 | (2.14, 2.14) / (2.14, 2.14) | (-1.70, -0.75) | ccw | BQ24650 datasheet, RVA0016A | OK |
 | ADS1115 (DGS VSSOP-10) | `VSSOP-10_3x3mm_P0.5mm` | 10 / 10 | 0.5 / 0.5 | - / - | (-2.20, -1.00) | ccw | ADS1115 datasheet, DGS0010A | OK |
 | BME688 (LGA-8 3x3) | `Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering` | 8 / 8 | 0.8 / 0.8 | - / - | (-1.20, -1.19) | cw | BME688 datasheet sec. 7 (Bosch numbers clockwise) | OK |
-| LM66100 (DCK SC-70-6) | `SOT-363_SC-70-6` | 6 / 6 | 0.65 / 0.65 | - / - | (-0.95, -0.65) | ccw | LM66100 datasheet, DCK0006A | OK |
+| TPS2121 (RUX VQFN-HR-12) | `VQFN-HR-12_L2.5-W2.0-P0.50-BL` | 12 / 12 | 0.5 / 0.5 | - / - | (-0.35, 0.67) | ccw | TPS2121 datasheet fig. 6-2 (pinout + pin 1 checked by eye) | OK |
 | RAK3172 (32-pad stamp) | `RAK3172` | 32 / 32 | 1.0 / 1.0 | - / - | (-7.40, -5.75) | ccw | RAK3172 datasheet, pad layout | OK |
 | ESP32-S3-WROOM-1 | `ESP32-S3-WROOM-1` | 41 / 41 | 1.27 / 1.27 | (3.9, 3.9) / - | (-8.75, -5.26) | ccw | ESP32-S3-WROOM-1 datasheet, PCB land pattern (40 pins + EP group) | OK |
 | TYPE-C-31-M-12 | `USB_C_Receptacle_HRO_TYPE-C-31-M-12` | 17 / 16 | 0.5 / 0.5 | (1.0, 2.1) / - | (-3.25, -4.04) | - | HRO TYPE-C-31-M-12 drawing (A/B pads, A6/B6 + A7/B7 paired) | OK |

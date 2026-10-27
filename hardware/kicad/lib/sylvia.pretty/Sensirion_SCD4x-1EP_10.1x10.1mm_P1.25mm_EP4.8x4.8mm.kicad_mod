@@ -467,8 +467,8 @@
 		(zone_connect 2)
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/lib/3dmodels/Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm_placeholder.wrl"
-		(offset (xyz 0 0 0))
+	(model "${KIPRJMOD}/lib/3dmodels/LGA-20_L10.1-W10.1-P1.25-TL.wrl"
+		(offset (xyz 0.0000 0.0000 0.0000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

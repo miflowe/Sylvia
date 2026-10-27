@@ -483,7 +483,7 @@
 	)
 	(embedded_fonts no)
 	(model "${KIPRJMOD}/lib/3dmodels/WIRELM-SMD_32P-L15.5-W15.0-P1.00.wrl"
-		(offset (xyz 0 0 0))
+		(offset (xyz -0.0138 0.0225 0.0000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

@@ -23,3 +23,10 @@ firmware/test/host/build/
 # 3D models that can't or needn't be committed (see tools/build_library.py)
 kicad/lib/3dmodels/mfr/
 kicad/lib/3dmodels/easyeda_step/
+# Per-device credentials from firmware/tools/provision.py
+firmware/secrets/
+# SKiDL by-products
+kicad/*_sklib.py
+kicad/*.log
+# Fabrication outputs are regenerated from the laid-out board (tools/jlc_export.py)
+kicad/fab/

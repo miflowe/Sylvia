@@ -342,9 +342,9 @@
 		(uuid "e783dde5-f762-4528-9b55-9220820b0b1c")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/lib/3dmodels/USB_C_Receptacle_HRO_TYPE-C-31-M-12_placeholder.wrl"
-		(offset (xyz 0 0 0))
+	(model "${KIPRJMOD}/lib/3dmodels/USB-C_SMD-TYPE-C-31-M-12_1.wrl"
+		(offset (xyz 0.0000 1.5750 0.0000))
 		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
+		(rotate (xyz 0 0 180))
 	)
 )

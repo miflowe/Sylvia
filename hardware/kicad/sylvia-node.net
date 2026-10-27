@@ -1,0 +1,6593 @@
+(export 
+  (version "D")
+  (design
+    (source "sylvia_node.py")
+    (date "10/26/2026 01:51 AM")
+    (tool "SKiDL (3.0.0)")
+    (sheet
+      (number 1)
+      (name "/")
+      (tstamps "/")
+      (title_block
+        (title)
+        (company)
+        (rev)
+        (date)
+        (source "sylvia_node.py")
+        (comment
+          (number "1")
+          (value ""))
+        (comment
+          (number "2")
+          (value ""))
+        (comment
+          (number "3")
+          (value ""))
+        (comment
+          (number "4")
+          (value ""))
+        (comment
+          (number "5")
+          (value ""))
+        (comment
+          (number "6")
+          (value ""))
+        (comment
+          (number "7")
+          (value ""))
+        (comment
+          (number "8")
+          (value ""))
+        (comment
+          (number "9")
+          (value "")))))
+  (components
+    (comp
+      (ref "BT1")
+      (value "LiFePO4 18650")
+      (description "Single-cell battery")
+      (footprint "sylvia:BatteryHolder_Keystone_1042_1x18650")
+      (fields
+        (field
+          (name "LCSC") "C5249310")
+        (field
+          (name "Description") "Single-cell battery")
+        (field
+          (name "Footprint") "sylvia:BatteryHolder_Keystone_1042_1x18650")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "BT1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Battery_Cell"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "85965525-5770-5047-adb1-0b4bb667c99a"))
+    (comp
+      (ref "BT2")
+      (value "LiFePO4 18650")
+      (description "Single-cell battery")
+      (footprint "sylvia:BatteryHolder_Keystone_1042_1x18650")
+      (fields
+        (field
+          (name "LCSC") "C5249310")
+        (field
+          (name "Description") "Single-cell battery")
+        (field
+          (name "Footprint") "sylvia:BatteryHolder_Keystone_1042_1x18650")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "BT2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Battery_Cell"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d163dc4c-b5a2-55e2-8df0-9aacbd4b5dd7"))
+    (comp
+      (ref "BZ1")
+      (value "MLT-8530")
+      (description "")
+      (footprint "sylvia:BUZ-SMD_4P-L8.5-W8.5-P8.50-BR")
+      (fields
+        (field
+          (name "LCSC") "C94599")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:BUZ-SMD_4P-L8.5-W8.5-P8.50-BR")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/Buzzers_MLT-8530_C94599.html")
+        (field
+          (name "SKiDL Tag") "BZ1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "MLT-8530"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a603af8c-49aa-59df-a429-264ea58e1ca7"))
+    (comp
+      (ref "C1")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Note") "U1 bulk")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "b514d237-c153-5f6d-afe2-53badf97a864"))
+    (comp
+      (ref "C10")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C10")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9ac3af44-dacb-5cab-9570-74696fc5614f"))
+    (comp
+      (ref "C11")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C11")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d4017ae0-ca40-581e-bf8a-e168323602ea"))
+    (comp
+      (ref "C12")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C12")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "2932345d-4f49-56ea-874e-6a87a258356f"))
+    (comp
+      (ref "C13")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C13")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f1d7b8fb-84cd-50f9-836b-638468521141"))
+    (comp
+      (ref "C14")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C14")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c946931e-80a5-5ed6-b53a-66445bf5e1a2"))
+    (comp
+      (ref "C15")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U7 VDD")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C15")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "81f7537e-5712-5826-a661-cfd597efb63e"))
+    (comp
+      (ref "C16")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U9 VDD")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C16")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "4b26d887-351e-555f-a3fe-11622a5d6521"))
+    (comp
+      (ref "C17")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C17")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d451fe6b-cc1e-51ff-abd9-a1c674370629"))
+    (comp
+      (ref "C18")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C18")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "65617007-c8f1-5598-9446-09da65da9bfc"))
+    (comp
+      (ref "C19")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "VINA")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C19")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "89c18bff-9d0a-560d-9afc-db5208f57a70"))
+    (comp
+      (ref "C2")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U1 decoupling")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "507fddd0-e494-5270-a7e4-2511aa140519"))
+    (comp
+      (ref "C20")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C20")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "de69f183-3e24-5ca0-bc14-716aaad4df38"))
+    (comp
+      (ref "C21")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C21")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ea3a15b0-5646-5a4b-ba8f-ee6aa1cf1128"))
+    (comp
+      (ref "C22")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C22")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "424c71f2-6ef1-5cf5-8bb2-ac922033ba2a"))
+    (comp
+      (ref "C23")
+      (value "1nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1523")
+        (field
+          (name "Note") "slow ramp for SEN66 inrush")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C23")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "bec88687-5f6e-5537-8f36-ac7e90d623da"))
+    (comp
+      (ref "C24")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Note") "U10 VIN")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C24")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "92603c51-dffb-5a22-9eb1-41f10e8591b4"))
+    (comp
+      (ref "C25")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C25")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5bb14be5-7170-542d-aa85-064ae609b7d0"))
+    (comp
+      (ref "C26")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C26")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9b754077-e010-51c5-b77f-b0ce541dfb80"))
+    (comp
+      (ref "C27")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C27")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ac97e086-8ca6-55be-95ba-594795c36921"))
+    (comp
+      (ref "C28")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C28")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0faa74ed-05dc-5c5f-930c-12c2975657d6"))
+    (comp
+      (ref "C29")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U3 VDD")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C29")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "42a18f4b-6805-5250-adf1-cce8f3e818b6"))
+    (comp
+      (ref "C3")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Note") "EN RC delay per Espressif")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "299afff0-b6cf-50c0-a677-db76bcc001ee"))
+    (comp
+      (ref "C30")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U3 VDDIO")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C30")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0f47fd7b-2a97-5852-b486-b8f30dff5b1c"))
+    (comp
+      (ref "C31")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U4 VDD")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C31")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5289590a-ce55-5ced-a9b8-bd07edd97a7b"))
+    (comp
+      (ref "C32")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C32")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "56cf75c2-48b9-5db5-aa55-062694a38170"))
+    (comp
+      (ref "C33")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C33")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f19d6a13-c73e-5ab6-acdc-db7f4f94afcf"))
+    (comp
+      (ref "C34")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Note") "optional TIA low-pass")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C34")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "cb42239c-bffb-5edb-96be-dc594dcb07be"))
+    (comp
+      (ref "C35")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "U5 VDD")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C35")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "83624d67-3a6f-5524-897e-8b70e39727c3"))
+    (comp
+      (ref "C36")
+      (value "10uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19702")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C36")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9caf1711-4ef9-5655-b3cc-459332533d7e"))
+    (comp
+      (ref "C37")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C37")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a44c6131-94f0-55c4-a73a-c1de6dd4270a"))
+    (comp
+      (ref "C38")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Note") "U14 IN1")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C38")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "be52583c-0c6c-5a62-aaf2-00548deb9ef7"))
+    (comp
+      (ref "C39")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Note") "U14 IN2")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C39")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9232ff12-9695-5e05-9fed-a2f9376f63f8"))
+    (comp
+      (ref "C4")
+      (value "4.7nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1538")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "6f9a1813-19d4-5d20-adea-8868e7232e30"))
+    (comp
+      (ref "C40")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Note") "soft start ~780 V/s: ~35 mA inrush into VCHG")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C40")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0081ecb2-1219-5a6b-829c-b1719e0c4f05"))
+    (comp
+      (ref "C5")
+      (value "4.7uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C19666")
+        (field
+          (name "Note") "VBUS bulk (USB limit 10 uF)")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C5")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "1d55401a-d19b-530c-b57c-5c75b8c48e01"))
+    (comp
+      (ref "C6")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Note") "25 V")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a6fd326a-61cc-55ba-9b64-3e8df39c0c42"))
+    (comp
+      (ref "C7")
+      (value "22uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C45783")
+        (field
+          (name "Note") "25 V")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "16338a68-8eed-55bf-a491-963475c6f7f3"))
+    (comp
+      (ref "C8")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C1525")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C8")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5745235a-c3ad-560a-9498-c294be8e78c3"))
+    (comp
+      (ref "C9")
+      (value "1uF")
+      (description "Unpolarized capacitor")
+      (footprint "sylvia:C_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C15849")
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "sylvia:C_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "C9")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9ccc330f-2a4c-575c-9353-ad8096a286cf"))
+    (comp
+      (ref "D1")
+      (value "SMF12A")
+      (description "200W unidirectional Transil Transient Voltage Suppressor, 12Vrwm, SMF")
+      (footprint "sylvia:D_SOD-123F")
+      (fields
+        (field
+          (name "LCSC") "C123800")
+        (field
+          (name "Note") "pin 1 = cathode")
+        (field
+          (name "Description") "200W unidirectional Transil Transient Voltage Suppressor, 12Vrwm, SMF")
+        (field
+          (name "Footprint") "sylvia:D_SOD-123F")
+        (field
+          (name "Datasheet") "https://www.vishay.com/doc?85881")
+        (field
+          (name "SKiDL Tag") "D1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "SMF12A"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "730dc923-5f42-5190-a58b-2dbed3a5d5b0"))
+    (comp
+      (ref "D2")
+      (value "B5819W")
+      (description "Schottky diode")
+      (footprint "sylvia:D_SOD-123")
+      (fields
+        (field
+          (name "LCSC") "C8598")
+        (field
+          (name "Note") "reverse-polarity block (IN2 min -0.3 V)")
+        (field
+          (name "Description") "Schottky diode")
+        (field
+          (name "Footprint") "sylvia:D_SOD-123")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "D2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "D_Schottky"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "06934a86-3c08-5320-b71c-96bf0d33127c"))
+    (comp
+      (ref "D3")
+      (value "1N5819WS")
+      (description "Schottky diode")
+      (footprint "sylvia:D_SOD-323")
+      (fields
+        (field
+          (name "LCSC") "C191023")
+        (field
+          (name "Note") "bootstrap")
+        (field
+          (name "Description") "Schottky diode")
+        (field
+          (name "Footprint") "sylvia:D_SOD-323")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "D3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "D_Schottky"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a31abf81-24ee-5c50-91fe-d4cecac4e7dd"))
+    (comp
+      (ref "D4")
+      (value "ESD9B5.0ST5G")
+      (description "ESD protection diode, 5.0Vrwm, SOD-923")
+      (footprint "sylvia:D_SOD-923")
+      (fields
+        (field
+          (name "LCSC") "C111566")
+        (field
+          (name "Description") "ESD protection diode, 5.0Vrwm, SOD-923")
+        (field
+          (name "Footprint") "sylvia:D_SOD-923")
+        (field
+          (name "Datasheet") "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF")
+        (field
+          (name "SKiDL Tag") "D4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "ESD9B5.0ST5G"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c682bab4-dac7-5b3c-8973-4e75b77a32cd"))
+    (comp
+      (ref "D5")
+      (value "ESD9B5.0ST5G")
+      (description "ESD protection diode, 5.0Vrwm, SOD-923")
+      (footprint "sylvia:D_SOD-923")
+      (fields
+        (field
+          (name "LCSC") "C111566")
+        (field
+          (name "Description") "ESD protection diode, 5.0Vrwm, SOD-923")
+        (field
+          (name "Footprint") "sylvia:D_SOD-923")
+        (field
+          (name "Datasheet") "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF")
+        (field
+          (name "SKiDL Tag") "D5")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "ESD9B5.0ST5G"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "68f6c72b-a475-524d-bd7b-c1b998873b90"))
+    (comp
+      (ref "D6")
+      (value "1N4148WS")
+      (description "75V 0.15A Fast switching Diode, SOD-323")
+      (footprint "sylvia:D_SOD-323")
+      (fields
+        (field
+          (name "LCSC") "C2128")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "75V 0.15A Fast switching Diode, SOD-323")
+        (field
+          (name "Footprint") "sylvia:D_SOD-323")
+        (field
+          (name "Datasheet") "https://www.vishay.com/docs/85751/1n4148ws.pdf")
+        (field
+          (name "SKiDL Tag") "D6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "1N4148WS"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "1a26254c-0960-55b1-8a30-c368e56e3140"))
+    (comp
+      (ref "D7")
+      (value "green")
+      (description "Light emitting diode")
+      (footprint "sylvia:LED_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C12624")
+        (field
+          (name "Description") "Light emitting diode")
+        (field
+          (name "Footprint") "sylvia:LED_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "D7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "LED"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5944a6f0-ac26-5cb9-8315-1252c3b3bcdb"))
+    (comp
+      (ref "F1")
+      (value "2A")
+      (description "Fuse")
+      (footprint "sylvia:Fuse_1206_3216Metric")
+      (fields
+        (field
+          (name "LCSC") "C3105")
+        (field
+          (name "Description") "Fuse")
+        (field
+          (name "Footprint") "sylvia:Fuse_1206_3216Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "F1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Fuse"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c8376089-30f9-5993-9f79-3ca96ebaa282"))
+    (comp
+      (ref "J1")
+      (value "TYPE-C-31-M-12")
+      (description "USB 2.0-only 16P Type-C Receptacle connector")
+      (footprint "sylvia:USB_C_Receptacle_HRO_TYPE-C-31-M-12")
+      (fields
+        (field
+          (name "LCSC") "C165948")
+        (field
+          (name "Description") "USB 2.0-only 16P Type-C Receptacle connector")
+        (field
+          (name "Footprint") "sylvia:USB_C_Receptacle_HRO_TYPE-C-31-M-12")
+        (field
+          (name "Datasheet") "https://www.usb.org/sites/default/files/documents/usb_type-c.zip")
+        (field
+          (name "SKiDL Tag") "J1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "USB_C_Receptacle_USB2.0_16P"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d7608689-a7d2-514c-aa16-0f8bde5cf213"))
+    (comp
+      (ref "J2")
+      (value "SEN66")
+      (description "Cable connector to a Sensirion SEN6x module (pins 1/6 and 2/5 joined inside the sensor)")
+      (footprint "sylvia:JST_GH_SM06B-GHS-TB_1x06-1MP_P1.25mm_Horizontal")
+      (fields
+        (field
+          (name "LCSC") "C133065")
+        (field
+          (name "Description") "Cable connector to a Sensirion SEN6x module (pins 1/6 and 2/5 joined inside the sensor)")
+        (field
+          (name "Footprint") "sylvia:JST_GH_SM06B-GHS-TB_1x06-1MP_P1.25mm_Horizontal")
+        (field
+          (name "Datasheet") "https://sensirion.com/media/documents/FAFC548D/6AC50BC5/PS_DS_SEN6x.pdf")
+        (field
+          (name "SKiDL Tag") "J2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "SEN66_Conn"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5e0b731b-c654-5cf6-8847-00f2f042255c"))
+    (comp
+      (ref "J3")
+      (value "SOLAR 6V")
+      (description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "sylvia:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+      (fields
+        (field
+          (name "LCSC") "C173752")
+        (field
+          (name "Description") "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "sylvia:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "J3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Conn_01x02"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "feeefe1a-2e42-5bb8-adfa-cd7486f50a6d"))
+    (comp
+      (ref "J4")
+      (value "PMSA003I")
+      (description "Cable header to a Plantower PMSA003I (5 V supply, 3.3 V I2C at 0x12). Pins 6/8 must stay unconnected.")
+      (footprint "sylvia:PinHeader_2x05_P1.27mm_Vertical")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Cable header to a Plantower PMSA003I (5 V supply, 3.3 V I2C at 0x12). Pins 6/8 must stay unconnected.")
+        (field
+          (name "Footprint") "sylvia:PinHeader_2x05_P1.27mm_Vertical")
+        (field
+          (name "Datasheet") "https://cdn-shop.adafruit.com/product-files/4632/4505_PMSA003I_series_data_manual_English_V2.6.pdf")
+        (field
+          (name "SKiDL Tag") "J4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "PMSA003I_Conn"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c449faf0-e5d1-5f09-ba34-b969c94251c8"))
+    (comp
+      (ref "J6")
+      (value "UART0")
+      (description "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "sylvia:PinHeader_1x04_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "sylvia:PinHeader_1x04_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "J6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Conn_01x04"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0e3756c0-0751-5147-8013-57cbcb656651"))
+    (comp
+      (ref "J7")
+      (value "RAK SWD")
+      (description "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "sylvia:PinHeader_1x05_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "sylvia:PinHeader_1x05_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "J7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Conn_01x05"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d3f28a6c-17c1-5c6b-aaa4-b24b96f23d33"))
+    (comp
+      (ref "JP1")
+      (value "JP1 VBAT->SYS")
+      (description "Solder Jumper, 2-pole, closed/bridged")
+      (footprint "sylvia:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "Solder Jumper, 2-pole, closed/bridged")
+        (field
+          (name "Footprint") "sylvia:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "JP1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "SolderJumper_2_Bridged"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "e6fccda1-6f87-5135-a30a-d131623c6d95"))
+    (comp
+      (ref "JP2")
+      (value "JP2 3V3 out")
+      (description "Solder Jumper, 2-pole, closed/bridged")
+      (footprint "sylvia:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "Solder Jumper, 2-pole, closed/bridged")
+        (field
+          (name "Footprint") "sylvia:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "JP2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "SolderJumper_2_Bridged"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "360e8fc6-6e94-50cb-a9ac-f565b48f0f48"))
+    (comp
+      (ref "L1")
+      (value "15uH")
+      (description "Inductor")
+      (footprint "sylvia:L_Sunlord_SWPA6045S")
+      (fields
+        (field
+          (name "LCSC") "C83374")
+        (field
+          (name "Description") "Inductor")
+        (field
+          (name "Footprint") "sylvia:L_Sunlord_SWPA6045S")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "L1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "L"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "93000a52-ef31-54a2-8496-9943a6f92870"))
+    (comp
+      (ref "L2")
+      (value "1.5uH")
+      (description "Inductor")
+      (footprint "sylvia:L_Sunlord_SWPA4020S")
+      (fields
+        (field
+          (name "LCSC") "C42099")
+        (field
+          (name "Description") "Inductor")
+        (field
+          (name "Footprint") "sylvia:L_Sunlord_SWPA4020S")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "L2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "L"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "7be8511f-6b87-5b39-a83c-5ca9a614e6f5"))
+    (comp
+      (ref "L3")
+      (value "1uH")
+      (description "Inductor")
+      (footprint "sylvia:L_Sunlord_SWPA4020S")
+      (fields
+        (field
+          (name "LCSC") "C91254")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Inductor")
+        (field
+          (name "Footprint") "sylvia:L_Sunlord_SWPA4020S")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "L3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "L"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "8cd2150f-cbf5-5f23-b52e-8d35005785dd"))
+    (comp
+      (ref "Q1")
+      (value "AO3400A")
+      (description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+      (footprint "sylvia:SOT-23")
+      (fields
+        (field
+          (name "LCSC") "C20917")
+        (field
+          (name "Note") "high side")
+        (field
+          (name "Description") "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+        (field
+          (name "Footprint") "sylvia:SOT-23")
+        (field
+          (name "Datasheet") "http://www.aosmd.com/pdfs/datasheet/AO3400A.pdf")
+        (field
+          (name "SKiDL Tag") "Q1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "AO3400A"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9699dfdd-a6d3-59e3-8793-7f24db869fba"))
+    (comp
+      (ref "Q2")
+      (value "AO3400A")
+      (description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+      (footprint "sylvia:SOT-23")
+      (fields
+        (field
+          (name "LCSC") "C20917")
+        (field
+          (name "Note") "low side")
+        (field
+          (name "Description") "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+        (field
+          (name "Footprint") "sylvia:SOT-23")
+        (field
+          (name "Datasheet") "http://www.aosmd.com/pdfs/datasheet/AO3400A.pdf")
+        (field
+          (name "SKiDL Tag") "Q2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "AO3400A"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "7852643a-7934-5503-82c8-62f05e9bd38e"))
+    (comp
+      (ref "Q3")
+      (value "2N7002")
+      (description "0.115A Id, 60V Vds, N-Channel MOSFET, SOT-23")
+      (footprint "sylvia:SOT-23")
+      (fields
+        (field
+          (name "LCSC") "C8545")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Note") "buzzer driver")
+        (field
+          (name "Description") "0.115A Id, 60V Vds, N-Channel MOSFET, SOT-23")
+        (field
+          (name "Footprint") "sylvia:SOT-23")
+        (field
+          (name "Datasheet") "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF")
+        (field
+          (name "SKiDL Tag") "Q3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "2N7002"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "fc2a17e0-9b04-5028-8d2e-9de8184e1c9f"))
+    (comp
+      (ref "Q4")
+      (value "2N7002")
+      (description "0.115A Id, 60V Vds, N-Channel MOSFET, SOT-23")
+      (footprint "sylvia:SOT-23")
+      (fields
+        (field
+          (name "LCSC") "C8545")
+        (field
+          (name "Note") "pulls MPPSET low = charge disabled")
+        (field
+          (name "Description") "0.115A Id, 60V Vds, N-Channel MOSFET, SOT-23")
+        (field
+          (name "Footprint") "sylvia:SOT-23")
+        (field
+          (name "Datasheet") "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF")
+        (field
+          (name "SKiDL Tag") "Q4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "2N7002"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "cc4e8343-4c03-5917-9689-4aee76b32c2b"))
+    (comp
+      (ref "R1")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "91628e47-8f83-5ba1-abed-4cb134d83eea"))
+    (comp
+      (ref "R10")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R10")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "99b6d9e4-efbb-57f3-bc7c-dc7822d36beb"))
+    (comp
+      (ref "R11")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R11")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "146f51db-bb3a-5131-afc8-7744106d2cfe"))
+    (comp
+      (ref "R12")
+      (value "270k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25770")
+        (field
+          (name "Note") "MPPSET: VCHG regulated to 1.2*(1+270/100) = 4.44 V")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R12")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9f75750b-4097-5a2a-b9eb-5e3f319978ce"))
+    (comp
+      (ref "R13")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R13")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "2e9cb324-63c9-5ad4-ba1a-b618f4020bea"))
+    (comp
+      (ref "R14")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Note") "charging enabled by default")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R14")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "fc87fb8d-6ec9-5f6a-ba62-fc9d37c462e7"))
+    (comp
+      (ref "R15")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R15")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "17eaf0a6-9932-5348-b523-0122128974c2"))
+    (comp
+      (ref "R16")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R16")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0ffe9dd6-18d7-5bd8-8f5c-a4cd816c10e4"))
+    (comp
+      (ref "R17")
+      (value "4.42k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C52269")
+        (field
+          (name "Note") "TS window 0..45 C with 10k B3380 NTC")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R17")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "47689824-ff01-5dd6-9338-a42dda36a2ce"))
+    (comp
+      (ref "R18")
+      (value "21.5k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25872")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R18")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "e4735f31-c71b-5536-824e-0b76945c5495"))
+    (comp
+      (ref "R19")
+      (value "0.1R")
+      (description "Resistor")
+      (footprint "sylvia:R_0805_2012Metric")
+      (fields
+        (field
+          (name "LCSC") "C127687")
+        (field
+          (name "Note") "charge current 40 mV / 0.1 ohm = 400 mA")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0805_2012Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R19")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0ead03f1-50b6-599b-864c-cf54dd0f7185"))
+    (comp
+      (ref "R2")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "91c587b0-c855-58aa-84a9-2ba4ce88549e"))
+    (comp
+      (ref "R20")
+      (value "71.5k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C43534")
+        (field
+          (name "Note") "float = 2.1*(1+71.5/100) = 3.60 V (LiFePO4)")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R20")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "6d059f79-f7fb-532a-98db-972feb6a8e76"))
+    (comp
+      (ref "R21")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R21")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c1d03f1d-6f40-597c-ab3d-c264934f0117"))
+    (comp
+      (ref "R22")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R22")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d4537170-d531-5db3-93c4-874ba3ead571"))
+    (comp
+      (ref "R23")
+      (value "1M")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C26083")
+        (field
+          (name "Note") "VOUT = 0.5*(1+1000/180) = 3.28 V (TI table)")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R23")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "1abe2392-84c4-5963-bbc8-555b73bed1d8"))
+    (comp
+      (ref "R24")
+      (value "180k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25760")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R24")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "76126967-3058-5beb-8348-178721f5f1ea"))
+    (comp
+      (ref "R25")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Note") "off by default")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R25")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "3bf9feaf-e237-51fc-902e-4d347ea8727d"))
+    (comp
+      (ref "R26")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Note") "off by default")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R26")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "35cd32e0-2eec-5ec5-b4e8-e5bbdbdb9060"))
+    (comp
+      (ref "R27")
+      (value "732k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C27016")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Note") "VOUT = 0.6*(1+732/100) = 4.99 V")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R27")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "7b63e68b-3b47-5fd3-988e-1f6c73de73f1"))
+    (comp
+      (ref "R28")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R28")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "61b48c9f-00ee-57f6-8009-23b11a90f392"))
+    (comp
+      (ref "R29")
+      (value "4.7k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25900")
+        (field
+          (name "Note") "pull-ups on the switched rail: no back-feed")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R29")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9571d8c5-ef1a-5d96-957f-33028cb8d5c4"))
+    (comp
+      (ref "R3")
+      (value "1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C11702")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9000ab58-0faa-55db-ba96-c3a9c048b920"))
+    (comp
+      (ref "R30")
+      (value "4.7k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25900")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R30")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f064446f-1abb-5ab7-9657-2f2853315805"))
+    (comp
+      (ref "R31")
+      (value "4.7k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25900")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R31")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "65cc3c35-189e-570b-b5bc-3cd7dc2d2aef"))
+    (comp
+      (ref "R32")
+      (value "4.7k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25900")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R32")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "6858d70f-fc35-59bd-9cb9-213e09f59676"))
+    (comp
+      (ref "R33")
+      (value "0R")
+      (description "Resistor")
+      (footprint "sylvia:R_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C21189")
+        (field
+          (name "Note") "isolation: CO front end")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R33")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "19f11603-7b26-5e94-8b85-b12459e3b930"))
+    (comp
+      (ref "R34")
+      (value "1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C11702")
+        (field
+          (name "Note") "RC-filtered external reference for the LMP91000")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R34")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "dd53b138-82c8-526a-9975-c748cd9d6290"))
+    (comp
+      (ref "R35")
+      (value "1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C11702")
+        (field
+          (name "Note") "backup: ESP32 ADC1_CH0")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R35")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c18b3153-aa22-515a-8b39-79a9493340a7"))
+    (comp
+      (ref "R36")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R36")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "87cf79d8-165a-5e0a-99b1-dc37c80f4ff2"))
+    (comp
+      (ref "R37")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Note") "defined level when ZE07 is not fitted")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R37")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "92df088b-f6e6-5813-b0bc-b368d50d4392"))
+    (comp
+      (ref "R38")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R38")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c1ee90a8-14ab-5f9c-a674-53f5cc8bac55"))
+    (comp
+      (ref "R39")
+      (value "1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C11702")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Note") "ZE07 UART is 3.0 V logic")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R39")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "05ba47c2-b500-57b8-adeb-d243301192fa"))
+    (comp
+      (ref "R4")
+      (value "100R")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25076")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a3a00a8b-c8d1-582e-9de2-300987de8d24"))
+    (comp
+      (ref "R40")
+      (value "1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C11702")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R40")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "41c31ee5-198b-5a8d-ad90-051eccd89ff2"))
+    (comp
+      (ref "R41")
+      (value "0R")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C17168")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R41")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0eeb2e24-c85a-546d-90d3-6410ab1f1e2f"))
+    (comp
+      (ref "R42")
+      (value "0R")
+      (description "Resistor")
+      (footprint "sylvia:R_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C21189")
+        (field
+          (name "Note") "isolation: LoRa")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R42")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "3ca913fa-03de-5e92-bfa0-c55208fc4c18"))
+    (comp
+      (ref "R43")
+      (value "0R")
+      (description "Resistor")
+      (footprint "sylvia:R_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C21189")
+        (field
+          (name "Note") "isolation: LoRa UART")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R43")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "0836c388-95b6-56b0-a18e-dc56ff27eb3e"))
+    (comp
+      (ref "R44")
+      (value "0R")
+      (description "Resistor")
+      (footprint "sylvia:R_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C21189")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R44")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f2775a93-0bdc-5c67-ad5c-12fc02c817e1"))
+    (comp
+      (ref "R45")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R45")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "84ee33b1-4197-5c39-a549-dcdec6c6a6ba"))
+    (comp
+      (ref "R46")
+      (value "10k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25744")
+        (field
+          (name "Note") "boot from flash by default")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R46")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "2f0f02a1-69e3-573e-85e4-f4b5a242bfc0"))
+    (comp
+      (ref "R47")
+      (value "309k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C122546")
+        (field
+          (name "Note") "USB selected above 1.06*(1+309/100) = 4.33 V")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R47")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "018327c3-341b-5fcd-a229-4c1f16ce373d"))
+    (comp
+      (ref "R48")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R48")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "2925aeeb-307c-5c8f-9ac6-b671764bdb69"))
+    (comp
+      (ref "R49")
+      (value "80.6k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25921")
+        (field
+          (name "Note") "I_LM = 65.2 / 80.6^0.861 = 1.5 A (datasheet eq. 2)")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R49")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "cc7b0c69-5688-5901-acf0-c7085b378d78"))
+    (comp
+      (ref "R5")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R5")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "29f79588-e279-5ce8-b215-982a9074cc1e"))
+    (comp
+      (ref "R6")
+      (value "100k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25741")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "380e2b43-9216-5117-9f41-94795d9c3e8a"))
+    (comp
+      (ref "R7")
+      (value "5.1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25905")
+        (field
+          (name "Note") "UFP sink")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "45fbc468-780f-56f4-b6ba-53310b6a0e74"))
+    (comp
+      (ref "R8")
+      (value "5.1k")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C25905")
+        (field
+          (name "Note") "UFP sink")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R8")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d4602b99-fd19-5b52-9a62-e3fbb9d2ed0c"))
+    (comp
+      (ref "R9")
+      (value "1M")
+      (description "Resistor")
+      (footprint "sylvia:R_0402_1005Metric")
+      (fields
+        (field
+          (name "LCSC") "C26083")
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "sylvia:R_0402_1005Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "R9")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "abe8364b-5ed9-593a-a990-c9655e96dd67"))
+    (comp
+      (ref "SW1")
+      (value "RESET")
+      (description "")
+      (footprint "sylvia:SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5")
+      (fields
+        (field
+          (name "LCSC") "C318884")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/Tactile-Switches_XKB-Enterprise-TS-1187-B-A-A_C318884.html")
+        (field
+          (name "SKiDL Tag") "SW1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TS-1187A"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ccd6b1b1-065e-52d8-bb15-76892f2b4e17"))
+    (comp
+      (ref "SW2")
+      (value "BOOT")
+      (description "")
+      (footprint "sylvia:SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5")
+      (fields
+        (field
+          (name "LCSC") "C318884")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/Tactile-Switches_XKB-Enterprise-TS-1187-B-A-A_C318884.html")
+        (field
+          (name "SKiDL Tag") "SW2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TS-1187A"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "7c5f82e1-e6ee-534e-8457-a60c4c3a8cf6"))
+    (comp
+      (ref "TH1")
+      (value "10k B3380")
+      (description "Temperature dependent resistor, negative temperature coefficient")
+      (footprint "sylvia:R_0603_1608Metric")
+      (fields
+        (field
+          (name "LCSC") "C13564")
+        (field
+          (name "Note") "against the cells")
+        (field
+          (name "Description") "Temperature dependent resistor, negative temperature coefficient")
+        (field
+          (name "Footprint") "sylvia:R_0603_1608Metric")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TH1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "Thermistor_NTC"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ad29a074-cb8a-5e23-b59d-c8ac10be1c59"))
+    (comp
+      (ref "TP1")
+      (value "TAMPER")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ec7b7017-d3a1-52a1-ab31-ef99bc577234"))
+    (comp
+      (ref "TP10")
+      (value "FG_ALRT")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP10")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "96ec807f-2b34-5ae2-8bad-1cdcc5458929"))
+    (comp
+      (ref "TP11")
+      (value "BB_EN")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP11")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "3265b5e2-52a3-522b-b83b-27c31fe5dc6a"))
+    (comp
+      (ref "TP12")
+      (value "BB_PG")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP12")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "625a4a54-4c87-5eaf-acad-993133a498ab"))
+    (comp
+      (ref "TP13")
+      (value "3V3")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP13")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "43e73621-8df7-586f-9dd0-4fde0b9213c8"))
+    (comp
+      (ref "TP14")
+      (value "GND")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP14")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d65c6246-ec18-5b5d-bdaa-42ed9f327646"))
+    (comp
+      (ref "TP15")
+      (value "GND")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP15")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "8e3bc712-45e2-5a15-9359-dc14204f8bab"))
+    (comp
+      (ref "TP16")
+      (value "3V3_SEN")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP16")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "630824d8-a5d4-56fa-a563-f220442a5e69"))
+    (comp
+      (ref "TP17")
+      (value "3V3_ALT")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP17")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a20bbd8b-c563-5e8b-b007-3b84a446bf65"))
+    (comp
+      (ref "TP18")
+      (value "5V_ALT")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP18")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "63855e58-c23e-56b6-b834-fcd2e877de8d"))
+    (comp
+      (ref "TP19")
+      (value "I2C1_SDA")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP19")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ac336478-ce19-54d5-8353-9f7b6d287790"))
+    (comp
+      (ref "TP2")
+      (value "TAMPER_GND")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "21c4b62b-8c2d-56ee-9b42-d10ab095f277"))
+    (comp
+      (ref "TP20")
+      (value "I2C1_SCL")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP20")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d7fb076b-a0ab-5730-b2ab-f47ce9113d61"))
+    (comp
+      (ref "TP21")
+      (value "I2C0_SDA")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP21")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9301efca-5a62-58a6-8ec9-d3f7b9277cab"))
+    (comp
+      (ref "TP22")
+      (value "I2C0_SCL")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP22")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "e766c6f0-e24d-585d-a534-6c3d7f456b7d"))
+    (comp
+      (ref "TP23")
+      (value "3V3_CO")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP23")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "c535e947-6e9a-5501-8daa-451830a3c301"))
+    (comp
+      (ref "TP24")
+      (value "CO_VOUT")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP24")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "8b537fdb-fa14-5cc2-919f-f77550e2b9f5"))
+    (comp
+      (ref "TP25")
+      (value "AIN3")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP25")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ba62cd7f-cc29-5610-a768-3d5a3f363d3f"))
+    (comp
+      (ref "TP26")
+      (value "LORA_TX")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP26")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ddac5a84-7612-5b0a-9ce0-520bf6304a8f"))
+    (comp
+      (ref "TP27")
+      (value "LORA_RX")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP27")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5ff712df-cfc8-5c25-870f-6800454d8551"))
+    (comp
+      (ref "TP3")
+      (value "IO48")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "a276100e-c6a6-5278-88b4-43d6f23fc86c"))
+    (comp
+      (ref "TP4")
+      (value "VBUS")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "2b772136-9490-52ee-a6b6-3823f884de0d"))
+    (comp
+      (ref "TP5")
+      (value "SOLAR_IN")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP5")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "3ef9c998-1bfd-52d6-903a-2314b2d59b7d"))
+    (comp
+      (ref "TP6")
+      (value "CHG_STAT1")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "09741339-fe92-5d8d-9626-685dbcd30d75"))
+    (comp
+      (ref "TP7")
+      (value "CHG_STAT2")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "47117044-94ce-5dd7-abf9-83e3ef59bacb"))
+    (comp
+      (ref "TP8")
+      (value "VBAT")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP8")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "dbebd152-e861-5059-b279-ee96be584c75"))
+    (comp
+      (ref "TP9")
+      (value "VCHG")
+      (description "test point")
+      (footprint "sylvia:TestPoint_Pad_D1.5mm")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Description") "test point")
+        (field
+          (name "Footprint") "sylvia:TestPoint_Pad_D1.5mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TP9")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TestPoint"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "9850fe91-cf09-54be-87a9-d3a0cc96fc3e"))
+    (comp
+      (ref "U1")
+      (value "ESP32-S3-WROOM-1-N8R8")
+      (description "RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD")
+      (footprint "sylvia:ESP32-S3-WROOM-1")
+      (fields
+        (field
+          (name "LCSC") "C2913201")
+        (field
+          (name "Description") "RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD")
+        (field
+          (name "Footprint") "sylvia:ESP32-S3-WROOM-1")
+        (field
+          (name "Datasheet") "https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf")
+        (field
+          (name "SKiDL Tag") "U1")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "ESP32-S3-WROOM-1"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f8fce87b-acde-5341-b554-4e93a034d648"))
+    (comp
+      (ref "U10")
+      (value "TPS22918")
+      (description "")
+      (footprint "sylvia:SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR")
+      (fields
+        (field
+          (name "LCSC") "C131941")
+        (field
+          (name "Note") "LS1 SEN66")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/PMIC-Power-Distribution-Switches_TI_TPS22918DBVR_TPS22918DBVR_C131941.html")
+        (field
+          (name "SKiDL Tag") "U10")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS22918DBV"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "b837a9be-139d-5aa2-acfc-27896a6ee169"))
+    (comp
+      (ref "U11")
+      (value "TPS22918")
+      (description "")
+      (footprint "sylvia:SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR")
+      (fields
+        (field
+          (name "LCSC") "C131941")
+        (field
+          (name "Note") "LS2 alternates")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/PMIC-Power-Distribution-Switches_TI_TPS22918DBVR_TPS22918DBVR_C131941.html")
+        (field
+          (name "SKiDL Tag") "U11")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS22918DBV"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "5628e4a6-a160-5f8a-a145-fc60506ebdd3"))
+    (comp
+      (ref "U12")
+      (value "TPS61023")
+      (description "")
+      (footprint "sylvia:SOT-563_L1.6-W1.2-P0.50-LS1.6-BR")
+      (fields
+        (field
+          (name "LCSC") "C919459")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SOT-563_L1.6-W1.2-P0.50-LS1.6-BR")
+        (field
+          (name "Datasheet") "https://www.lcsc.com/datasheet/C919459.pdf")
+        (field
+          (name "SKiDL Tag") "U12")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS61023DRL"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "17961b9f-b52d-544b-815d-76d693295643"))
+    (comp
+      (ref "U13")
+      (value "USBLC6-2SC6")
+      (description "Very low capacitance ESD protection diode, 2 data-line, SOT-23-6")
+      (footprint "sylvia:SOT-23-6")
+      (fields
+        (field
+          (name "LCSC") "C7519")
+        (field
+          (name "Description") "Very low capacitance ESD protection diode, 2 data-line, SOT-23-6")
+        (field
+          (name "Footprint") "sylvia:SOT-23-6")
+        (field
+          (name "Datasheet") "https://www.st.com/resource/en/datasheet/usblc6-2.pdf")
+        (field
+          (name "SKiDL Tag") "U13")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "USBLC6-2SC6"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "cdcb3be2-8fff-5398-8273-cde8ec3ebf0d"))
+    (comp
+      (ref "U14")
+      (value "TPS2121RUXR")
+      (description "")
+      (footprint "sylvia:VQFN-HR-12_L2.5-W2.0-P0.50-BL")
+      (fields
+        (field
+          (name "LCSC") "C485916")
+        (field
+          (name "Note") "USB/solar power mux, 2.8-22 V")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:VQFN-HR-12_L2.5-W2.0-P0.50-BL")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/New-Arrivals_Texas-Instruments-Texas-Instruments-TPS2121RUXR_C485916.html")
+        (field
+          (name "SKiDL Tag") "U14")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS2121RUX"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ddecac60-a4e9-546b-9868-8965b28b3d4d"))
+    (comp
+      (ref "U15")
+      (value "110-102")
+      (description "SPEC Sensors 3SP_CO_1000 electrochemical CO sensor, pin package. Hand-solder only.")
+      (footprint "sylvia:SPEC_110-102_THT")
+      (fields
+        (field
+          (name "LCSC"))
+        (field
+          (name "Note") "HAND-SOLDER ONLY after reflow; never reflow")
+        (field
+          (name "Description") "SPEC Sensors 3SP_CO_1000 electrochemical CO sensor, pin package. Hand-solder only.")
+        (field
+          (name "Footprint") "sylvia:SPEC_110-102_THT")
+        (field
+          (name "Datasheet") "https://www.interlinkelectronics.com/downloads/subsidiary-docs/spec-sensors/3SP_CO_1000-P-Package-110-102.pdf")
+        (field
+          (name "SKiDL Tag") "U15")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "SPEC_110-102"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ed05584a-54d6-578e-9dcc-75250bc0c08e"))
+    (comp
+      (ref "U16")
+      (value "ZE07-CO")
+      (description "")
+      (footprint "sylvia:SENSOR-TH_ZE07-CO")
+      (fields
+        (field
+          (name "LCSC") "C141345")
+        (field
+          (name "DNP") "DNP")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SENSOR-TH_ZE07-CO")
+        (field
+          (name "Datasheet") "https://www.lcsc.com/datasheet/C141345.pdf")
+        (field
+          (name "SKiDL Tag") "U16")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "ZE07-CO"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ac1d503f-7696-5d4e-b7d6-b257c5d4519c"))
+    (comp
+      (ref "U2")
+      (value "RAK3172-9-SM-I")
+      (description "LoRa Module, STM32WLE5, US915/AU915/KR920/AS923, RAKwireless")
+      (footprint "sylvia:RAK3172")
+      (fields
+        (field
+          (name "LCSC") "C19723905")
+        (field
+          (name "Description") "LoRa Module, STM32WLE5, US915/AU915/KR920/AS923, RAKwireless")
+        (field
+          (name "Footprint") "sylvia:RAK3172")
+        (field
+          (name "Datasheet") "https://docs.rakwireless.com/product-categories/wisduo/rak3172-module/datasheet")
+        (field
+          (name "SKiDL Tag") "U2")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "RAK3172-xx-9-SM-xI"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "7a03e947-39e7-5554-99eb-b5f6bb184fae"))
+    (comp
+      (ref "U3")
+      (value "BME688")
+      (description "4-in-1 sensor, gas, humidity, pressure, temperature, I2C and SPI interface, 1.71-3.6V, LGA-8")
+      (footprint "sylvia:Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering")
+      (fields
+        (field
+          (name "LCSC") "C3664478")
+        (field
+          (name "Description") "4-in-1 sensor, gas, humidity, pressure, temperature, I2C and SPI interface, 1.71-3.6V, LGA-8")
+        (field
+          (name "Footprint") "sylvia:Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering")
+        (field
+          (name "Datasheet") "https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001.pdf")
+        (field
+          (name "SKiDL Tag") "U3")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "BME680"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "d29b9cd6-156c-5987-b6f9-a6a085b1d5a7"))
+    (comp
+      (ref "U4")
+      (value "LMP91000SDX/NOPB")
+      (description "")
+      (footprint "sylvia:WSON-14_L4.0-W4.0-P0.50-BL-EP-1")
+      (fields
+        (field
+          (name "LCSC") "C2651584")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:WSON-14_L4.0-W4.0-P0.50-BL-EP-1")
+        (field
+          (name "Datasheet") "https://www.lcsc.com/datasheet/C2651584.pdf")
+        (field
+          (name "SKiDL Tag") "U4")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "LMP91000SD"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "b2699459-f172-5b2a-8b70-5ef993fb2f77"))
+    (comp
+      (ref "U5")
+      (value "ADS1115IDGSR")
+      (description "Ultra-Small, Low-Power, I2C-Compatible, 860-SPS, 16-Bit ADCs With Internal Reference, Oscillator, and Programmable Comparator, VSSOP-10")
+      (footprint "sylvia:VSSOP-10_3x3mm_P0.5mm")
+      (fields
+        (field
+          (name "LCSC") "C37593")
+        (field
+          (name "Description") "Ultra-Small, Low-Power, I2C-Compatible, 860-SPS, 16-Bit ADCs With Internal Reference, Oscillator, and Programmable Comparator, VSSOP-10")
+        (field
+          (name "Footprint") "sylvia:VSSOP-10_3x3mm_P0.5mm")
+        (field
+          (name "Datasheet") "http://www.ti.com/lit/ds/symlink/ads1113.pdf")
+        (field
+          (name "SKiDL Tag") "U5")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "ADS1115IDGS"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "6254ed11-c784-58f8-9988-ecfc74740e7c"))
+    (comp
+      (ref "U6")
+      (value "BQ24650RVAR")
+      (description "10A, 28V max voltage, Battery Charger w/600kHz NMOS-NMOS Synchronous Buck Converter for Solar, VQFN-16")
+      (footprint "sylvia:Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm_ThermalVias")
+      (fields
+        (field
+          (name "LCSC") "C53712")
+        (field
+          (name "Description") "10A, 28V max voltage, Battery Charger w/600kHz NMOS-NMOS Synchronous Buck Converter for Solar, VQFN-16")
+        (field
+          (name "Footprint") "sylvia:Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm_ThermalVias")
+        (field
+          (name "Datasheet") "https://www.ti.com/lit/ds/symlink/bq24650.pdf")
+        (field
+          (name "SKiDL Tag") "U6")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "BQ24650"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "aee7dbbb-30a2-5780-a35b-54386b8e659f"))
+    (comp
+      (ref "U7")
+      (value "MAX17048G+T10")
+      (description "")
+      (footprint "sylvia:TDFN-8_L2.0-W2.0-P0.50-BL-EP1.2")
+      (fields
+        (field
+          (name "LCSC") "C2682616")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:TDFN-8_L2.0-W2.0-P0.50-BL-EP1.2")
+        (field
+          (name "Datasheet") "https://www.lcsc.com/datasheet/C2682616.pdf")
+        (field
+          (name "SKiDL Tag") "U7")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "MAX17048G"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "ab236476-70f8-5542-a3ab-0bc4462af286"))
+    (comp
+      (ref "U8")
+      (value "TPS63020DSJR")
+      (description "")
+      (footprint "sylvia:VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ")
+      (fields
+        (field
+          (name "LCSC") "C15483")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ")
+        (field
+          (name "Datasheet") "https://lcsc.com/product-detail/DC-DC-Converters_TI_TPS63020DSJR_TPS63020DSJR_C15483.html")
+        (field
+          (name "SKiDL Tag") "U8")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS63020DSJR"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "f56aafd4-c086-5584-a621-53ab2b17ba80"))
+    (comp
+      (ref "U9")
+      (value "TPS3840PL27")
+      (description "")
+      (footprint "sylvia:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR")
+      (fields
+        (field
+          (name "LCSC") "C2066421")
+        (field
+          (name "Note") "cuts 3.3 V below 2.7 V")
+        (field
+          (name "Description"))
+        (field
+          (name "Footprint") "sylvia:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR")
+        (field
+          (name "Datasheet") "https://www.lcsc.com/datasheet/C2066421.pdf")
+        (field
+          (name "SKiDL Tag") "U9")
+        (field
+          (name "SKiDL Line") "sylvia_node.py:50"))
+      (libsource
+        (lib "sylvia")
+        (part "TPS3840PL27DBV"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (component_classes)
+      (tstamps "08ba691c-bdf8-55e7-8681-4964b6a21ce3")))
+  (nets
+    (net
+      (code 1)
+      (name "3V3")
+      (class "Default")
+      (node
+        (ref "BZ1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C24")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C29")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C30")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "JP2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R15")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R16")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R22")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R31")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R32")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R33")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R36")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R42")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP13")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "2")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U10")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U11")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U3")
+        (pin "2")
+        (pintype "INPUT"))
+      (node
+        (ref "U3")
+        (pin "6")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U3")
+        (pin "8")
+        (pintype "POWER-IN")))
+    (net
+      (code 2)
+      (name "3V3_ALT")
+      (class "Default")
+      (node
+        (ref "C26")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C27")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "L3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP17")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U11")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U11")
+        (pin "6")
+        (pintype "POWER-OUT"))
+      (node
+        (ref "U12")
+        (pin "2")
+        (pintype "INPUT"))
+      (node
+        (ref "U12")
+        (pin "3")
+        (pintype "POWER-IN")))
+    (net
+      (code 3)
+      (name "3V3_CO")
+      (class "Default")
+      (node
+        (ref "C31")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C32")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C35")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R33")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R34")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP23")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "6")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U5")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "U5")
+        (pin "8")
+        (pintype "POWER-IN")))
+    (net
+      (code 4)
+      (name "3V3_LORA")
+      (class "Default")
+      (node
+        (ref "C36")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C37")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J7")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R42")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R45")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "24")
+        (pintype "POWER-IN")))
+    (net
+      (code 5)
+      (name "3V3_REG")
+      (class "Default")
+      (node
+        (ref "C20")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C21")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C22")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "JP2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R23")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "4")
+        (pintype "POWER-OUT"))
+      (node
+        (ref "U8")
+        (pin "5")
+        (pintype "PASSIVE")))
+    (net
+      (code 6)
+      (name "3V3_SEN")
+      (class "Default")
+      (node
+        (ref "C25")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "6")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R29")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R30")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP16")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U10")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U10")
+        (pin "6")
+        (pintype "POWER-OUT")))
+    (net
+      (code 7)
+      (name "5V_ALT")
+      (class "Default")
+      (node
+        (ref "C28")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R27")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP18")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U12")
+        (pin "6")
+        (pintype "POWER-OUT"))
+      (node
+        (ref "U16")
+        (pin "15")
+        (pintype "POWER-IN")))
+    (net
+      (code 8)
+      (name "ADC_AIN3")
+      (class "Default")
+      (node
+        (ref "R38")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP25")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U5")
+        (pin "7")
+        (pintype "INPUT")))
+    (net
+      (code 9)
+      (name "ADC_RDY")
+      (class "Default")
+      (node
+        (ref "R36")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "24")
+        (pintype "INPUT"))
+      (node
+        (ref "U5")
+        (pin "2")
+        (pintype "OUTPUT")))
+    (net
+      (code 10)
+      (name "ALT_UART_RX")
+      (class "Default")
+      (node
+        (ref "R39")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "34")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 11)
+      (name "ALT_UART_TX")
+      (class "Default")
+      (node
+        (ref "R40")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "35")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 12)
+      (name "BB_EN")
+      (class "Default")
+      (node
+        (ref "TP11")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "12")
+        (pintype "INPUT"))
+      (node
+        (ref "U9")
+        (pin "1")
+        (pintype "OUTPUT")))
+    (net
+      (code 13)
+      (name "BB_FB")
+      (class "Default")
+      (node
+        (ref "R23")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R24")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "3")
+        (pintype "INPUT")))
+    (net
+      (code 14)
+      (name "BB_L1")
+      (class "Default")
+      (node
+        (ref "L2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "8")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "9")
+        (pintype "PASSIVE")))
+    (net
+      (code 15)
+      (name "BB_L2")
+      (class "Default")
+      (node
+        (ref "L2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "6")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "7")
+        (pintype "PASSIVE")))
+    (net
+      (code 16)
+      (name "BB_PG")
+      (class "Default")
+      (node
+        (ref "TP12")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "14")
+        (pintype "OPEN-COLLECTOR")))
+    (net
+      (code 17)
+      (name "BST_FB")
+      (class "Default")
+      (node
+        (ref "R27")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R28")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U12")
+        (pin "1")
+        (pintype "INPUT")))
+    (net
+      (code 18)
+      (name "BST_SW")
+      (class "Default")
+      (node
+        (ref "L3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U12")
+        (pin "5")
+        (pintype "PASSIVE")))
+    (net
+      (code 19)
+      (name "BUZZER")
+      (class "Default")
+      (node
+        (ref "R4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "8")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 20)
+      (name "BUZ_D")
+      (class "Default")
+      (node
+        (ref "BZ1")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D6")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q3")
+        (pin "3")
+        (pintype "PASSIVE")))
+    (net
+      (code 21)
+      (name "BUZ_G")
+      (class "Default")
+      (node
+        (ref "Q3")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "R4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R5")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 22)
+      (name "CC1")
+      (class "Default")
+      (node
+        (ref "J1")
+        (pin "A5")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R7")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 23)
+      (name "CC2")
+      (class "Default")
+      (node
+        (ref "J1")
+        (pin "B5")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R8")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 24)
+      (name "CHG_BTST")
+      (class "Default")
+      (node
+        (ref "C11")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "16")
+        (pintype "OUTPUT")))
+    (net
+      (code 25)
+      (name "CHG_HIDRV")
+      (class "Default")
+      (node
+        (ref "Q1")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "U6")
+        (pin "15")
+        (pintype "OUTPUT")))
+    (net
+      (code 26)
+      (name "CHG_INHIBIT")
+      (class "Default")
+      (node
+        (ref "Q4")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "R14")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "18")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 27)
+      (name "CHG_LODRV")
+      (class "Default")
+      (node
+        (ref "Q2")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "U6")
+        (pin "13")
+        (pintype "OUTPUT")))
+    (net
+      (code 28)
+      (name "CHG_PH")
+      (class "Default")
+      (node
+        (ref "C11")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "L1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q2")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "14")
+        (pintype "INPUT")))
+    (net
+      (code 29)
+      (name "CHG_SRP")
+      (class "Default")
+      (node
+        (ref "C12")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "L1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R19")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "10")
+        (pintype "INPUT")))
+    (net
+      (code 30)
+      (name "CHG_STAT1")
+      (class "Default")
+      (node
+        (ref "R15")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "20")
+        (pintype "INPUT"))
+      (node
+        (ref "U6")
+        (pin "3")
+        (pintype "OPEN-COLLECTOR")))
+    (net
+      (code 31)
+      (name "CHG_STAT2")
+      (class "Default")
+      (node
+        (ref "R16")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP7")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "21")
+        (pintype "INPUT"))
+      (node
+        (ref "U6")
+        (pin "5")
+        (pintype "OPEN-COLLECTOR")))
+    (net
+      (code 32)
+      (name "CHG_TS")
+      (class "Default")
+      (node
+        (ref "R17")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R18")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TH1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "4")
+        (pintype "INPUT")))
+    (net
+      (code 33)
+      (name "CHG_VFB")
+      (class "Default")
+      (node
+        (ref "R20")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R21")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "8")
+        (pintype "INPUT")))
+    (net
+      (code 34)
+      (name "CO_ADC_ESP")
+      (class "Default")
+      (node
+        (ref "R35")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "39")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 35)
+      (name "CO_CE")
+      (class "Default")
+      (node
+        (ref "U15")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "14")
+        (pintype "PASSIVE")))
+    (net
+      (code 36)
+      (name "CO_RE")
+      (class "Default")
+      (node
+        (ref "U15")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "13")
+        (pintype "PASSIVE")))
+    (net
+      (code 37)
+      (name "CO_VOUT")
+      (class "Default")
+      (node
+        (ref "R35")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP24")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "8")
+        (pintype "OUTPUT"))
+      (node
+        (ref "U5")
+        (pin "4")
+        (pintype "INPUT")))
+    (net
+      (code 38)
+      (name "CO_WE")
+      (class "Default")
+      (node
+        (ref "U15")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U15")
+        (pin "6")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "12")
+        (pintype "PASSIVE")))
+    (net
+      (code 39)
+      (name "EN_ALT")
+      (class "Default")
+      (node
+        (ref "R26")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "17")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U11")
+        (pin "3")
+        (pintype "INPUT")))
+    (net
+      (code 40)
+      (name "EN_SEN")
+      (class "Default")
+      (node
+        (ref "R25")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "12")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U10")
+        (pin "3")
+        (pintype "INPUT")))
+    (net
+      (code 41)
+      (name "ESP_BOOT")
+      (class "Default")
+      (node
+        (ref "R2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "27")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 42)
+      (name "ESP_EN")
+      (class "Default")
+      (node
+        (ref "C3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "3")
+        (pintype "INPUT")))
+    (net
+      (code 43)
+      (name "FG_ALRT")
+      (class "Default")
+      (node
+        (ref "R22")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP10")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "19")
+        (pintype "INPUT"))
+      (node
+        (ref "U7")
+        (pin "5")
+        (pintype "OPEN-COLLECTOR")))
+    (net
+      (code 44)
+      (name "GND")
+      (class "Default")
+      (node
+        (ref "BT1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "BT2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C10")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C13")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C14")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C15")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C16")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C17")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C18")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C19")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C20")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C21")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C22")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C23")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C24")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C25")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C26")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C27")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C28")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C29")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C30")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C31")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C32")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C33")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C35")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C36")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C37")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C38")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C39")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C40")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C5")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C6")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C7")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C8")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C9")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D5")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D7")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "A1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "A12")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "B1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "B12")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "MP")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J4")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J4")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J6")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J7")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R11")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R13")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R14")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R18")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R21")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R24")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R25")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R26")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R28")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R37")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R38")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R46")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R48")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R49")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R5")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R7")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R8")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R9")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW1")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW1")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW2")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "SW2")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TH1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP14")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP15")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U1")
+        (pin "40")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "41")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U10")
+        (pin "2")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U11")
+        (pin "2")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U12")
+        (pin "4")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U13")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "12")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U14")
+        (pin "3")
+        (pintype "INPUT"))
+      (node
+        (ref "U14")
+        (pin "4")
+        (pintype "INPUT"))
+      (node
+        (ref "U14")
+        (pin "5")
+        (pintype "INPUT"))
+      (node
+        (ref "U14")
+        (pin "9")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U16")
+        (pin "14")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U16")
+        (pin "5")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U2")
+        (pin "11")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U2")
+        (pin "17")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "18")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "23")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "28")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U3")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U3")
+        (pin "5")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U3")
+        (pin "7")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U4")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U4")
+        (pin "15")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U4")
+        (pin "2")
+        (pintype "INPUT"))
+      (node
+        (ref "U4")
+        (pin "7")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U5")
+        (pin "3")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U6")
+        (pin "11")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U6")
+        (pin "17")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U7")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U7")
+        (pin "4")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U7")
+        (pin "6")
+        (pintype "INPUT"))
+      (node
+        (ref "U7")
+        (pin "9")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U8")
+        (pin "13")
+        (pintype "INPUT"))
+      (node
+        (ref "U8")
+        (pin "15")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U8")
+        (pin "2")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U9")
+        (pin "3")
+        (pintype "POWER-IN")))
+    (net
+      (code 45)
+      (name "I2C0_SCL")
+      (class "Default")
+      (node
+        (ref "R32")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP22")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "5")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U3")
+        (pin "4")
+        (pintype "INPUT"))
+      (node
+        (ref "U4")
+        (pin "3")
+        (pintype "INPUT"))
+      (node
+        (ref "U5")
+        (pin "10")
+        (pintype "INPUT"))
+      (node
+        (ref "U7")
+        (pin "7")
+        (pintype "INPUT")))
+    (net
+      (code 46)
+      (name "I2C0_SDA")
+      (class "Default")
+      (node
+        (ref "R31")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP21")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "4")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U3")
+        (pin "3")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U4")
+        (pin "4")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U5")
+        (pin "9")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U7")
+        (pin "8")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 47)
+      (name "I2C1_SCL")
+      (class "Default")
+      (node
+        (ref "D5")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "4")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J4")
+        (pin "7")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R30")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP20")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "7")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 48)
+      (name "I2C1_SDA")
+      (class "Default")
+      (node
+        (ref "D4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "3")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J4")
+        (pin "9")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R29")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP19")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "6")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 49)
+      (name "IO48_SPARE")
+      (class "Default")
+      (node
+        (ref "TP3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "25")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 50)
+      (name "LED")
+      (class "Default")
+      (node
+        (ref "R3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "22")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 51)
+      (name "LED_A")
+      (class "Default")
+      (node
+        (ref "D7")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R3")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 52)
+      (name "LORA_BOOT0")
+      (class "Default")
+      (node
+        (ref "R46")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "32")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U2")
+        (pin "21")
+        (pintype "INPUT")))
+    (net
+      (code 53)
+      (name "LORA_RST")
+      (class "Default")
+      (node
+        (ref "J7")
+        (pin "4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R45")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "9")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U2")
+        (pin "22")
+        (pintype "PASSIVE")))
+    (net
+      (code 54)
+      (name "LORA_RX")
+      (class "Default")
+      (node
+        (ref "R44")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP27")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "11")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 55)
+      (name "LORA_TX")
+      (class "Default")
+      (node
+        (ref "R43")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP26")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "10")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 56)
+      (name "LS1_CT")
+      (class "Default")
+      (node
+        (ref "C23")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U10")
+        (pin "4")
+        (pintype "PASSIVE")))
+    (net
+      (code 57)
+      (name "MPPSET")
+      (class "Default")
+      (node
+        (ref "Q4")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R12")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R13")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "2")
+        (pintype "INPUT")))
+    (net
+      (code 58)
+      (name "MUX_ILM")
+      (class "Default")
+      (node
+        (ref "R49")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "10")
+        (pintype "PASSIVE")))
+    (net
+      (code 59)
+      (name "MUX_PR1")
+      (class "Default")
+      (node
+        (ref "R47")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R48")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "6")
+        (pintype "INPUT")))
+    (net
+      (code 60)
+      (name "MUX_SS")
+      (class "Default")
+      (node
+        (ref "C40")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "11")
+        (pintype "PASSIVE")))
+    (net
+      (code 61)
+      (name "PM_SET")
+      (class "Default")
+      (node
+        (ref "J4")
+        (pin "10")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U1")
+        (pin "33")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 62)
+      (name "RAK_SWCLK")
+      (class "Default")
+      (node
+        (ref "J7")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "8")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 63)
+      (name "RAK_SWDIO")
+      (class "Default")
+      (node
+        (ref "J7")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "7")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 64)
+      (name "RAK_UART2_RX")
+      (class "Default")
+      (node
+        (ref "R43")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "1")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 65)
+      (name "RAK_UART2_TX")
+      (class "Default")
+      (node
+        (ref "R44")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U2")
+        (pin "2")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 66)
+      (name "REGN")
+      (class "Default")
+      (node
+        (ref "C10")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "12")
+        (pintype "OUTPUT")))
+    (net
+      (code 67)
+      (name "SOLAR_IN")
+      (class "Default")
+      (node
+        (ref "D1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP5")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 68)
+      (name "SOLAR_MUX")
+      (class "Default")
+      (node
+        (ref "C39")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "D2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "2")
+        (pintype "POWER-IN")))
+    (net
+      (code 69)
+      (name "TAMPER")
+      (class "Default")
+      (node
+        (ref "R6")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "23")
+        (pintype "INPUT")))
+    (net
+      (code 70)
+      (name "TIA_C1")
+      (class "Default")
+      (node
+        (ref "C34")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "10")
+        (pintype "PASSIVE")))
+    (net
+      (code 71)
+      (name "TIA_C2")
+      (class "Default")
+      (node
+        (ref "C34")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "9")
+        (pintype "PASSIVE")))
+    (net
+      (code 72)
+      (name "UART0_RX")
+      (class "Default")
+      (node
+        (ref "J6")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "36")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 73)
+      (name "UART0_TX")
+      (class "Default")
+      (node
+        (ref "J6")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "37")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 74)
+      (name "USB_D+")
+      (class "Default")
+      (node
+        (ref "J1")
+        (pin "A6")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J1")
+        (pin "B6")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U1")
+        (pin "14")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U13")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U13")
+        (pin "4")
+        (pintype "PASSIVE")))
+    (net
+      (code 75)
+      (name "USB_D-")
+      (class "Default")
+      (node
+        (ref "J1")
+        (pin "A7")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J1")
+        (pin "B7")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U1")
+        (pin "13")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "U13")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U13")
+        (pin "6")
+        (pintype "PASSIVE")))
+    (net
+      (code 76)
+      (name "USB_SHIELD")
+      (class "Default")
+      (node
+        (ref "C4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "S1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R9")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 77)
+      (name "VBAT")
+      (class "Default")
+      (node
+        (ref "C12")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C13")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C14")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C15")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C16")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "F1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "JP1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R19")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R20")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP8")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "9")
+        (pintype "INPUT"))
+      (node
+        (ref "U7")
+        (pin "2")
+        (pintype "INPUT"))
+      (node
+        (ref "U7")
+        (pin "3")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U9")
+        (pin "2")
+        (pintype "POWER-IN")))
+    (net
+      (code 78)
+      (name "VBAT_SYS")
+      (class "Default")
+      (node
+        (ref "C17")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C18")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C19")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "JP1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U8")
+        (pin "1")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U8")
+        (pin "10")
+        (pintype "POWER-IN"))
+      (node
+        (ref "U8")
+        (pin "11")
+        (pintype "POWER-IN")))
+    (net
+      (code 79)
+      (name "VBUS")
+      (class "Default")
+      (node
+        (ref "C38")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C5")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "A4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "A9")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "B4")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "B9")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R10")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R47")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U13")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "7")
+        (pintype "POWER-IN")))
+    (net
+      (code 80)
+      (name "VBUS_DET")
+      (class "Default")
+      (node
+        (ref "R10")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R11")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "31")
+        (pintype "INPUT")))
+    (net
+      (code 81)
+      (name "VCELL")
+      (class "Default")
+      (node
+        (ref "BT1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "BT2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "F1")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 82)
+      (name "VCHG")
+      (class "Default")
+      (node
+        (ref "C6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C7")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C8")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q1")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R12")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "TP9")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U14")
+        (pin "1")
+        (pintype "POWER-OUT"))
+      (node
+        (ref "U14")
+        (pin "8")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "1")
+        (pintype "POWER-IN")))
+    (net
+      (code 83)
+      (name "VREF_BQ")
+      (class "Default")
+      (node
+        (ref "C9")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R17")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U6")
+        (pin "6")
+        (pintype "INPUT"))
+      (node
+        (ref "U6")
+        (pin "7")
+        (pintype "INPUT")))
+    (net
+      (code 84)
+      (name "VREF_CO")
+      (class "Default")
+      (node
+        (ref "C33")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R34")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U4")
+        (pin "11")
+        (pintype "INPUT"))
+      (node
+        (ref "U5")
+        (pin "5")
+        (pintype "INPUT")))
+    (net
+      (code 85)
+      (name "ZE07_ADC_ESP")
+      (class "Default")
+      (node
+        (ref "R41")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U1")
+        (pin "38")
+        (pintype "BIDIRECTIONAL")))
+    (net
+      (code 86)
+      (name "ZE07_DAC")
+      (class "Default")
+      (node
+        (ref "R37")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R41")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U16")
+        (pin "10")
+        (pintype "OUTPUT"))
+      (node
+        (ref "U5")
+        (pin "6")
+        (pintype "INPUT")))
+    (net
+      (code 87)
+      (name "ZE07_RXD")
+      (class "Default")
+      (node
+        (ref "R40")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U16")
+        (pin "7")
+        (pintype "INPUT")))
+    (net
+      (code 88)
+      (name "ZE07_TXD")
+      (class "Default")
+      (node
+        (ref "R39")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "U16")
+        (pin "8")
+        (pintype "OUTPUT")))))

@@ -1,0 +1,31 @@
+CONFIG_IDF_TARGET="esp32s3"
+
+# ESP32-S3-WROOM-1-N8R8: 8 MB quad flash, 8 MB octal PSRAM (uses GPIO33-37)
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+
+# Partitions: two OTA slots + factory NVS holding per-device credentials
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
+
+# Per-device secrets live in encrypted NVS. Enable flash encryption + NVS encryption for field units
+# (release mode is irreversible: do it only on production boards, see firmware/README.md).
+CONFIG_NVS_ENCRYPTION=n
+
+# Console on native USB (no USB-UART chip on the board); UART0 header stays free for logs if wanted
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# Power
+CONFIG_PM_ENABLE=y
+CONFIG_ESP_SLEEP_GPIO_RESET_WORKAROUND=y
+CONFIG_RTC_CLK_SRC_INT_RC=y
+
+# TLS to Azure IoT Hub (DigiCert Global Root G2 is in the default bundle)
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE=y
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE_DEFAULT_FULL=y
+CONFIG_MBEDTLS_SSL_PROTO_TLS1_2=y
+CONFIG_ESP_TLS_CLIENT_SESSION_TICKETS=y
+
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y

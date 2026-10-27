@@ -17,8 +17,9 @@ SOURCES = [
     FW / "components" / "detect" / "detect.c",
     FW / "components" / "power_policy" / "power_policy.c",
     FW / "components" / "payload" / "payload.c",
+    FW / "components" / "sensor_math" / "sensor_math.c",
 ]
-INCLUDES = [FW / "components" / c / "include" for c in ("detect", "power_policy", "payload")]
+INCLUDES = [FW / "components" / c / "include" for c in ("detect", "power_policy", "payload", "sensor_math")]
 
 
 def compiler():
@@ -37,10 +38,28 @@ def main():
     exe = BUILD / ("node_tests.exe" if sys.platform == "win32" else "node_tests")
     cmd = compiler() + ["-std=c11", "-O1", "-Wall", "-Wextra", "-Werror", "-o", str(exe)]
     cmd += [f"-I{p}" for p in INCLUDES] + [str(s) for s in SOURCES] + ["-lm"]
-    print(" ".join(cmd[-6:]))
+    print(" ".join(cmd[-6:]), flush=True)
     subprocess.run(cmd, check=True)
+    syntax_ok = compile_drivers_against_stubs()
     r = subprocess.run([str(exe), str(HERE / "fixtures")])
-    sys.exit(r.returncode)
+    sys.exit(r.returncode or (0 if syntax_ok else 1))
+
+
+def compile_drivers_against_stubs():
+    """Type-check the ESP-IDF driver layer + Bosch BME68x API against stubs/ (ESP-IDF v5.4 signatures).
+    Catches typos and wrong argument types without ESP-IDF installed. NOT a substitute for `idf.py build`."""
+    out = BUILD / "syntax"
+    out.mkdir(exist_ok=True)
+    comps = FW / "components"
+    inc = [HERE / "stubs"] + [comps / c / "include" for c in ("board", "drivers", "sensor_math", "payload", "bme68x")]
+    files = sorted((comps / "drivers").glob("*.c")) + [comps / "bme68x" / "bme68x.c"]
+    ok = True
+    for f in files:
+        cmd = compiler() + ["-std=c11", "-c", "-o", str(out / (f.name + ".o")), "-Wall", "-Wextra", "-Werror",
+                            "-Wno-unused-parameter"] + [f"-I{p}" for p in inc] + [str(f)]
+        ok &= subprocess.run(cmd).returncode == 0
+    print(f"driver layer vs ESP-IDF stubs: {len(files)} files {'compile' if ok else 'FAILED'}", flush=True)
+    return ok
 
 
 if __name__ == "__main__":

@@ -1,0 +1,47 @@
+(version 1)
+# JLCPCB 4-layer standard process (no extra-cost options), with margin over the published minimums.
+# Published (2026): 0.09 mm track/space on 4-layer, 0.15 mm via drill (0.3 mm+ is the no-surcharge size).
+# Board minimum hole is 0.2 mm only because the ESP32-S3-WROOM-1 footprint's exposed pad uses 0.2 mm
+# thermal vias; every via you place is held to 0.3 mm below. Check the order page for a small-hole surcharge.
+
+(rule "JLC min track"
+	(constraint track_width (min 0.127mm)))
+
+(rule "JLC min clearance"
+	(constraint clearance (min 0.127mm)))
+
+(rule "JLC via drill (no surcharge)"
+	(condition "A.Type == 'Via'")
+	(constraint hole_size (min 0.3mm)))
+
+(rule "JLC via diameter"
+	(condition "A.Type == 'Via'")
+	(constraint via_diameter (min 0.5mm)))
+
+(rule "JLC annular ring"
+	(constraint annular_width (min 0.13mm)))
+
+(rule "JLC hole to hole"
+	(constraint hole_to_hole (min 0.5mm)))
+
+(rule "JLC copper to edge"
+	(constraint edge_clearance (min 0.3mm)))
+
+(rule "JLC silk to pad"
+	(layer outer)
+	(constraint silk_clearance (min 0.15mm)))
+
+# Power paths: charger and battery currents up to ~1 A peak.
+(rule "Power track width"
+	(condition "A.NetClass == 'Power'")
+	(constraint track_width (min 0.5mm)))
+
+# The CO sensor's electrode traces carry nanoamps: keep everything else well away (leakage, noise).
+(rule "CO electrode isolation"
+	(condition "A.Type == 'Track' && (A.NetName == 'CO_WE' || A.NetName == 'CO_RE' || A.NetName == 'CO_CE')")
+	(constraint clearance (min 0.3mm)))
+
+# Charger switch node: keep it small and away from the analog front end.
+(rule "Switch node clearance"
+	(condition "A.NetName == 'CHG_PH' || A.NetName == 'BB_L1' || A.NetName == 'BB_L2'")
+	(constraint clearance (min 0.2mm)))

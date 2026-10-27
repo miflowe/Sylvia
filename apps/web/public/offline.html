@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline · Sylvia</title>
+<style>
+  :root { --paper: #f6f4ee; --ink: #16241b; --muted: #56625a; --pine: #1f4a33; }
+  @media (prefers-color-scheme: dark) { :root { --paper: #121a15; --ink: #eef1ea; --muted: #a7b3aa; --pine: #86c99f; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/26px "Atkinson Hyperlegible Next", system-ui, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 48px 16px; display: grid; gap: 16px; }
+  h1 { font: 400 40px/44px "Instrument Serif", Georgia, serif; margin: 0; }
+  p { margin: 0; }
+  .muted { color: var(--muted); font-size: 15px; }
+  button { justify-self: start; min-height: 48px; padding: 0 24px; border: 0; border-radius: 10px; background: var(--pine); color: var(--paper); font: 700 15px system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<main>
+  <h1>You're offline</h1>
+  <p>Sylvia needs a connection for current fire and smoke information.</p>
+  <p><b>If there's an emergency, follow official instructions and call 911.</b> Alert Ready messages reach your phone without the internet.</p>
+  <button onclick="location.reload()">Try again</button>
+  <p class="muted">Notifications Sylvia already sent are still in your phone's notification list.</p>
+</main>
+</body>
+</html>

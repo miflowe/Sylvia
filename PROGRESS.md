@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 7 Profile + Communities
-**Next action:** When the user sends the Entra External ID tenant subdomain, tenant ID and client ID: `azd env set AUTH_TENANT_SUBDOMAIN/AUTH_TENANT_ID/AUTH_CLIENT_ID`, add the same three to `apps/web/.env.local`, `scripts/deploy-web.sh`, then test sign-in → link → second device → delete. Then step 8.
+**Current step:** 10 Pitch kit (9 = hardware session)
+**Next action:** Step 10 pitch kit: deck (≤15 slides incl. architecture, Microsoft tech list, Node tiers, business model), 2-min demo script + 3-min pitch script, validation findings template. Still open: sign-in (waits on the $5k-credit tenant), iPhone push test, team email for the privacy page (`packages/core/src/site.ts` → contactEmail).
 
 ## Build order
 - [x] 1 Foundation
@@ -52,7 +52,12 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Central Okanagan community view `/communities/central-okanagan` (`apps/web/src/server/community.ts`): right-now conditions + official notices, homes with alerts on, checklist adoption, invasive sightings; counts under 5 hidden; labelled **sample data** switch for town interviews (`SAMPLE_COMMUNITY`)
   - [x] Optional sign-in code (Entra External ID, MSAL redirect + PKCE, `jose` token verification): `ownerId()` = account (`u-<oid>`) when signed in, else device; `/api/auth/link` moves device data on first sign-in; `/api/auth/account` DELETE removes everything. Hidden until AUTH_* env vars are set
   - [ ] Sign-in live test. BLOCKED: the TMU directory (Azure for Students tenant 360b39cf…) sets allowedToCreateTenants=false and allowedToCreateApps=false, so students can't create an External ID tenant or an app registration there. Options: wait for the $5k-credit subscription (likely in a tenant you control), the External ID 30-day trial with a personal Microsoft account, or ask TMU IT
-- [ ] 8 Trust + polish (privacy, terms, disclaimer, a11y, tests, prod deploy)
+- [x] 8 Trust + polish
+  - [x] `/privacy` and `/terms` (safety notice, data-source credits); disclaimer on Home and onboarding; links on Profile. Contact email slot in `packages/core/src/site.ts` (empty until the team inbox exists)
+  - [x] Signal Leaf app icon from the design system (`public/icon.svg`, PNGs via `apps/web/scripts/make-icons.mjs`, maskable + Apple touch); offline page served by the service worker (pages only; data is never cached)
+  - [x] Accessibility: `apps/web/e2e/a11y.spec.ts`, axe WCAG 2.1 A/AA on 8 screens × light/dark = 16 checks, 0 violations (map canvas excluded)
+  - [x] End-to-end: `apps/web/e2e/flows.spec.ts`, 7 flows at Pixel 7 size, all passing against real Azure. Run with `pnpm --filter web e2e` (dev server on :3000 or `E2E_BASE_URL`)
+  - [x] Lighthouse (live, mobile): Home 97/100/100/100, Sprout 99/100/100/100, Alerts 98/100/100/100, Privacy 99/100/100/100 (perf/a11y/best practices/SEO). Lighthouse can't spawn Chrome here; start Chromium via Playwright with `--remote-debugging-port=9222` and pass `--port=9222`
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
 - [ ] 10 Pitch kit (deck, video scripts, findings template)
 
@@ -76,6 +81,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-27: Step 8 done and deployed: legal pages, icons, offline, a11y 0 violations, 7 e2e flows, Lighthouse ≥97.
 - 2026-10-27: Step 7 deployed (checklist, Communities, sign-in code switched off until configured).
 - 2026-10-27: Step 6 live: official relay + alert evaluation timers, web push, Alerts tab, Replay (verified live via API).
 - 2026-10-27: Step 5 live: map with all layers and detail cards.

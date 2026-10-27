@@ -42,3 +42,17 @@ a { color: var(--pine); }
 }
 
 .muted { color: var(--ink-muted); font: var(--type-body-sm); }
+
+/* Long-form text pages (privacy, terms) */
+.prose { display: grid; gap: var(--space-3); }
+.prose h2 { font: var(--type-title); margin: var(--space-4) 0 0; }
+.prose p, .prose ul { margin: 0; }
+.prose ul { padding-left: var(--space-5); display: grid; gap: var(--space-2); }
+.prose table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); display: block; overflow-x: auto; }
+.prose th, .prose td { text-align: left; vertical-align: top; padding: var(--space-2) var(--space-3) var(--space-2) 0; border-bottom: 1px solid var(--line); }
+.prose th { font-weight: 700; }
+.notice { display: grid; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--sky-soft); }
+.notice h2 { margin: 0; }
+
+.legalLinks { display: flex; flex-wrap: wrap; gap: var(--space-4); font: var(--type-body-sm); }
+.legalLinks a { color: var(--ink-muted); }

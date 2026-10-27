@@ -1,0 +1,7 @@
+/** Site-wide facts used by the legal pages. Fill CONTACT_EMAIL once the team inbox exists. */
+export const SITE = {
+  name: "Sylvia",
+  team: "Sylvia team, Electrical and Computer Engineering Club (ECEC), Toronto Metropolitan University",
+  contactEmail: "",
+  policyDate: "October 27, 2026",
+} as const;

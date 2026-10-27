@@ -19,6 +19,10 @@ export default function ProfilePage() {
       <footer className={styles.footer}>
         <p className="muted">Work for a town or regional district?</p>
         <Link href="/communities/central-okanagan">See the Central Okanagan community view</Link>
+        <nav className="legalLinks" aria-label="Legal">
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms and safety</Link>
+        </nav>
       </footer>
     </main>
   );

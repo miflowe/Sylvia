@@ -122,7 +122,8 @@ export function HomeDashboard() {
           <FireActivityCard c={conditions} />
           {conditions.weather && <WeatherCard c={conditions} />}
           <p className="muted">
-            Sylvia adds to official alerts and never replaces them. {loading ? "Updating…" : `Updated ${ago(conditions.generatedAt)}.`}
+            Sylvia adds to official alerts and never replaces them. In an emergency, call 911. {loading ? "Updating…" : `Updated ${ago(conditions.generatedAt)}.`}{" "}
+            <a href="/terms">Safety notice</a>
           </p>
         </>
       )}
@@ -282,6 +283,10 @@ function PlacePicker({ onChoose }: { onChoose: (p: Place) => void }) {
         <p className="eyebrow">Welcome to Sylvia</p>
         <h1 className="display">Where&apos;s home?</h1>
         <p>I&apos;ll show fire danger, air quality and fire activity near you. Your location stays on this device.</p>
+        <p className="muted">
+          Sylvia is not an emergency service and adds to official alerts. By using it you agree to the <a href="/terms">terms</a> and{" "}
+          <a href="/privacy">privacy policy</a>.
+        </p>
       </header>
       <button type="button" className={styles.primary} onClick={useMine} disabled={busy}>
         {busy ? "Finding you…" : "Use my location"}

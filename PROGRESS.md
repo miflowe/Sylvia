@@ -2,8 +2,8 @@
 
 Single source of truth for where the build is. Updated after every chunk.
 
-**Current step:** 10 Pitch kit (9 = hardware session)
-**Next action:** Step 10 pitch kit: deck (≤15 slides incl. architecture, Microsoft tech list, Node tiers, business model), 2-min demo script + 3-min pitch script, validation findings template. Still open: sign-in (waits on the $5k-credit tenant), iPhone push test, team email for the privacy page (`packages/core/src/site.ts` → contactEmail).
+**Current step:** All Claude build steps done; waiting on team inputs
+**Next action:** Fill the deck's [placeholders] from interview findings (slide 8 validation, slide 10 prices, cover/roadmap team names, slide 9 video links), then film with `docs/kits/video-scripts.md`. Open items: sign-in (waits on the $5k-credit tenant), iPhone push test, committing the hardware session's `hardware/` files.
 
 ## Build order
 - [x] 1 Foundation
@@ -47,7 +47,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Replay: Quilpituk Creek wildfire (Aug 2026) from archived FIRMS VIIRS + BC historical orders (K51402). Inputs in `data/replay/quilpituk-creek-2026/`, rebuild with `pnpm data:replay`. 6 frames → L1 heat (21 km N) → L2 official alert → L3 official order. BC publishes order dates only; frames say so
   - [x] Real-device push test on Android (2026-10-27): test notification + 3 replay notifications delivered via FCM
   - [ ] Real-device push test on an installed iPhone (iOS 16.4+)
-- [ ] 7 Profile + Communities
+- [x] 7 Profile + Communities (sign-in code built; live sign-in waits on a tenant)
   - [x] FireSmart checklist on Profile (`packages/core/src/firesmart.ts`, 15 items in 5 zones, paraphrased from FireSmart Canada); `/api/checklist` stores only ticks + percent + community tag (no coordinates)
   - [x] Central Okanagan community view `/communities/central-okanagan` (`apps/web/src/server/community.ts`): right-now conditions + official notices, homes with alerts on, checklist adoption, invasive sightings; counts under 5 hidden; labelled **sample data** switch for town interviews (`SAMPLE_COMMUNITY`)
   - [x] Optional sign-in code (Entra External ID, MSAL redirect + PKCE, `jose` token verification): `ownerId()` = account (`u-<oid>`) when signed in, else device; `/api/auth/link` moves device data on first sign-in; `/api/auth/account` DELETE removes everything. Hidden until AUTH_* env vars are set
@@ -59,7 +59,10 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] End-to-end: `apps/web/e2e/flows.spec.ts`, 7 flows at Pixel 7 size, all passing against real Azure. Run with `pnpm --filter web e2e` (dev server on :3000 or `E2E_BASE_URL`)
   - [x] Lighthouse (live, mobile): Home 97/100/100/100, Sprout 99/100/100/100, Alerts 98/100/100/100, Privacy 99/100/100/100 (perf/a11y/best practices/SEO). Lighthouse can't spawn Chrome here; start Chromium via Playwright with `--remote-debugging-port=9222` and pass `--port=9222`
 - [ ] 9 Node design package (proposed as its own session: `hardware/PROGRESS-hardware.md`)
-- [ ] 10 Pitch kit (deck, video scripts, findings template)
+- [x] 10 Pitch kit
+  - [x] Deck (15 slides, Sylvia design system, live-app screenshots): https://claude.ai/artifact/QE4dyNRhjT4gMhhc4VTuGQ. Bracketed placeholders: team names, interview count/quotes/results (slide 8), prices (slide 10), demo/app links (slide 9). Private until shared from its Share menu; downloads as PPTX/PDF
+  - [x] `docs/kits/video-scripts.md`: 2:00 demo shot list + 3:00 pitch script, one take each (no editing allowed)
+  - [x] `docs/kits/findings-template.csv` for interview logging (also on the shareable interview kit page)
 
 ## Waiting on the user / team
 - PurpleAir: the key in `.env.local` is a WRITE key. Put the READ key in `PURPLEAIR_API_KEY` (local file), then run `azd env set PURPLEAIR_API_KEY <read key>` and `azd provision`.
@@ -81,6 +84,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.
+- 2026-10-27: Team email live on /privacy. Step 10 pitch kit done (deck + scripts + findings template).
 - 2026-10-27: Step 8 done and deployed: legal pages, icons, offline, a11y 0 violations, 7 e2e flows, Lighthouse ≥97.
 - 2026-10-27: Step 7 deployed (checklist, Communities, sign-in code switched off until configured).
 - 2026-10-27: Step 6 live: official relay + alert evaluation timers, web push, Alerts tab, Replay (verified live via API).

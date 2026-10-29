@@ -323,9 +323,9 @@ resource functionsPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   properties: { reserved: true }
 }
 
-// Sylvia Node telemetry. Free tier: 8,000 messages a day, one free hub per subscription. Each device twin's tags hold
-// its location (rounded to about 1 km), name and whether it's simulated; enrichments stamp them onto every message,
-// so the firmware never sends a location.
+// Sylvia Node telemetry. Free tier: 8,000 messages a day, one free hub per subscription, two enrichments. Each device
+// twin's tags hold its location as "lat,lon" (rounded to about 1 km) and a display name; enrichments stamp them onto
+// every message, so the firmware never sends a location. Simulated devices are named sylvia-sim-*.
 resource iotHub 'Microsoft.Devices/IotHubs@2023-06-30' = {
   name: 'iot-${token}'
   location: location
@@ -335,10 +335,8 @@ resource iotHub 'Microsoft.Devices/IotHubs@2023-06-30' = {
     eventHubEndpoints: { events: { retentionTimeInDays: 1, partitionCount: 2 } }
     routing: {
       enrichments: [
-        { key: 'lat', value: '$twin.tags.lat', endpointNames: ['events'] }
-        { key: 'lon', value: '$twin.tags.lon', endpointNames: ['events'] }
+        { key: 'loc', value: '$twin.tags.loc', endpointNames: ['events'] }
         { key: 'nodeName', value: '$twin.tags.name', endpointNames: ['events'] }
-        { key: 'simulated', value: '$twin.tags.simulated', endpointNames: ['events'] }
       ]
       fallbackRoute: { name: '$fallback', source: 'DeviceMessages', condition: 'true', endpointNames: ['events'], isEnabled: true }
     }

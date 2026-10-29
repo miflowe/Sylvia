@@ -54,7 +54,7 @@ with ESP-IDF (the user declined installing it here, 2026-10-26).
 - Fetch from a browser: nRF9151 Product Specification; MAX17048 outline 21-0168 / land pattern 90-0065 (analog.com
   is unreachable from this PC).
 - Someone with ESP-IDF v5.4: `idf.py build` in `hardware/firmware` and fix what the compiler finds.
-- Per-device secrets: run `firmware/tools/provision.py` and the printed `az iot hub device-identity create` yourself.
+- Per-device secrets: run `firmware/tools/provision.py` and the printed `az iot hub device-identity create` and `device-twin update` (location + name tags) yourself. The cloud side is live and tested with a simulated Node: `docs/results/node-cloud-test.md` in the repo root.
 - Committed: the whole `hardware/` package is in the repo (commit 5f94b49, 2026-10-27). Datasheet PDFs, the Python venv, build output and per-device secrets stay local by design (see `hardware/.gitignore`).
 
 ## Known gaps (honest list)

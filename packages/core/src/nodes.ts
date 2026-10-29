@@ -3,8 +3,8 @@ import type { Observation } from "./observations";
 
 /**
  * Sylvia Node telemetry, as the firmware's payload_json() writes it (hardware/firmware/components/payload).
- * Location never comes from the device: IoT Hub stamps each message with the device twin's tags
- * (lat, lon rounded to about 1 km, name, simulated) through message enrichments.
+ * Location never comes from the device: IoT Hub stamps each message with the device twin's tags through message
+ * enrichments: `loc` ("lat,lon", rounded to about 1 km) and `name`. Simulated test devices are named sylvia-sim-*.
  */
 export interface NodeTelemetry {
   v: number;
@@ -28,11 +28,11 @@ export interface NodeTelemetry {
 }
 
 export interface NodeEnrichment {
-  lat?: string | number;
-  lon?: string | number;
+  loc?: string;
   nodeName?: string;
-  simulated?: string | boolean;
 }
+
+export const SIMULATED_NODE_PREFIX = "sylvia-sim-";
 
 export const NODE_SOURCE = { name: "Sylvia Node", url: "https://github.com/miflowe/Sylvia/tree/main/hardware" } as const;
 
@@ -50,9 +50,10 @@ const tag = (x: unknown) => (typeof x === "string" && x.startsWith("$twin") ? un
 export function nodeObservation(deviceId: string, body: unknown, props: NodeEnrichment, receivedAt: string): Observation | undefined {
   const t = body as Partial<NodeTelemetry>;
   if (!t || typeof t !== "object" || t.v !== 1) return undefined;
-  const at = { lat: Number(tag(props.lat)), lon: Number(tag(props.lon)) };
+  const [lat, lon] = String(tag(props.loc) ?? "").split(",").map((x) => (x.trim() === "" ? NaN : Number(x)));
+  const at = { lat, lon };
   if (!isValidLatLon(at)) return undefined;
-  const simulated = String(tag(props.simulated) ?? "false") === "true";
+  const simulated = deviceId.startsWith(SIMULATED_NODE_PREFIX);
   const pm25 = num(t.pm25);
   const extra: Record<string, number | string | boolean> = { deviceId, simulated, level: t.level ?? 0, cause: NODE_CAUSES[t.cause ?? 0] ?? "None" };
   for (const k of ["co2", "co", "t", "rh", "soc", "pmSlope"] as const) {

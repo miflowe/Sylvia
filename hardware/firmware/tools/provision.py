@@ -79,6 +79,9 @@ def main():
     print("\nNext, run these yourself:")
     print(f"  az iot hub device-identity create --hub-name {a.hub.split('.')[0]} --device-id {a.device_id} "
           f"--am x509_thumbprint --ptp {thumb} --stp {thumb}")
+    # The cloud reads each Node's map position and name from twin tags (IoT Hub enrichments), never from the device.
+    print(f"  az iot hub device-twin update --hub-name {a.hub.split('.')[0]} --device-id {a.device_id} "
+          "--tags '{\"loc\": \"<lat,lon rounded to 2 decimals>\", \"name\": \"<short place name>\"}'")
     print(f"  esptool.py --chip esp32s3 write_flash 0x12000 {out / 'fctry.bin'}")
     print(f"  Register DevEUI {a.deveui or '<AT+DEVEUI=?>'} with AppKey from {out / 'appkey.txt'} on your LoRaWAN network")
 

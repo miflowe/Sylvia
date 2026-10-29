@@ -1,7 +1,7 @@
 // Sylvia Node cloud test: plays a Node through the real cloud path, then checks the reading reached the map.
 //   node scripts/node-sim.mjs <iot hub name> <resource group> <web url> [readings]
-// Registers device "sylvia-sim-01" (symmetric key; real Nodes use X.509 over MQTT, same telemetry endpoint), tags it
-// as a simulated test node at TMU (rounded to ~1 km), sends readings in the firmware's payload_json() format over
+// Registers device "sylvia-sim-01" (symmetric key; real Nodes use X.509 over MQTT, same telemetry endpoint; the
+// sylvia-sim- prefix marks it simulated), tags it with a location at TMU (rounded to ~1 km), sends readings in the firmware's payload_json() format over
 // HTTPS, then polls the web app's /api/map until the reading shows up. Keys are fetched with `az` and never printed.
 import { execFileSync } from "node:child_process";
 import { createHmac, randomBytes } from "node:crypto";
@@ -13,7 +13,7 @@ if (!hubName || !group || !web) {
 }
 const host = `${hubName}.azure-devices.net`;
 const DEVICE = "sylvia-sim-01";
-const TAGS = { lat: "43.66", lon: "-79.38", name: "TMU test node", simulated: "true" };
+const TAGS = { loc: "43.66,-79.38", name: "TMU test node" };
 
 function sas(resource, key, policy) {
   const se = Math.round(Date.now() / 1000) + 3600;
@@ -48,7 +48,7 @@ if (!device) {
 
 // 2. Twin tags: location and labels that IoT Hub stamps onto every message.
 await call("PATCH", `/twins/${DEVICE}?api-version=2021-04-12`, { tags: TAGS }, { ...service, "if-match": "*" });
-console.log(`tagged ${DEVICE}: ${TAGS.name}, simulated`);
+console.log(`tagged ${DEVICE}: ${TAGS.name} at ${TAGS.loc}`);
 
 // 3. Telemetry, exactly as the firmware's payload_json() writes it.
 const deviceAuth = sas(`${host}/devices/${DEVICE}`, device.authentication.symmetricKey.primaryKey);

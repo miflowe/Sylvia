@@ -57,7 +57,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] Signal Leaf app icon from the design system (`public/icon.svg`, PNGs via `apps/web/scripts/make-icons.mjs`, maskable + Apple touch); offline page served by the service worker (pages only; data is never cached)
   - [x] Accessibility: `apps/web/e2e/a11y.spec.ts`, axe WCAG 2.1 A/AA on 8 screens × light/dark = 16 checks, 0 violations (map canvas excluded)
   - [x] End-to-end: `apps/web/e2e/flows.spec.ts`, 7 flows at Pixel 7 size, all passing against real Azure. Run with `pnpm --filter web e2e` (dev server on :3000 or `E2E_BASE_URL`)
-  - [x] Lighthouse (live, mobile): Home 97/100/100/100, Sprout 99/100/100/100, Alerts 98/100/100/100, Privacy 99/100/100/100 (perf/a11y/best practices/SEO). Lighthouse can't spawn Chrome here; start Chromium via Playwright with `--remote-debugging-port=9222` and pass `--port=9222`
+  - [x] Lighthouse (live, mobile, after redesign, median of 3): Home 86, Sprout 91, Alerts 78, Profile 94, Map 62, Privacy 97 performance; accessibility, best practices and SEO 100 everywhere except Map SEO 90 (Azure Maps attribution links). Performance swings with load on this PC: stop the dev server first. Details `docs/results/lighthouse.md`. Lighthouse can't spawn Chrome here; start Chromium via Playwright with `--remote-debugging-port=9222` and pass `--port=9222`
 - [x] 9 Node design package (built in its own session, committed 5f94b49; status in `hardware/PROGRESS-hardware.md`)
 - [x] 10 Pitch kit
   - [x] Deck (15 slides, Sylvia design system, live-app screenshots): https://claude.ai/artifact/QE4dyNRhjT4gMhhc4VTuGQ. Bracketed placeholders: team names, interview count/quotes/results (slide 8), prices (slide 10), demo/app links (slide 9). Private until shared from its Share menu; downloads as PPTX/PDF
@@ -65,7 +65,7 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] `docs/kits/findings-template.csv` for interview logging (also on the shareable interview kit page)
 
 ## Waiting on the user / team
-- PurpleAir READ key: updated by the user 2026-10-28.
+- PurpleAir READ key: updated by the user 2026-10-28, copied to the azd env and provisioned; 125 Kamloops–Okanagan sensors live.
 - Fill `data/curation/nurseries.csv` with Grow Me Instead / FireSmart BC retailers: the Azure Maps garden-centre results alone are unreliable.
 - Verify the draft plant rows in `data/curation/` against their sources (see its README), then run `pnpm data:check`.
 - Optional: `gh auth login` (GitHub CLI isn't signed in; git push works without it).
@@ -81,6 +81,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - Functions deploy from the staged `apps/functions/deploy/` folder (pnpm symlinks can't be zipped).
 
 ## Log
+- 2026-10-28: Team Sylvia names on the deck and pitch script. Plant-ID accuracy test (`scripts/plant-accuracy.mjs`, 48 licensed iNaturalist photos, 16 species): 83% top-1, 94% top-3, 29/30 right when "sure"; Norway maple is the weak spot (`docs/results/plant-id-accuracy.md`). Sylvia Node cloud path live: IoT Hub `iot-6x6suo5lxjc5o` (F1, enrichments `loc` + `name` from twin tags), `nodeTelemetry` Function, "Sylvia Nodes" map layer; `scripts/node-sim.mjs` reading reached the map in ~14 s (`docs/results/node-cloud-test.md`). Simulated devices are named `sylvia-sim-*`.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.

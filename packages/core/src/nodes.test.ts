@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { nodeObservation } from "./nodes";
 
 const msg = { v: 1, seq: 7, up: 3600, pm25: 18.4, co2: 512, co: 1.25, t: 21.5, rh: 40, soc: 88, pmSlope: 0.3, level: 0, cause: 0, fw: "0.1.0" };
-const tags = { lat: "43.66", lon: "-79.38", nodeName: "TMU test node", simulated: "true" };
+const tags = { loc: "43.66,-79.38", nodeName: "TMU test node" };
 const at = "2026-10-28T15:00:00.000Z";
 
 describe("nodeObservation", () => {
@@ -18,7 +18,7 @@ describe("nodeObservation", () => {
   });
 
   it("drops a message from a node with no location tags instead of putting it at 0,0", () => {
-    const unset = { lat: "$twin.tags.lat", lon: "$twin.tags.lon", nodeName: "$twin.tags.name", simulated: "$twin.tags.simulated" };
+    const unset = { loc: "$twin.tags.loc", nodeName: "$twin.tags.name" };
     expect(nodeObservation("sylvia-node-0002", msg, unset, at)).toBeUndefined();
   });
 
@@ -27,8 +27,8 @@ describe("nodeObservation", () => {
     expect(nodeObservation("x", "not json", tags, at)).toBeUndefined();
   });
 
-  it("treats a node as real unless its twin says it's simulated, and keeps missing PM2.5 empty", () => {
-    const o = nodeObservation("sylvia-node-0001", { ...msg, pm25: null }, { lat: 50.67, lon: -120.33 }, at)!;
+  it("treats a node as real unless its id says it's simulated, and keeps missing PM2.5 empty", () => {
+    const o = nodeObservation("sylvia-node-0001", { ...msg, pm25: null }, { loc: "50.67,-120.33" }, at)!;
     expect(o.props?.simulated).toBe(false);
     expect(o.value).toBeUndefined();
     expect(o.label).toBe("sylvia-node-0001");

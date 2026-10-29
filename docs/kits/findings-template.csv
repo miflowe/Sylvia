@@ -1,2 +1,2 @@
-date,interviewer,group,province,community_type,key_quote_word_for_word,pain_observed,current_workaround,hypothesis,result,would_pay_and_how_much,follow_up
-2026-11-04,A.,Resident,BC,Rural,"(example, delete this row) I found out from my neighbour, not the alert.",Late warning,Facebook group,H7,Supported,n/a,Wants to test the app
+date,interviewer,group,province,community_type,key_quote_word_for_word,pain_observed,current_workaround,hypothesis,result,sdg_target,would_pay_and_how_much,follow_up
+2026-11-04,A.,Resident,BC,Rural,"(example, delete this row) I found out from my neighbour, not the alert.",Late warning,Facebook group,H7,Supported,11.5,n/a,Wants to test the app

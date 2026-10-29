@@ -52,7 +52,12 @@ from the front.
 | 1:05–1:40 | [B] | Solution, Sprout, Alerts | "Sylvia is one free app. It shows your official fire danger and air quality in plain words. Sprout scans a plant in your yard, tells you if it's invasive where you live, and suggests a native swap. And our alerts warn you about nearby fire and smoke, always labelled unverified, while official evacuation orders are relayed word for word, naming the agency." |
 | 1:40–2:00 | [B] | Replay | "We replayed a real fire from this August, Quilpituk Creek near Kelowna. Sylvia flagged satellite heat at 2:20 in the morning, then relayed the official alert and the order, as they happened." |
 | 2:00–2:25 | [C] | Business | "Residents never pay. Towns and regional districts already fund FireSmart and invasive-plant programs; our Communities view shows them where residents are ready and where they're not. Nurseries pay for referrals when Sprout suggests a native plant. [Validation: what towns or nurseries told you about paying.]" |
-| 2:25–2:45 | [C] | Architecture, Node | "It's built on Microsoft Azure, with four Microsoft AI services in production. And as an engineering club, we're designing the Sylvia Node, a solar smoke sensor that keeps working when the power goes out." |
-| 2:45–3:00 | [A] | Roadmap | "This spring we pilot with communities in Central Okanagan and Northwestern Ontario. Sylvia: more time when it matters. Thank you." |
+| 2:25–2:40 | [C] | Architecture, Node | "It's built on Microsoft Azure, with four Microsoft AI services in production. And as an engineering club, we're designing the Sylvia Node, a solar smoke sensor that keeps working when the power goes out." |
+| 2:40–3:00 | [A] | Roadmap | "This spring we pilot with communities in Central Okanagan and Northwestern Ontario. Sylvia works on four UN Sustainable Development Goals: health, safer communities, climate adaptation and invasive species. Sylvia: more time when it matters. Thank you." |
 
 Fill every `[bracket]` from the interview findings before filming. Don't invent a quote or a number.
+
+**If a judge asks about the UN goals:** name the targets and the proof behind each. 3.9 (illness from air
+pollution): smoke alerts that adjust for people sensitive to smoke. 11.5 (people affected by disasters): the
+Quilpituk Creek replay. 13.1 (resilience to climate hazards): fire danger in plain words and the FireSmart
+checklist. 15.8 (invasive alien species): Sprout, 83% right on its first guess across 48 test photos.

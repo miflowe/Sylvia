@@ -94,8 +94,12 @@ Build in **Microsoft Forms** (it helps the Microsoft story). Keep it to 3 minute
 9. Optional email to test the app (store separately from answers).
 
 ## 7. Findings sheet (copy into Excel / SharePoint)
-| Date | Interviewer | Segment | Province | Community type | Key quote (verbatim) | Pain observed | Current workaround | H# tested | Result (✅/❌/❓) | Would pay? (B2B: amount) | Follow-up |
-|---|---|---|---|---|---|---|---|---|---|---|---|
+| Date | Interviewer | Segment | Province | Community type | Key quote (verbatim) | Pain observed | Current workaround | H# tested | Result (✅/❌/❓) | SDG target | Would pay? (B2B: amount) | Follow-up |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+**SDG target:** the UN Sustainable Development Goal target a finding backs up, if any: 3.9 (smoke and health),
+11.5 (warnings that reduce harm from disasters), 13.1 (preparing for climate hazards like longer fire seasons) or
+15.8 (invasive plants). Leave it blank when none fits; never stretch one.
 
 After every 5 interviews, the team spends 15 minutes on: which hypotheses are holding, what surprised us, and what
 we change in the app. Send me the sheet and I'll turn the patterns into deck slides and product changes.
@@ -105,4 +109,5 @@ we change in the app. Send me the sheet and I'll turn the patterns into deck sli
 - 3–4 verbatim quotes, one per pain point.
 - Hypothesis scorecard (H1–H7).
 - Willingness-to-pay evidence from nurseries and towns (the business model slide).
+- SDG evidence: one real finding behind each of the four UN goal targets on the roadmap slide.
 - What we changed because of what we heard (judges love this).

@@ -82,6 +82,7 @@ Single source of truth for where the build is. Updated after every chunk.
 
 ## Log
 - 2026-10-28: Team Sylvia names on the deck and pitch script. Plant-ID accuracy test (`scripts/plant-accuracy.mjs`, 48 licensed iNaturalist photos, 16 species): 83% top-1, 94% top-3, 29/30 right when "sure"; Norway maple is the weak spot (`docs/results/plant-id-accuracy.md`). Sylvia Node cloud path live: IoT Hub `iot-6x6suo5lxjc5o` (F1, enrichments `loc` + `name` from twin tags), `nodeTelemetry` Function, "Sylvia Nodes" map layer; `scripts/node-sim.mjs` reading reached the map in ~14 s (`docs/results/node-cloud-test.md`). Simulated devices are named `sylvia-sim-*`.
+- 2026-10-29: UN SDG targets 3.9, 11.5, 13.1, 15.8 added: a badge row on the roadmap slide (deck v18), one line in the pitch script's close plus a judge Q&A note, and an `SDG target` column in the findings sheet / interview kit (v2) so each target gets a real finding behind it.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.

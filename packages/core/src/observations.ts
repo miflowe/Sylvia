@@ -3,7 +3,7 @@
  * scales used to describe them. Every observation keeps its source and time.
  */
 
-export type ObservationKind = "hotspot" | "fire-perimeter" | "aqhi" | "pm25";
+export type ObservationKind = "hotspot" | "fire-perimeter" | "aqhi" | "pm25" | "node";
 
 export interface Observation {
   id: string;

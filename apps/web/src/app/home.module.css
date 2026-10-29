@@ -60,9 +60,7 @@ button.tile:active { transform: scale(0.98); }
 .footnote { margin: var(--space-2) 0 0; font: var(--type-body-sm); color: var(--ink-muted); }
 
 /* Loading placeholders. */
-.skeleton { background: var(--paper-sunk); animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse { 50% { opacity: 0.55; } }
-@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+.skeleton { background: var(--paper-sunk); }
 
 /* Detail sheet contents. */
 .sheetBig { font: var(--type-reading); font-size: 40px; line-height: 44px; font-variant-numeric: tabular-nums; }

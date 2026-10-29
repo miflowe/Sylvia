@@ -86,7 +86,8 @@ export function HomeDashboard() {
     syncAlerts(p, sensitive).catch(() => {});
   };
 
-  if (!ready) return null;
+  // Before the saved place is read, show the loading shape so the first paint isn't blank.
+  if (!ready) return <Skeleton />;
   if (!place || picking) return <PlacePicker onChoose={choose} onCancel={place ? () => setPicking(false) : undefined} />;
 
   const c = conditions;
@@ -125,10 +126,7 @@ export function HomeDashboard() {
       {!c && !error && (
         <>
           <p className="sr-only" aria-live="polite">Checking conditions near {place.name}…</p>
-          <div className={`${styles.hero} ${styles.skeleton}`} aria-hidden="true" />
-          <div className={styles.tiles} aria-hidden="true">
-            {[0, 1, 2, 3].map((i) => <div key={i} className={`${styles.tile} ${styles.skeleton}`} />)}
-          </div>
+          <Skeleton />
         </>
       )}
 
@@ -200,6 +198,17 @@ export function HomeDashboard() {
           </Sheet>
         </>
       )}
+    </>
+  );
+}
+
+function Skeleton() {
+  return (
+    <>
+      <div className={`${styles.hero} ${styles.skeleton}`} aria-hidden="true" />
+      <div className={styles.tiles} aria-hidden="true">
+        {[0, 1, 2, 3].map((i) => <div key={i} className={`${styles.tile} ${styles.skeleton}`} />)}
+      </div>
     </>
   );
 }

@@ -5,7 +5,7 @@ import { container } from "./cosmos";
 
 type Feature = { type: "Feature"; id: string; geometry: unknown; properties: Record<string, unknown> };
 type Collection = { type: "FeatureCollection"; features: Feature[] };
-export type MapLayers = Record<"hotspots" | "fires" | "aqhi" | "pm25" | "sightings", Collection>;
+export type MapLayers = Record<"hotspots" | "fires" | "aqhi" | "pm25" | "sightings" | "nodes", Collection>;
 
 const fc = (features: Feature[]): Collection => ({ type: "FeatureCollection", features });
 
@@ -25,12 +25,13 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
         .fetchAll()
     ).resources;
 
-  const [hotspots, fires, aqhi, pm25, sightings] = await Promise.all([
+  const [hotspots, fires, aqhi, pm25, sightings, nodes] = await Promise.all([
     within<Observation>("observations", "AND c.kind = 'hotspot' AND c.observedAt >= @since", [{ name: "@since", value: dayAgo }]),
     within<Observation>("observations", "AND c.kind = 'fire-perimeter'"),
     within<Observation>("observations", "AND c.kind = 'aqhi'"),
     within<Observation>("observations", "AND c.kind = 'pm25'"),
     within<Sighting>("sightings", ""),
+    within<Observation>("observations", "AND c.kind = 'node'"),
   ]);
 
   const point = (o: { id: string; location: unknown }, properties: Record<string, unknown>): Feature => ({
@@ -57,5 +58,6 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
     aqhi: fc(aqhi.map((o) => point(o, { kind: "aqhi", value: o.value, label: o.label ?? "", observedAt: o.observedAt }))),
     pm25: fc(pm25.map((o) => point(o, { kind: "pm25", value: o.value, observedAt: o.observedAt }))),
     sightings: fc(sightings.map((x) => point(x, { kind: "sighting", commonName: x.commonName, date: x.createdAt }))),
+    nodes: fc(nodes.map((o) => point(o, { kind: "node", ...(o.value !== undefined ? { value: o.value } : {}), name: o.label ?? "", observedAt: o.observedAt, ...o.props }))),
   };
 }

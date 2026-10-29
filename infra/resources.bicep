@@ -323,6 +323,31 @@ resource functionsPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   properties: { reserved: true }
 }
 
+// Sylvia Node telemetry. Free tier: 8,000 messages a day, one free hub per subscription. Each device twin's tags hold
+// its location (rounded to about 1 km), name and whether it's simulated; enrichments stamp them onto every message,
+// so the firmware never sends a location.
+resource iotHub 'Microsoft.Devices/IotHubs@2023-06-30' = {
+  name: 'iot-${token}'
+  location: location
+  tags: tags
+  sku: { name: 'F1', capacity: 1 }
+  properties: {
+    eventHubEndpoints: { events: { retentionTimeInDays: 1, partitionCount: 2 } }
+    routing: {
+      enrichments: [
+        { key: 'lat', value: '$twin.tags.lat', endpointNames: ['events'] }
+        { key: 'lon', value: '$twin.tags.lon', endpointNames: ['events'] }
+        { key: 'nodeName', value: '$twin.tags.name', endpointNames: ['events'] }
+        { key: 'simulated', value: '$twin.tags.simulated', endpointNames: ['events'] }
+      ]
+      fallbackRoute: { name: '$fallback', source: 'DeviceMessages', condition: 'true', endpointNames: ['events'], isEnabled: true }
+    }
+  }
+}
+
+var iotServiceKey = filter(iotHub.listkeys().value, k => k.keyName == 'service')[0].primaryKey
+var iotEventsConnection = 'Endpoint=${iotHub.properties.eventHubEndpoints.events.endpoint};SharedAccessKeyName=service;SharedAccessKey=${iotServiceKey};EntityPath=${iotHub.properties.eventHubEndpoints.events.path}'
+
 resource functions 'Microsoft.Web/sites@2024-04-01' = {
   name: 'func-${token}'
   location: location
@@ -357,12 +382,15 @@ resource functions 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'VAPID_PUBLIC_KEY', value: vapidPublicKey }
         { name: 'VAPID_PRIVATE_KEY', value: vapidPrivateKey }
         { name: 'VAPID_SUBJECT', value: empty(webOrigin) ? 'https://github.com/miflowe/Sylvia' : webOrigin }
+        { name: 'IOTHUB_EVENTS_CONNECTION', value: iotEventsConnection }
+        { name: 'IOTHUB_EVENTS_NAME', value: iotHub.properties.eventHubEndpoints.events.path }
       ]
     }
   }
 }
 
 output webAppName string = web.name
+output iotHubName string = iotHub.name
 output aiEndpoint string = ai.properties.endpoint
 output searchEndpoint string = 'https://${search.name}.search.windows.net'
 output keyVaultName string = vault.name

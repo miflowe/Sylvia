@@ -5,12 +5,13 @@ import type { Place } from "@sylvia/core";
 import { DetailCard, type Selected } from "./DetailCard";
 import styles from "./map.module.css";
 
-type LayerId = "fires" | "hotspots" | "aqhi" | "pm25" | "sightings";
+type LayerId = "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
 const LAYERS: { id: LayerId; label: string; swatch: string }[] = [
   { id: "fires", label: "Fire areas", swatch: "var(--ember)" },
   { id: "hotspots", label: "Satellite heat", swatch: "#e8771a" },
   { id: "aqhi", label: "Air quality", swatch: "var(--sky)" },
   { id: "pm25", label: "Smoke sensors", swatch: "#7a5fb3" },
+  { id: "nodes", label: "Sylvia Nodes", swatch: "var(--pine)" },
   { id: "sightings", label: "Invasive sightings", swatch: "var(--moss)" },
 ];
 
@@ -38,7 +39,7 @@ const css = (name: string) => getComputedStyle(document.documentElement).getProp
 export function FireMap() {
   const el = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<Partial<Record<LayerId, Atlas.layer.Layer[]>>>({});
-  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ fires: true, hotspots: true, aqhi: true, pm25: true, sightings: true });
+  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
   const [counts, setCounts] = useState<Partial<Record<LayerId, number>>>({});
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
@@ -102,9 +103,16 @@ export function FireMap() {
               textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 11, allowOverlap: true },
             }),
           ],
+          nodes: [
+            new atlas.layer.BubbleLayer(sources.nodes, "nodes", { color: css("--pine"), radius: 11, strokeColor: "#ffffff", strokeWidth: 2 }),
+            new atlas.layer.SymbolLayer(sources.nodes, "nodes-label", {
+              iconOptions: { image: "none" },
+              textOptions: { textField: ["case", ["has", "value"], ["to-string", ["round", ["get", "value"]]], ""], color: "#ffffff", size: 11, allowOverlap: true },
+            }),
+          ],
           sightings: [new atlas.layer.BubbleLayer(sources.sightings, "sightings", { color: css("--moss"), radius: 6, strokeColor: "#ffffff", strokeWidth: 1.5 })],
         };
-        for (const id of ["fires", "hotspots", "pm25", "aqhi", "sightings"] as LayerId[]) {
+        for (const id of ["fires", "hotspots", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
           for (const layer of layerRefs.current[id]!) {
             map.layers.add(layer);
             map.events.add("click", layer, (e: Atlas.MapMouseEvent) => {
@@ -174,7 +182,6 @@ export function FireMap() {
             {counts[l.id] !== undefined && <span className={styles.count}>{counts[l.id]}</span>}
           </button>
         ))}
-        <span className={styles.chipDisabled} title="Sylvia Node sensors are on the roadmap">Sylvia Nodes · coming soon</span>
       </div>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}

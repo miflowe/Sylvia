@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { aqhiCategory, pm25Label, SOURCES } from "@sylvia/core";
+import { aqhiCategory, NODE_SOURCE, pm25Label, SOURCES } from "@sylvia/core";
 import styles from "./map.module.css";
 
 export type Selected =
@@ -8,7 +8,8 @@ export type Selected =
   | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; position?: number[] }
   | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
   | { kind: "pm25"; value: number; observedAt: string; position?: number[] }
-  | { kind: "sighting"; commonName: string; date: string; position?: number[] };
+  | { kind: "sighting"; commonName: string; date: string; position?: number[] }
+  | { kind: "node"; name: string; value?: number; observedAt: string; simulated?: boolean; co?: number; co2?: number; t?: number; rh?: number; soc?: number; cause?: string; position?: number[] };
 
 const SATELLITES: Record<string, string> = { N20: "NOAA-20", N21: "NOAA-21", N: "Suomi NPP" };
 const CONFIDENCE: Record<string, string> = { l: "low", n: "nominal", h: "high" };
@@ -80,6 +81,26 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
         <>
           <p className={styles.reading}>PM2.5 {item.value} µg/m³ · {pm25Label(item.value)}</p>
           <p className="muted">10-minute average, last reported {when(item.observedAt)}. Community sensors aren&apos;t official monitors.</p>
+        </>
+      );
+      break;
+    case "node":
+      title = item.simulated ? `${item.name} (test node)` : item.name;
+      source = NODE_SOURCE;
+      body = (
+        <>
+          {item.simulated && <p className={styles.note}>Simulated test data from Sylvia&apos;s cloud test, not a real reading.</p>}
+          <p className={styles.reading}>
+            {item.value !== undefined ? `PM2.5 ${item.value} µg/m³ · ${pm25Label(item.value)}` : "PM2.5 not reported"}
+          </p>
+          <dl className={styles.dl}>
+            {item.co !== undefined && <div><dt>Carbon monoxide</dt><dd>{item.co} ppm</dd></div>}
+            {item.co2 !== undefined && <div><dt>CO2</dt><dd>{item.co2} ppm</dd></div>}
+            {item.t !== undefined && <div><dt>Temperature</dt><dd>{item.t} °C, {item.rh ?? "–"}% humidity</dd></div>}
+            {item.soc !== undefined && <div><dt>Battery</dt><dd>{item.soc}%</dd></div>}
+            {item.cause && item.cause !== "None" && <div><dt>Node flagged</dt><dd>{item.cause} (unverified)</dd></div>}
+          </dl>
+          <p className="muted">Last reported {when(item.observedAt)}. Location rounded to about 1 km.</p>
         </>
       );
       break;

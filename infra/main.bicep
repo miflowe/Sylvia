@@ -103,3 +103,4 @@ output AZURE_KEY_VAULT_NAME string = resources.outputs.keyVaultName
 output COSMOS_ENDPOINT string = resources.outputs.cosmosEndpoint
 output WEB_URL string = resources.outputs.webUrl
 output FUNCTIONS_URL string = resources.outputs.functionsUrl
+output IOT_HUB_NAME string = resources.outputs.iotHubName

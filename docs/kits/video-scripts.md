@@ -40,13 +40,13 @@ Maps. Judges score whether the demo actually shows Microsoft AI working.
 
 ## Pitch video (3:00)
 
-**Setup:** camera at the height and distance of a judge sitting across a table. Two or three speakers, standing.
+**Setup:** camera at the height and distance of a judge sitting across a table. Two or three speakers, standing: pick [A], [B] and [C] from Mina Adnan (team lead), Aniket Arbatti, Salwa Mukhtar and Thirshan Varatharajah.
 The deck can be on a screen behind you, but the pitch must work without reading slides. Quiet room, good light
 from the front.
 
 | Time | Speaker | Slide | Script |
 |---|---|---|---|
-| 0:00–0:20 | [A] | Cover | "Hi, we're [names] from Toronto Metropolitan University. When a wildfire comes, the people who need the most time to get ready often hear last. We built Sylvia to give them that time back." |
+| 0:00–0:20 | [A] | Cover | "Hi, we're Team Sylvia: Mina, Aniket, Salwa and Thirshan, from Toronto Metropolitan University. When a wildfire comes, the people who need the most time to get ready often hear last. We built Sylvia to give them that time back." |
 | 0:20–0:50 | [A] | Problem | "Fire seasons are getting worse: 2023 burned more than 15 million hectares in Canada. When fire comes, alerts are broadcasts, the same message for everyone, whether you're healthy or on oxygen. And before any fire, our yards make it worse: invasive plants spread from gardens, and some burn easily." |
 | 0:50–1:05 | [A] | People | "We talked to [N] residents, nurseries and town staff in Ontario and BC. [One real quote from an interview.]" |
 | 1:05–1:40 | [B] | Solution, Sprout, Alerts | "Sylvia is one free app. It shows your official fire danger and air quality in plain words. Sprout scans a plant in your yard, tells you if it's invasive where you live, and suggests a native swap. And our alerts warn you about nearby fire and smoke, always labelled unverified, while official evacuation orders are relayed word for word, naming the agency." |

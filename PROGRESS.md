@@ -65,12 +65,12 @@ Single source of truth for where the build is. Updated after every chunk.
   - [x] `docs/kits/findings-template.csv` for interview logging (also on the shareable interview kit page)
 
 ## Waiting on the user / team
-- PurpleAir: the key in `.env.local` is a WRITE key. Put the READ key in `PURPLEAIR_API_KEY` (local file), then run `azd env set PURPLEAIR_API_KEY <read key>` and `azd provision`.
+- PurpleAir READ key: updated by the user 2026-10-28.
 - Fill `data/curation/nurseries.csv` with Grow Me Instead / FireSmart BC retailers: the Azure Maps garden-centre results alone are unreliable.
 - Verify the draft plant rows in `data/curation/` against their sources (see its README), then run `pnpm data:check`.
 - Optional: `gh auth login` (GitHub CLI isn't signed in; git push works without it).
 - Register API keys: NASA FIRMS MAP_KEY, PurpleAir, Pl@ntNet. Put them in `apps/web/.env.local` (never commit).
-- All 4 team members register on the Imagine Cup site; fix "five people" anywhere it appears.
+- Done 2026-10-28: all 4 registered as Team Sylvia (Mina Adnan, lead; Aniket Arbatti; Salwa Mukhtar; Thirshan Varatharajah). Deck cover, last slide and pitch script carry the names.
 - Start customer interviews with the shareable kit: https://claude.ai/artifact/VPfkfLMLKUS7j8MfftnAB7 (source `docs/kits/interview-kit.html`; share it from the page's Share menu).
 
 ## Azure for Students quirks (learned the hard way)

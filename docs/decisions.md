@@ -13,7 +13,7 @@ every decision below during grilling. Deliverables:
 
 Deadline is reported as **Jan 8, 2027** (confirm on the Imagine Cup account page). Claude builds all software,
 infrastructure and the hardware design package **immediately**, with no calendar pacing. The team (**max 4
-registered students**: the old site's "five people" must be fixed) owns interviews, data review, outreach, PCB
+registered students**: Team Sylvia is Mina Adnan (lead), Aniket Arbatti, Salwa Mukhtar and Thirshan Varatharajah, all registered) owns interviews, data review, outreach, PCB
 layout and ordering, filming and submission.
 
 ## Decisions (locked)

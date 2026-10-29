@@ -55,7 +55,7 @@ with ESP-IDF (the user declined installing it here, 2026-10-26).
   is unreachable from this PC).
 - Someone with ESP-IDF v5.4: `idf.py build` in `hardware/firmware` and fix what the compiler finds.
 - Per-device secrets: run `firmware/tools/provision.py` and the printed `az iot hub device-identity create` yourself.
-- Not committed: nothing in `hardware/` has been committed (another session owns the repo setup).
+- Committed: the whole `hardware/` package is in the repo (commit 5f94b49, 2026-10-27). Datasheet PDFs, the Python venv, build output and per-device secrets stay local by design (see `hardware/.gitignore`).
 
 ## Known gaps (honest list)
 - Wi-Fi/MQTT, LoRaWAN, OTA and `main.c` never compiled; drivers only checked against stub headers.

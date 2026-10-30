@@ -18,23 +18,24 @@ limit, cut words rather than speed up.
 **Setup before recording**
 - Record the phone screen (Android: built-in screen recorder; iPhone: Control Centre → Screen Recording), or a
   laptop browser at phone size. Use the live app, not localhost.
-- Turn on Do Not Disturb so personal notifications don't appear. Turn alerts on in the app first, so replay
-  notifications show.
-- Home set to **Kamloops, BC**. On Alerts, tap **Clear replay alerts** so history starts empty.
+- Clear Sylvia's site data (or use a fresh private window) right before the take, so the "hello" and leaves intro
+  plays as the opening. Then set home to **Kamloops, BC** in the first seconds, or set it the day before and clear
+  only the intro by removing `sylvia.welcomed` in the browser's site storage.
+- Turn on Do Not Disturb so personal notifications don't appear.
 - Have `barberry.jpg` (in `apps/web/test-fixtures/`) saved in the phone's photos, or a real barberry plant.
 - One narrator records the voice-over live while another person taps. Practise the taps until they're smooth.
 
 | Time | On screen | Narration |
 |---|---|---|
-| 0:00–0:12 | Home tab, Kamloops | "This is Sylvia, a free app that buys people time before and during a wildfire. I've set my home to Kamloops." |
-| 0:12–0:30 | Scroll Home slowly: fire danger, AQHI, fire activity, weather, "Sylvia says" | "Home shows the official fire danger from Natural Resources Canada, air quality from Environment Canada, and satellite heat nearby, each with its source and time. Sylvia's summary is written by GPT-4o in Azure AI Foundry, and checked by Azure AI Content Safety." |
-| 0:30–0:42 | Map tab; tap one fire area to open its card | "The map brings fire areas, satellite heat, smoke sensors and air quality into one place. Every card says what it is, and what it isn't. This is an estimated outline, not an official perimeter." |
-| 0:42–1:10 | Sprout tab → Ontario → choose barberry photo → result → scroll to swaps | "Prevention starts in the yard. I scan a shrub. Two AI models identify it: GPT-4o in Azure AI Foundry, and Pl@ntNet as a second opinion. They agree: Japanese barberry, invasive in Ontario. Azure AI Search finds native plants that look similar, like common ninebark, and I can save it to My plants." |
-| 1:10–1:45 | Alerts tab → Replay → Start → Next moment ×5, pausing on each banner; a notification drops in | "Now a real fire. This replays the Quilpituk Creek wildfire from August, using only the data available at each moment. At 2:20 a.m., satellites detected heat 21 kilometres north: a Level 1 advisory, clearly marked unverified. Then the Regional District's official evacuation alert, relayed. Then the official order, Level 3, with the agency named. Sylvia never orders anyone to leave on its own." |
-| 1:45–2:00 | Profile: checklist; then Communities with sample data on | "Residents get a FireSmart checklist, and towns get an anonymous Communities view, shown here with sample data. Sylvia: more time when it matters." |
+| 0:00–0:10 | First launch: "hello" is written, leaves fall and blow away, Home appears for Kamloops | "This is Sylvia, a free app that buys people time before and during a wildfire. My home is Kamloops." |
+| 0:10–0:30 | Home: fire danger, smoke forecast, "Sylvia says"; tap the "Is it OK to go for a run today?" suggestion | "Home shows the official fire danger, Environment Canada's smoke forecast for the next two days, and air quality, each with its source and time. I can ask Sylvia. GPT-4o in Azure AI Foundry answers only from these live readings, and Azure AI Content Safety checks every answer." |
+| 0:30–0:42 | Map tab: named fires with their status; tap "Report what you see" and show the sheet, then close it | "The map shows named fires with their official status, evacuation areas, satellite heat and smoke sensors. Neighbours can report smoke they see. Reports are marked unverified, and the 911 and fire-line numbers come first." |
+| 0:42–1:05 | Sprout tab → Ontario → choose barberry photo → result → swaps | "Prevention starts in the yard. Two AI models identify this shrub: GPT-4o and Pl@ntNet. Japanese barberry, invasive in Ontario. Azure AI Search finds native look-alikes, like common ninebark." |
+| 1:05–1:45 | Map → "Replay a past fire": let it play; it pauses on each alert | "Now a real fire: the Quilpituk Creek wildfire from August, replayed on the map hour by hour. Satellites see heat overnight: a Level 1 advisory, marked unverified. The estimated fire area grows. Then the Regional District's evacuation alert, relayed. Then the official order, Level 3, with the agency named. Sylvia never orders anyone to leave on its own." |
+| 1:45–2:00 | Profile: checklist; then Communities with sample data on | "Residents get a FireSmart checklist, and towns get an anonymous Communities view, shown with sample data. Sylvia: more time when it matters." |
 
-**Microsoft AI to name out loud:** Azure AI Foundry (GPT-4o), Azure AI Search, Azure AI Content Safety, plus Azure
-Maps. Judges score whether the demo actually shows Microsoft AI working.
+**Microsoft AI to name out loud:** Azure AI Foundry (GPT-4o), Azure AI Search, Azure AI Content Safety (with Prompt
+Shields on Ask Sylvia), plus Azure Maps. Judges score whether the demo actually shows Microsoft AI working.
 
 ---
 

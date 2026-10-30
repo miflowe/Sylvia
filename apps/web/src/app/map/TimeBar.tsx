@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/Icon";
 import styles from "./map.module.css";
 
 /** Colours for satellite heat by age; the map layer and this legend share them. */
@@ -8,8 +9,8 @@ export const HEAT_AGE = [
   { upTo: 24, color: "#e8c39e", label: "12–24 h" },
 ] as const;
 
-/** Bottom bar on the map: how many hours of satellite heat to show, with the age legend. */
-export function TimeBar({ hours, onHours }: { hours: number; onHours: (h: number) => void }) {
+/** Bottom bar on the map: how many hours of satellite heat to show, the age legend, and the way into a replay. */
+export function TimeBar({ hours, onHours, onReplay }: { hours: number; onHours: (h: number) => void; onReplay: () => void }) {
   return (
     <div className={styles.timebar}>
       <label className={styles.timeLabel} htmlFor="heat-hours">
@@ -34,6 +35,10 @@ export function TimeBar({ hours, onHours }: { hours: number; onHours: (h: number
           </li>
         ))}
       </ul>
+      <button type="button" className={styles.replayStart} onClick={onReplay}>
+        <Icon name="play" size={16} />
+        Replay a real past fire
+      </button>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import styles from "./map.module.css";
 
 export type Selected =
   | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; position?: number[] }
-  | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; position?: number[] }
+  | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; replay?: boolean; position?: number[] }
   | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
   | { kind: "pm25"; value: number; observedAt: string; position?: number[] }
   | { kind: "sighting"; commonName: string; date: string; position?: number[] }
@@ -38,8 +38,8 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
         <>
           <dl className={styles.dl}>
             <div><dt>Detected</dt><dd>{when(item.observedAt)}</dd></div>
-            <div><dt>Satellite</dt><dd>{SATELLITES[item.satellite] ?? item.satellite}</dd></div>
-            <div><dt>Confidence</dt><dd>{CONFIDENCE[item.confidence] ?? item.confidence}</dd></div>
+            {item.satellite && <div><dt>Satellite</dt><dd>{SATELLITES[item.satellite] ?? item.satellite}</dd></div>}
+            {item.confidence && <div><dt>Confidence</dt><dd>{CONFIDENCE[item.confidence] ?? item.confidence}</dd></div>}
             {item.frp !== null && <div><dt>Heat output</dt><dd>{item.frp} MW</dd></div>}
           </dl>
           <p className={styles.note}>Not a confirmed fire. Satellites also pick up controlled burns, flares and other heat sources. Check official sources.</p>
@@ -47,8 +47,8 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
       );
       break;
     case "fire":
-      title = "Mapped fire area";
-      source = SOURCES.cwfis;
+      title = item.replay ? "Fire area (replay estimate)" : "Mapped fire area";
+      source = item.replay ? SOURCES.firms : SOURCES.cwfis;
       body = (
         <>
           <dl className={styles.dl}>
@@ -56,7 +56,11 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
             {item.firstSeen && <div><dt>First seen</dt><dd>{day(item.firstSeen)}</dd></div>}
             <div><dt>Last active</dt><dd>{day(item.lastSeen)}</dd></div>
           </dl>
-          <p className={styles.note}>Outline estimated from satellite detections. It is not an official fire perimeter or evacuation zone.</p>
+          <p className={styles.note}>
+            {item.replay
+              ? "Sylvia estimated this outline from the satellite heat seen so far in the replay. It is not an official fire perimeter or evacuation zone."
+              : "Outline estimated from satellite detections. It is not an official fire perimeter or evacuation zone."}
+          </p>
         </>
       );
       break;

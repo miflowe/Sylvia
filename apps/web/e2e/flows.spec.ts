@@ -21,6 +21,18 @@ test("map loads layers with counts", async ({ page }) => {
   await expect(page.locator('[aria-label="Map layers"] button', { hasText: /Fire areas\s*\d+/ })).toBeVisible();
 });
 
+test("map replay plays the fire, from an unverified advisory to the official order", async ({ page }) => {
+  test.setTimeout(90_000);
+  await withHome(page);
+  await page.goto("/map");
+  await page.getByRole("button", { name: "Replay a real past fire" }).click();
+  await expect(page.getByText(/Quilpituk Creek wildfire.*not live/)).toBeVisible();
+  await expect(page.getByText("Level 1 · Advisory · Unverified · Replay")).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText("Level 3 · Official order · Replay")).toBeVisible({ timeout: 60_000 });
+  await page.getByRole("button", { name: "Exit" }).click();
+  await expect(page.locator('[aria-label="Map layers"]')).toBeVisible();
+});
+
 test("Sprout flags Japanese barberry as invasive in Ontario, offers swaps, and saves to My plants", async ({ page }) => {
   await page.goto("/sprout");
   await page.getByRole("radio", { name: "Ontario" }).click();

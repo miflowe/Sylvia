@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type * as Atlas from "azure-maps-control";
-import type { Place } from "@sylvia/core";
+import { buildTimeline, replayAt, type Alert, type Place, type ReplayTimeline } from "@sylvia/core";
 import { DetailCard, type Selected } from "./DetailCard";
 import { HEAT_AGE, TimeBar } from "./TimeBar";
+import { ReplayAlert, ReplayBar, ReplayHeader } from "./ReplayBar";
 import { isDark } from "@/lib/theme";
 import styles from "./map.module.css";
 
@@ -38,7 +39,20 @@ function loadAtlas(): Promise<typeof Atlas> {
 
 // Half a 44 px touch target. Point layers that a tap can pick, by id.
 const TAP_RADIUS = 22;
-const POINT_LAYERS = ["nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots"];
+const POINT_LAYERS = ["nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots", "replay-heat"];
+const AREA_LAYERS = ["fires-fill", "replay-fill"];
+
+const HOUR = 3600 * 1000;
+// Fresh heat is darker and bigger; older detections fade. Shared by live and replay heat.
+const heatColor = ["step", ["get", "ageH"], HEAT_AGE[0].color, HEAT_AGE[0].upTo, HEAT_AGE[1].color, HEAT_AGE[1].upTo, HEAT_AGE[2].color] as unknown as string;
+const heatRadius = ["step", ["get", "ageH"], 6, 3, 5, 12, 4] as unknown as number;
+
+interface Replay {
+  name: string;
+  dateLabel: string;
+  home: { name: string; lat: number; lon: number };
+  timeline: ReplayTimeline;
+}
 
 const css = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888";
 
@@ -51,6 +65,19 @@ export function FireMap() {
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
   const [heatHours, setHeatHours] = useState(24);
+  // Replay mode: an archived fire plays on the map with the same alert rules as live.
+  const mapRef = useRef<Atlas.Map | undefined>(undefined);
+  const atlasRef = useRef<typeof Atlas | undefined>(undefined);
+  const placeRef = useRef<Place | undefined>(undefined);
+  const replayRefs = useRef<{ heat: Atlas.source.DataSource; area: Atlas.source.DataSource; layers: Atlas.layer.Layer[]; marker?: Atlas.HtmlMarker } | undefined>(undefined);
+  const [replay, setReplay] = useState<Replay | undefined>();
+  const [t, setT] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [replayAlerts, setReplayAlerts] = useState<Alert[]>([]);
+  const [caption, setCaption] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const seenAlerts = useRef(new Set<string>());
+  const holdUntil = useRef(0);
 
   useEffect(() => {
     let map: Atlas.Map | undefined;
@@ -65,6 +92,7 @@ export function FireMap() {
       try {
         place = JSON.parse(localStorage.getItem("sylvia.place") ?? "null") ?? undefined;
       } catch {}
+      placeRef.current = place;
       const dark = isDark();
 
       map = new atlas.Map(el.current, {
@@ -81,6 +109,8 @@ export function FireMap() {
         if (!map) return;
         // Development only: lets tests drive the map from the browser console.
         if (process.env.NODE_ENV !== "production") (window as unknown as { __sylviaMap?: Atlas.Map }).__sylviaMap = map;
+        mapRef.current = map;
+        atlasRef.current = atlas;
         const controlStyle = (dark ? "dark" : "light") as Atlas.ControlStyle;
         map.controls.add([new atlas.control.ZoomControl({ style: controlStyle, zoomDelta: 1 }), new atlas.control.CompassControl({ style: controlStyle, rotationDegreesDelta: 15 })], { position: atlas.ControlPosition.BottomRight });
 
@@ -102,11 +132,11 @@ export function FireMap() {
             new atlas.layer.LineLayer(sources.fires, "fires-line", { strokeColor: ember, strokeWidth: 1.5, filter: isPolygon }),
             new atlas.layer.BubbleLayer(sources.fires, "fires-point", { color: ember, radius: 7, strokeColor: "#ffffff", strokeWidth: 1, filter: isPoint }),
           ],
-          // Fresh heat is darker and bigger; older detections fade (ageH is set when the data loads).
+          // ageH is set when the data loads.
           hotspots: [
             new atlas.layer.BubbleLayer(sources.hotspots, "hotspots", {
-              color: ["step", ["get", "ageH"], HEAT_AGE[0].color, HEAT_AGE[0].upTo, HEAT_AGE[1].color, HEAT_AGE[1].upTo, HEAT_AGE[2].color] as unknown as string,
-              radius: ["step", ["get", "ageH"], 6, 3, 5, 12, 4] as unknown as number,
+              color: heatColor,
+              radius: heatRadius,
               strokeColor: "#5a2a00",
               strokeWidth: 1,
               opacity: 0.95,
@@ -152,6 +182,18 @@ export function FireMap() {
         for (const id of ["fires", "hotspots", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
           for (const layer of layerRefs.current[id]!) map.layers.add(layer);
         }
+        // Replay layers stay hidden until a replay starts.
+        const replayHeat = new atlas.source.DataSource();
+        const replayArea = new atlas.source.DataSource();
+        map.sources.add([replayHeat, replayArea]);
+        const replayLayers = [
+          new atlas.layer.PolygonLayer(replayArea, "replay-fill", { fillColor: ember, fillOpacity: 0.3, visible: false }),
+          new atlas.layer.LineLayer(replayArea, "replay-line", { strokeColor: ember, strokeWidth: 2, strokeDashArray: [2, 1.5], visible: false }),
+          new atlas.layer.BubbleLayer(replayHeat, "replay-heat", { color: heatColor, radius: heatRadius, strokeColor: "#5a2a00", strokeWidth: 1, opacity: 0.95, visible: false }),
+        ];
+        map.layers.add(replayLayers);
+        replayRefs.current = { heat: replayHeat, area: replayArea, layers: replayLayers };
+
         // Ring around the tapped point, so it's clear which dot in a cluster the card is about.
         ring.current = new atlas.source.DataSource();
         map.sources.add(ring.current);
@@ -174,7 +216,7 @@ export function FireMap() {
             const d = Math.hypot(px - x, py - y);
             if (d <= TAP_RADIUS && (!best || d < best.d)) best = { hit, d };
           }
-          const area = best ? undefined : (map.layers.getRenderedShapes(e.position, ["fires-fill"]) as Hit[])[0];
+          const area = best ? undefined : (map.layers.getRenderedShapes(e.position, AREA_LAYERS) as Hit[])[0];
           const group = best && (propsOf(best.hit) as unknown as { cluster?: boolean; cluster_id?: number });
           if (group?.cluster && group.cluster_id !== undefined) {
             // Tapping a group zooms in until it splits into single sensors.
@@ -230,9 +272,102 @@ export function FireMap() {
 
   useEffect(() => {
     for (const id of Object.keys(visible) as LayerId[]) {
-      layerRefs.current[id]?.forEach((l) => l.setOptions({ visible: visible[id] }));
+      layerRefs.current[id]?.forEach((l) => l.setOptions({ visible: visible[id] && !replay }));
     }
-  }, [visible, counts]);
+  }, [visible, counts, replay]);
+
+  async function startReplay() {
+    setStatus("Loading the replay…");
+    try {
+      const [first] = (await fetch("/api/replay").then((r) => r.json())) as { id: string }[];
+      const res = await fetch(`/api/replay?id=${encodeURIComponent(first!.id)}`);
+      if (!res.ok) throw new Error();
+      const ev = await res.json();
+      const timeline = buildTimeline(ev.frames);
+      seenAlerts.current = new Set();
+      holdUntil.current = 0;
+      setSelected(undefined);
+      ring.current?.clear();
+      setReplay({ name: ev.name, dateLabel: ev.dateLabel, home: ev.home, timeline });
+      setT(timeline.start);
+      setPlaying(true);
+      setStatus("");
+    } catch {
+      setStatus("Couldn't load the replay.");
+    }
+  }
+
+  function exitReplay() {
+    setReplay(undefined);
+    setPlaying(false);
+    setSelected(undefined);
+    ring.current?.clear();
+  }
+
+  // Entering or leaving a replay: show its layers and home, and move the camera.
+  useEffect(() => {
+    const map = mapRef.current;
+    const atlas = atlasRef.current;
+    const r = replayRefs.current;
+    if (!map || !atlas || !r) return;
+    r.layers.forEach((l) => l.setOptions({ visible: !!replay }));
+    if (replay) {
+      r.marker = new atlas.HtmlMarker({ position: [replay.home.lon, replay.home.lat], htmlContent: `<div class="${styles.home}" title="${replay.home.name}"></div>` });
+      map.markers.add(r.marker);
+      // Frame the whole fire and the replay home, clear of the alert banner and the bottom bar.
+      const pts = [...replay.timeline.detections.map((d) => [d.location.lon, d.location.lat]), [replay.home.lon, replay.home.lat]];
+      map.setCamera({ bounds: atlas.data.BoundingBox.fromPositions(pts), padding: { top: 190, bottom: 250, left: 40, right: 80 }, maxZoom: 11, type: "fly", duration: 1200 });
+    } else {
+      if (r.marker) map.markers.remove(r.marker);
+      r.marker = undefined;
+      r.heat.clear();
+      r.area.clear();
+      setReplayAlerts([]);
+      const place = placeRef.current;
+      if (place) map.setCamera({ center: [place.lon, place.lat], zoom: 7, type: "fly", duration: 1000 });
+    }
+  }, [replay]);
+
+  // What was known at time t: heat so far, the estimated area, and the alerts the live rules would raise.
+  useEffect(() => {
+    const atlas = atlasRef.current;
+    const r = replayRefs.current;
+    if (!replay || !atlas || !r) return;
+    let sensitive = false;
+    try {
+      sensitive = JSON.parse(localStorage.getItem("sylvia.sensitive") ?? "false");
+    } catch {}
+    const s = replayAt(replay.timeline, replay.home, t, sensitive);
+    r.heat.setShapes(
+      s.hotspots.map((h) => new atlas.data.Feature(new atlas.data.Point([h.location.lon, h.location.lat]), { kind: "hotspot", observedAt: h.observedAt, frp: null, satellite: "", confidence: "", ageH: h.ageH })),
+    );
+    const firstSeen = replay.timeline.detections[0]?.observedAt ?? "";
+    r.area.setShapes(s.outlines.map((ring) => new atlas.data.Feature(new atlas.data.Polygon([ring]), { kind: "fire", areaHa: null, firstSeen, lastSeen: new Date(t).toISOString(), replay: true })));
+    // A new alert holds the playback for a moment so it can be read.
+    const fresh = s.alerts.filter((a) => !seenAlerts.current.has(a.key ?? a.title));
+    fresh.forEach((a) => seenAlerts.current.add(a.key ?? a.title));
+    if (fresh.length) {
+      holdUntil.current = Date.now() + 2500;
+      setAlertOpen(false);
+    }
+    setReplayAlerts(s.alerts);
+    setCaption(s.caption);
+  }, [replay, t]);
+
+  // Playback: one hour of the fire every 450 ms.
+  useEffect(() => {
+    if (!replay || !playing) return;
+    const end = replay.timeline.end;
+    const id = setInterval(() => {
+      if (Date.now() < holdUntil.current) return;
+      setT((prev) => Math.min(end, prev + HOUR));
+    }, 450);
+    return () => clearInterval(id);
+  }, [replay, playing]);
+
+  useEffect(() => {
+    if (replay && t >= replay.timeline.end) setPlaying(false);
+  }, [replay, t]);
 
   useEffect(() => {
     layerRefs.current.hotspots?.[0]?.setOptions({ filter: ["<=", ["get", "ageH"], heatHours] } as Atlas.BubbleLayerOptions);
@@ -240,7 +375,9 @@ export function FireMap() {
 
   return (
     <div className={styles.wrap}>
-      <div className={styles.chips} role="group" aria-label="Map layers">
+      {replay && <ReplayHeader name={replay.name} dateLabel={replay.dateLabel} onExit={exitReplay} />}
+      {replay && !selected && <ReplayAlert alerts={replayAlerts} open={alertOpen} onToggle={() => setAlertOpen((o) => !o)} />}
+      <div className={styles.chips} role="group" aria-label="Map layers" hidden={!!replay}>
         {LAYERS.map((l) => (
           <button
             key={l.id}
@@ -257,7 +394,24 @@ export function FireMap() {
       </div>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
-      {!selected && <TimeBar hours={heatHours} onHours={setHeatHours} />}
+      {!selected && !replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} />}
+      {!selected && replay && (
+        <ReplayBar
+          start={replay.timeline.start}
+          end={replay.timeline.end}
+          t={t}
+          playing={playing}
+          caption={caption}
+          onPlay={() => {
+            if (!playing && t >= replay.timeline.end) setT(replay.timeline.start);
+            setPlaying((p) => !p);
+          }}
+          onScrub={(next) => {
+            setPlaying(false);
+            setT(next);
+          }}
+        />
+      )}
       {selected && <DetailCard item={selected} onClose={() => { setSelected(undefined); ring.current?.clear(); }} />}
     </div>
   );

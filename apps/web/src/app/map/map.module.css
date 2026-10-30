@@ -27,6 +27,17 @@
   border-radius: var(--radius-full); background: var(--paper-raised); box-shadow: var(--shadow-sm); font: var(--type-body-sm); z-index: 2;
 }
 
+/* Bottom bar: heat time window and age legend. Leaves room on the right for the zoom controls. */
+.timebar {
+  position: absolute; left: var(--space-3); right: 64px; bottom: var(--space-3); z-index: 2; max-width: 460px;
+  display: grid; gap: var(--space-1); padding: var(--space-3) var(--space-4); background: var(--paper-raised);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+}
+.timeLabel { font: var(--type-body-sm); }
+.range { width: 100%; height: 32px; margin: 0; accent-color: var(--ember); cursor: pointer; }
+.legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; font: var(--type-data); font-size: 13px; color: var(--ink-muted); }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+
 .home { width: 18px; height: 18px; border-radius: 50%; background: var(--pine); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--pine); }
 
 .sheet {

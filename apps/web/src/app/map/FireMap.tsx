@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type * as Atlas from "azure-maps-control";
 import type { Place } from "@sylvia/core";
 import { DetailCard, type Selected } from "./DetailCard";
+import { HEAT_AGE, TimeBar } from "./TimeBar";
 import styles from "./map.module.css";
 
 type LayerId = "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
@@ -48,6 +49,7 @@ export function FireMap() {
   const [counts, setCounts] = useState<Partial<Record<LayerId, number>>>({});
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
+  const [heatHours, setHeatHours] = useState(24);
 
   useEffect(() => {
     let map: Atlas.Map | undefined;
@@ -98,7 +100,16 @@ export function FireMap() {
             new atlas.layer.LineLayer(sources.fires, "fires-line", { strokeColor: ember, strokeWidth: 1.5, filter: isPolygon }),
             new atlas.layer.BubbleLayer(sources.fires, "fires-point", { color: ember, radius: 7, strokeColor: "#ffffff", strokeWidth: 1, filter: isPoint }),
           ],
-          hotspots: [new atlas.layer.BubbleLayer(sources.hotspots, "hotspots", { color: "#e8771a", radius: 4, strokeColor: "#5a2a00", strokeWidth: 1, opacity: 0.9 })],
+          // Fresh heat is darker and bigger; older detections fade (ageH is set when the data loads).
+          hotspots: [
+            new atlas.layer.BubbleLayer(sources.hotspots, "hotspots", {
+              color: ["step", ["get", "ageH"], HEAT_AGE[0].color, HEAT_AGE[0].upTo, HEAT_AGE[1].color, HEAT_AGE[1].upTo, HEAT_AGE[2].color] as unknown as string,
+              radius: ["step", ["get", "ageH"], 6, 3, 5, 12, 4] as unknown as number,
+              strokeColor: "#5a2a00",
+              strokeWidth: 1,
+              opacity: 0.95,
+            }),
+          ],
           aqhi: [
             new atlas.layer.BubbleLayer(sources.aqhi, "aqhi", { color: css("--sky"), radius: 13, strokeColor: "#ffffff", strokeWidth: 1.5 }),
             new atlas.layer.SymbolLayer(sources.aqhi, "aqhi-label", {
@@ -188,6 +199,8 @@ export function FireMap() {
             const body = await res.json();
             if (!res.ok) throw new Error(body.error);
             const next: Partial<Record<LayerId, number>> = {};
+            const now = Date.now();
+            for (const h of body.hotspots.features) h.properties.ageH = (now - Date.parse(h.properties.observedAt)) / 3.6e6;
             for (const id of Object.keys(sources) as LayerId[]) {
               sources[id].setShapes(body[id]);
               next[id] = body[id].features.length;
@@ -219,6 +232,10 @@ export function FireMap() {
     }
   }, [visible, counts]);
 
+  useEffect(() => {
+    layerRefs.current.hotspots?.[0]?.setOptions({ filter: ["<=", ["get", "ageH"], heatHours] } as Atlas.BubbleLayerOptions);
+  }, [heatHours, counts]);
+
   return (
     <div className={styles.wrap}>
       <div className={styles.chips} role="group" aria-label="Map layers">
@@ -238,6 +255,7 @@ export function FireMap() {
       </div>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
+      {!selected && <TimeBar hours={heatHours} onHours={setHeatHours} />}
       {selected && <DetailCard item={selected} onClose={() => { setSelected(undefined); ring.current?.clear(); }} />}
     </div>
   );

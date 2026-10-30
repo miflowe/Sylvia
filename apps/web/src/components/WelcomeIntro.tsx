@@ -1,14 +1,12 @@
 "use client";
 import { Dancing_Script } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
+import { WELCOMED_KEY } from "@/lib/welcome";
 import { playLeaves } from "./welcomeLeaves";
 import styles from "./WelcomeIntro.module.css";
 
 const script = Dancing_Script({ subsets: ["latin"], weight: "600" });
 
-export const WELCOMED_KEY = "sylvia.welcomed";
-/** Runs in <head>: hides the intro before first paint for anyone who has seen it, so it never flashes. */
-export const WELCOME_SCRIPT = `try{if(localStorage.getItem("${WELCOMED_KEY}"))document.documentElement.classList.add("welcomed")}catch(e){}`;
 
 // The writing is slow and calm; the leaves run between slow (1.8) and the designed pace (1).
 const WRITE_S = 2.7;

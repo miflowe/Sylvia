@@ -3,7 +3,8 @@ import { Figtree } from "next/font/google";
 import { TabBar } from "@/components/TabBar";
 import { ServiceWorker } from "@/components/ServiceWorker";
 import { THEME_SCRIPT } from "@/lib/theme";
-import { WELCOME_SCRIPT, WelcomeIntro } from "@/components/WelcomeIntro";
+import { WelcomeIntro } from "@/components/WelcomeIntro";
+import { WELCOME_SCRIPT } from "@/lib/welcome";
 import "./globals.css";
 
 const sans = Figtree({ subsets: ["latin"], variable: "--font-sans", fallback: ["system-ui", "Segoe UI", "sans-serif"] });

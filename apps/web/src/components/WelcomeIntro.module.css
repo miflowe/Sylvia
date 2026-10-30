@@ -1,0 +1,33 @@
+/* Covers everything, including the tab bar, until the leaves blow away. */
+.intro { position: fixed; inset: 0; z-index: 100; }
+
+.greeting {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1);
+  background: var(--paper);
+}
+.intro[data-phase="leaves"] .greeting { visibility: hidden; }
+.intro[data-phase="fade"] { opacity: 0; transition: opacity 0.6s; }
+
+/* "hello" is revealed left to right behind a soft edge, like a pen writing it, already filled in. */
+.ink {
+  margin: 0; padding: 0 var(--space-4); font-size: clamp(88px, 22vw, 150px); line-height: 1.15; color: var(--pine);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 42%, transparent 58%); mask-image: linear-gradient(90deg, #000 0 42%, transparent 58%);
+  -webkit-mask-size: 260% 100%; mask-size: 260% 100%; -webkit-mask-position: 100% 0; mask-position: 100% 0;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  animation: write 2.7s cubic-bezier(0.45, 0.05, 0.4, 1) 0.3s forwards;
+}
+@keyframes write { to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
+.sub { margin: 0; font: var(--type-body); color: var(--ink-muted); opacity: 0; transform: translateY(4px); animation: rise 0.6s ease-out forwards; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+.leaves { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.skip {
+  position: absolute; top: max(var(--space-3), env(safe-area-inset-top)); right: var(--space-3); z-index: 1; min-height: 40px;
+  padding: 0 var(--space-4); border: 0; border-radius: var(--radius-full); background: color-mix(in srgb, var(--paper-raised) 80%, transparent);
+  color: var(--ink-muted); font: var(--type-label); font-size: 14px; cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink { animation: none; -webkit-mask-image: none; mask-image: none; }
+}

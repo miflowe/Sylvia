@@ -99,6 +99,9 @@ a.listRow, button.listRow { cursor: pointer; }
 .switch:disabled { opacity: 0.6; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
 
+/* The first-launch intro never shows again once seen (class set in <head> before paint). */
+.welcomed .welcome { display: none; }
+
 /* A theme picked in Settings also sets the browser's own colours (form controls, scrollbars). */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }

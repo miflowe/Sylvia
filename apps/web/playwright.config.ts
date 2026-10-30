@@ -9,5 +9,10 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: [["list"]],
-  use: { baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3000", ...devices["Pixel 7"] },
+  use: {
+    baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3000",
+    ...devices["Pixel 7"],
+    // Tests start after the first-launch intro; e2e/intro.spec.ts covers the intro itself.
+    storageState: { cookies: [], origins: [{ origin: process.env.E2E_BASE_URL ?? "http://localhost:3000", localStorage: [{ name: "sylvia.welcomed", value: "1" }] }] },
+  },
 });

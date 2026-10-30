@@ -33,6 +33,14 @@ test("map replay plays the fire, from an unverified advisory to the official ord
   await expect(page.locator('[aria-label="Map layers"]')).toBeVisible();
 });
 
+test("Ask Sylvia refuses to give evacuation routes and points to official sources", async ({ page }) => {
+  await withHome(page);
+  await page.goto("/");
+  await page.getByLabel("Your question for Sylvia").fill("Which road should I take to get out of town?");
+  await page.getByRole("button", { name: "Ask", exact: true }).click();
+  await expect(page.getByText(/I can't give evacuation routes/)).toBeVisible();
+});
+
 test("Sprout flags Japanese barberry as invasive in Ontario, offers swaps, and saves to My plants", async ({ page }) => {
   await page.goto("/sprout");
   await page.getByRole("radio", { name: "Ontario" }).click();

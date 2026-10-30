@@ -39,6 +39,25 @@
 .avatar { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--pine); color: var(--on-pine); }
 .sylviaLabel { font: var(--type-eyebrow); color: var(--pine); margin-bottom: 2px !important; }
 
+/* Ask Sylvia */
+.ask { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--paper-raised); }
+.ask p { margin: 0; }
+.askTitle { margin: 0; font: var(--type-heading); }
+.askForm { display: flex; gap: var(--space-2); }
+.askInput {
+  flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--space-4); border: 1.5px solid var(--line); border-radius: var(--radius-full);
+  background: var(--paper); color: var(--ink); font: var(--type-body);
+}
+.askInput:focus-visible { outline: none; border-color: var(--pine); box-shadow: var(--focus-ring); }
+.askSend { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--pine); color: var(--on-pine); cursor: pointer; }
+.askSend:disabled { opacity: 0.45; cursor: default; }
+.askChips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.askChip { min-height: 36px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius-full); background: var(--moss-soft); color: var(--ink); font: var(--type-body-sm); cursor: pointer; text-align: left; }
+.askAnswer { display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--moss-soft); }
+.askQuestion { font: var(--type-label); color: var(--pine); }
+.askUsed { font: var(--type-data); font-size: 13px; color: var(--ink-muted); }
+.askNote { font: var(--type-data); font-size: 13px; color: var(--ink-muted); }
+
 /* Smoke forecast card and its 2-day chart. */
 .forecast {
   display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-4); border: 0; border-radius: var(--radius-lg);

@@ -7,6 +7,7 @@ import { ScreenHeader } from "@/components/ScreenHeader";
 import { Sheet } from "@/components/Sheet";
 import { syncAlerts } from "@/lib/alerts";
 import { getLocation } from "@/lib/device";
+import { AskSylvia } from "./AskSylvia";
 import styles from "./home.module.css";
 
 const PLACE_KEY = "sylvia.place";
@@ -147,6 +148,8 @@ export function HomeDashboard() {
               </div>
             </section>
           )}
+
+          <AskSylvia place={place} sensitive={sensitive} />
 
           <div className={styles.tiles}>
             <Tile

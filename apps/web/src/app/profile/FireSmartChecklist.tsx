@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CHECKLIST, checklistProgress, FIRESMART_SOURCE, ZONES, type ChecklistItem, type Place } from "@sylvia/core";
+import { Icon } from "@/components/Icon";
 import { withDevice } from "@/lib/device";
 import styles from "./profile.module.css";
 
@@ -60,22 +61,35 @@ export function FireSmartChecklist() {
         </p>
       </div>
       {!loaded && <p className="muted">Loading…</p>}
+      {/* One collapsed row per zone with its progress; open a zone to see and tick its steps. */}
       {loaded &&
-        zones.map((zone) => (
-          <fieldset key={zone} className={styles.zone}>
-            <legend className={styles.zoneTitle}>{ZONES[zone]}</legend>
-            {CHECKLIST.filter((i) => i.zone === zone).map((item) => (
-              <div key={item.id} className={styles.check}>
-                <input type="checkbox" id={`chk-${item.id}`} checked={!!done[item.id]} onChange={() => toggle(item.id)} />
-                <label htmlFor={`chk-${item.id}`}>
-                  <span className={styles.checkText}>{item.text}</span>
-                  <span className={styles.why}>{item.why}</span>
-                </label>
-                {item.link && <Link className={styles.checkLink} href={item.link.href}>{item.link.label}</Link>}
+        zones.map((zone) => {
+          const items = CHECKLIST.filter((i) => i.zone === zone);
+          const zoneDone = items.filter((i) => done[i.id]).length;
+          return (
+            <details key={zone} className={styles.zone}>
+              <summary className={styles.zoneSummary}>
+                <span className={styles.zoneName}>{ZONES[zone]}</span>
+                <span className={styles.zoneCount} data-complete={zoneDone === items.length}>
+                  {zoneDone === items.length ? "All done" : `${zoneDone} of ${items.length} done`}
+                </span>
+                <Icon name="chevronDown" size={20} className={styles.zoneChevron} />
+              </summary>
+              <div role="group" aria-label={ZONES[zone]}>
+                {items.map((item) => (
+                  <div key={item.id} className={styles.check}>
+                    <input type="checkbox" id={`chk-${item.id}`} checked={!!done[item.id]} onChange={() => toggle(item.id)} />
+                    <label htmlFor={`chk-${item.id}`}>
+                      <span className={styles.checkText}>{item.text}</span>
+                      <span className={styles.why}>{item.why}</span>
+                    </label>
+                    {item.link && <Link className={styles.checkLink} href={item.link.href}>{item.link.label}</Link>}
+                  </div>
+                ))}
               </div>
-            ))}
-          </fieldset>
-        ))}
+            </details>
+          );
+        })}
     </section>
   );
 }

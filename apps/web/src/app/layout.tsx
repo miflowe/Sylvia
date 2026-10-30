@@ -4,6 +4,7 @@ import { TabBar } from "@/components/TabBar";
 import { ServiceWorker } from "@/components/ServiceWorker";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { WelcomeIntro } from "@/components/WelcomeIntro";
+import { DesktopSiteHint } from "@/components/DesktopSiteHint";
 import { WELCOME_SCRIPT } from "@/lib/welcome";
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TabBar />
         <ServiceWorker />
         <WelcomeIntro />
+        <DesktopSiteHint />
       </body>
     </html>
   );

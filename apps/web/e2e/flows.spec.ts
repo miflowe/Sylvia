@@ -107,10 +107,16 @@ test("Replay walks from an unverified advisory to a relayed official order", asy
 test("checklist saves and survives a reload", async ({ page }) => {
   await withHome(page);
   await page.goto("/profile");
+  // Zones start closed; each shows its own progress.
+  const roof = page.locator("summary", { hasText: /roof/i });
+  await expect(roof).toContainText("0 of");
+  await roof.click();
   const box = page.getByLabel(/Roof and gutters are clear/);
   await box.check();
   await expect(page.getByText(/1 of 15 done · Saved/)).toBeVisible();
+  await expect(roof).toContainText("1 of");
   await page.reload();
+  await page.locator("summary", { hasText: /roof/i }).click();
   await expect(page.getByLabel(/Roof and gutters are clear/)).toBeChecked();
   await page.getByLabel(/Roof and gutters are clear/).uncheck();
   await expect(page.getByText(/0 of 15 done · Saved/)).toBeVisible();

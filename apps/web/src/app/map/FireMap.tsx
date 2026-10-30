@@ -386,7 +386,7 @@ export function FireMap() {
       map.markers.add(r.marker);
       // Frame the whole fire and the replay home, clear of the alert banner and the bottom bar.
       const pts = [...replay.timeline.detections.map((d) => [d.location.lon, d.location.lat]), [replay.home.lon, replay.home.lat]];
-      map.setCamera({ bounds: atlas.data.BoundingBox.fromPositions(pts), padding: matchMedia("(min-width: 768px)").matches ? 60 : { top: 190, bottom: 250, left: 40, right: 80 }, maxZoom: 11, type: "fly", duration: 1200 });
+      map.setCamera({ bounds: atlas.data.BoundingBox.fromPositions(pts), padding: matchMedia("(min-width: 768px) and (min-height: 600px) and (min-device-width: 768px)").matches ? 60 : { top: 190, bottom: 250, left: 40, right: 80 }, maxZoom: 11, type: "fly", duration: 1200 });
     } else {
       if (r.marker) map.markers.remove(r.marker);
       r.marker = undefined;

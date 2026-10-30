@@ -1,0 +1,7 @@
+/* Big on purpose: in "Desktop site" mode the page is shrunk to about 40%, so normal-sized text would be unreadable. */
+.hint {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: flex-start; gap: 24px;
+  padding: 32px 40px; background: var(--ember-soft); color: var(--ink); box-shadow: var(--shadow-sm);
+}
+.hint p { margin: 0; flex: 1; font-size: 40px; line-height: 1.3; }
+.close { flex: none; width: 88px; height: 88px; border: 0; border-radius: 50%; background: var(--paper-raised); color: var(--ink); font-size: 56px; line-height: 1; cursor: pointer; }

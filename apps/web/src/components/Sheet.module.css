@@ -25,7 +25,7 @@
   border-radius: 50%; border: 0; background: var(--paper-sunk); color: var(--ink); cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (min-height: 600px) and (min-device-width: 768px) {
   .sheet { margin: auto; border-radius: var(--radius-lg); max-width: 520px; }
   .grabber { display: none; }
   .inner { padding-top: var(--space-5); }

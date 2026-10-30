@@ -47,6 +47,12 @@ const HOUR = 3600 * 1000;
 const heatColor = ["step", ["get", "ageH"], HEAT_AGE[0].color, HEAT_AGE[0].upTo, HEAT_AGE[1].color, HEAT_AGE[1].upTo, HEAT_AGE[2].color] as unknown as string;
 const heatRadius = ["step", ["get", "ageH"], 6, 3, 5, 12, 4] as unknown as number;
 
+// Environment Canada's FireWork forecast of surface smoke PM2.5, as map tiles (transparent below 1 µg/m³).
+const HOUR_NOW = () => Math.ceil(Date.now() / HOUR) * HOUR;
+const smokeTiles = (aheadH: number) =>
+  "https://geo.weather.gc.ca/geomet?service=WMS&version=1.3.0&request=GetMap&layers=RAQDPS.Sfc_PM2.5-WildfireSmokePlume&styles=PM2.5_0to100ugm3_Dis" +
+  `&crs=EPSG:3857&bbox={bbox-epsg-3857}&width=256&height=256&format=image/png&transparent=true&time=${new Date(HOUR_NOW() + aheadH * HOUR).toISOString().replace(".000", "")}`;
+
 interface Replay {
   name: string;
   dateLabel: string;
@@ -65,6 +71,9 @@ export function FireMap() {
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
   const [heatHours, setHeatHours] = useState(24);
+  const smokeLayer = useRef<Atlas.layer.TileLayer | undefined>(undefined);
+  const [smokeOn, setSmokeOn] = useState(false);
+  const [smokeAhead, setSmokeAhead] = useState(24);
   // Replay mode: an archived fire plays on the map with the same alert rules as live.
   const mapRef = useRef<Atlas.Map | undefined>(undefined);
   const atlasRef = useRef<typeof Atlas | undefined>(undefined);
@@ -182,6 +191,10 @@ export function FireMap() {
         for (const id of ["fires", "hotspots", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
           for (const layer of layerRefs.current[id]!) map.layers.add(layer);
         }
+        // Smoke forecast tiles sit under every data layer; off until the chip is turned on.
+        smokeLayer.current = new atlas.layer.TileLayer({ tileUrl: smokeTiles(24), tileSize: 256, opacity: 0.55, visible: false }, "smoke-forecast");
+        map.layers.add(smokeLayer.current, "fires-fill");
+
         // Replay layers stay hidden until a replay starts.
         const replayHeat = new atlas.source.DataSource();
         const replayArea = new atlas.source.DataSource();
@@ -275,6 +288,10 @@ export function FireMap() {
       layerRefs.current[id]?.forEach((l) => l.setOptions({ visible: visible[id] && !replay }));
     }
   }, [visible, counts, replay]);
+
+  useEffect(() => {
+    smokeLayer.current?.setOptions({ visible: smokeOn && !replay, tileUrl: smokeTiles(smokeAhead) });
+  }, [smokeOn, smokeAhead, replay, counts]);
 
   async function startReplay() {
     setStatus("Loading the replay…");
@@ -391,10 +408,14 @@ export function FireMap() {
             {counts[l.id] !== undefined && <span className={styles.count}>{counts[l.id]}</span>}
           </button>
         ))}
+        <button type="button" className={styles.chip} aria-pressed={smokeOn} onClick={() => setSmokeOn((s) => !s)}>
+          <span className={styles.swatch} style={{ background: "linear-gradient(90deg, #22c4f0, #ffe933, #ff3333)" }} aria-hidden="true" />
+          Smoke forecast
+        </button>
       </div>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
-      {!selected && !replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} />}
+      {!selected && !replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} />}
       {!selected && replay && (
         <ReplayBar
           start={replay.timeline.start}

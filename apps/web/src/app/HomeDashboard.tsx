@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { FIRE_DANGER, type Conditions, type Place } from "@sylvia/core";
+import { FIRE_DANGER, SMOKE_THRESHOLDS, smokeLine, timeZoneFor, type Conditions, type Place, type SmokeForecast } from "@sylvia/core";
 import { Icon, type IconName } from "@/components/Icon";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { Sheet } from "@/components/Sheet";
@@ -39,7 +39,7 @@ function ago(iso?: string): string {
 /** "Environment and Climate Change Canada (AQHI)" → "AQHI", for tight spaces; the full name is one tap away. */
 const shortSource = (name: string) => name.match(/\(([^)]+)\)\s*$/)?.[1] ?? name;
 
-type Detail = "air" | "fire" | "weather" | "smoke";
+type Detail = "air" | "fire" | "weather" | "smoke" | "forecast";
 
 export function HomeDashboard() {
   const [place, setPlace] = useState<Place | undefined>();
@@ -134,6 +134,8 @@ export function HomeDashboard() {
         <>
           <FireDangerHero c={c} />
 
+          {c.smoke && <SmokeForecastCard f={c.smoke} place={place} sensitive={sensitive} onOpen={() => setDetail("forecast")} />}
+
           {c.summary && (
             <section className={styles.sylvia} aria-live="polite">
               <span className={styles.avatar} aria-hidden="true">
@@ -195,6 +197,7 @@ export function HomeDashboard() {
             {detail === "fire" && <FireDetail c={c} />}
             {detail === "weather" && <WeatherDetail c={c} />}
             {detail === "smoke" && <SmokeDetail c={c} />}
+            {detail === "forecast" && c.smoke && <ForecastDetail f={c.smoke} place={place} sensitive={sensitive} />}
           </Sheet>
         </>
       )}
@@ -218,6 +221,7 @@ const detailTitle: Record<Detail, string> = {
   fire: "Fire activity",
   weather: "Weather now",
   smoke: "Smoke sensors nearby",
+  forecast: "Wildfire smoke forecast",
 };
 
 function Tile({ icon, tone, label, value, unit, foot, onOpen }: { icon: IconName; tone: "sky" | "ember"; label: string; value: string; unit: string; foot: string; onOpen?: () => void }) {
@@ -348,6 +352,58 @@ function SmokeDetail({ c }: { c: Conditions }) {
       </p>
       <p>{p.label} · median of {p.sensors} sensor{p.sensors === 1 ? "" : "s"} within 10 km</p>
       <Source s={p.source} at={p.observedAt} />
+    </>
+  );
+}
+
+const issued = (iso: string) =>
+  new Date(iso).toLocaleString("en-CA", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+
+/** One plain line from Environment Canada's FireWork forecast; tap for the next 2 days hour by hour. */
+function SmokeForecastCard({ f, place, sensitive, onOpen }: { f: SmokeForecast; place: Place; sensitive: boolean; onOpen: () => void }) {
+  const line = smokeLine(f, place.name, new Date().toISOString(), timeZoneFor(place.lon, place.regionCode), sensitive);
+  return (
+    <button type="button" className={`${styles.forecast} ${f.level === "moderate" || f.level === "heavy" ? styles.forecastSmoky : ""}`} onClick={onOpen}>
+      <span className={`${styles.tileIcon} ${styles.sky}`}>
+        <Icon name="cloud" size={18} />
+      </span>
+      <span className={styles.forecastText}>
+        <span className={styles.tileLabel}>Smoke forecast · next 2 days</span>
+        <span className={styles.forecastLine}>{line}</span>
+        <span className={styles.tileFoot}>FireWork · Environment Canada · issued {ago(f.issuedAt)}</span>
+      </span>
+      <Icon name="chevronRight" size={20} className="chevron" />
+    </button>
+  );
+}
+
+function ForecastDetail({ f, place, sensitive }: { f: SmokeForecast; place: Place; sensitive: boolean }) {
+  const tz = timeZoneFor(place.lon, place.regionCode);
+  const top = Math.max(f.peakUgm3, SMOKE_THRESHOLDS.heavy + 5);
+  const label = (iso: string) => new Date(iso).toLocaleString("en-CA", { timeZone: tz, weekday: "short", hour: "numeric" });
+  const tone = (v: number) => (v >= SMOKE_THRESHOLDS.heavy ? "var(--alert-evacuate)" : v >= SMOKE_THRESHOLDS.moderate ? "var(--alert-warning)" : v >= SMOKE_THRESHOLDS.light ? "var(--alert-advisory)" : "var(--sky)");
+  return (
+    <>
+      <p>{smokeLine(f, place.name, new Date().toISOString(), tz, sensitive)}</p>
+      <ol className={styles.bars} aria-label="Wildfire smoke PM2.5 forecast, every 3 hours">
+        {f.points.map((p) => (
+          <li key={p.at} title={`${label(p.at)}: ${Math.round(p.ugm3)} µg/m³`}>
+            <span className={styles.bar} style={{ height: `${Math.max(3, (p.ugm3 / top) * 100)}%`, background: tone(p.ugm3) }} />
+            <span className="sr-only">{`${label(p.at)}: ${Math.round(p.ugm3)} µg/m³`}</span>
+          </li>
+        ))}
+      </ol>
+      <p className={styles.barAxis} aria-hidden="true">
+        <span>{label(f.points[0]!.at)}</span>
+        <span>{label(f.points.at(-1)!.at)}</span>
+      </p>
+      <p className="muted">
+        PM2.5 from wildfire smoke, µg/m³. Light from {SMOKE_THRESHOLDS.light}, moderate from {SMOKE_THRESHOLDS.moderate}, heavy from {SMOKE_THRESHOLDS.heavy}. A computer
+        forecast: real smoke can arrive earlier, later or not at all, so keep checking the Air Quality Health Index.
+      </p>
+      <p className={styles.source}>
+        <a href={f.source.url} target="_blank" rel="noreferrer">{f.source.name}</a> · model run {issued(f.issuedAt)}
+      </p>
     </>
   );
 }

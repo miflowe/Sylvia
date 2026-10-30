@@ -14,3 +14,4 @@ export * from "./firesmart";
 export * from "./site";
 export * from "./nodes";
 export * from "./replayTimeline";
+export * from "./smoke";

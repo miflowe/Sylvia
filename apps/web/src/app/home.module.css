@@ -39,6 +39,20 @@
 .avatar { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--pine); color: var(--on-pine); }
 .sylviaLabel { font: var(--type-eyebrow); color: var(--pine); margin-bottom: 2px !important; }
 
+/* Smoke forecast card and its 2-day chart. */
+.forecast {
+  display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-4); border: 0; border-radius: var(--radius-lg);
+  background: var(--paper-raised); color: var(--ink); text-align: left; font: inherit; cursor: pointer;
+}
+.forecastSmoky { background: var(--ember-soft); }
+.forecastText { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.forecastLine { font: var(--type-heading); }
+.forecast .tileFoot { margin-top: 0; padding-top: 2px; }
+.bars { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; align-items: end; gap: 3px; height: 120px; margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.bars li { height: 100%; display: flex; align-items: flex-end; }
+.bar { width: 100%; border-radius: 4px 4px 0 0; }
+.barAxis { display: flex; justify-content: space-between; margin: 0; font: var(--type-data); font-size: 12px; color: var(--ink-muted); }
+
 /* Tiles. */
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .tile {

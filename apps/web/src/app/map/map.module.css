@@ -39,6 +39,10 @@
 .legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; font: var(--type-data); font-size: 13px; color: var(--ink-muted); }
 .legend li { display: inline-flex; align-items: center; gap: 6px; }
 
+.smokeBlock { display: grid; gap: var(--space-1); padding-bottom: var(--space-2); margin-bottom: var(--space-1); border-bottom: 1px solid var(--line); }
+.smokeKey { display: flex; align-items: center; gap: var(--space-2); margin: 0; font: var(--type-data); font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.smokeRamp { flex: none; width: 56px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #22c4f0 0 30%, #ffe933 30% 50%, #ff9a3c 50% 65%, #ff3333 65% 85%, #7a0000 85%); }
+
 .replayStart {
   justify-self: start; display: inline-flex; align-items: center; gap: var(--space-2); min-height: 40px; margin-top: var(--space-1);
   padding: 0 var(--space-4); border: 0; border-radius: var(--radius-full); background: var(--paper-sunk); color: var(--ink);

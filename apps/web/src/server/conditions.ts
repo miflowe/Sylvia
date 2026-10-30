@@ -14,6 +14,7 @@ import {
 } from "@sylvia/core";
 import { container } from "./cosmos";
 import { isSafeText, writeSummary } from "./foundry";
+import { smokeForecast } from "./smoke";
 
 const HOTSPOT_KM = 50;
 const FIRE_KM = 100;
@@ -97,13 +98,15 @@ async function weather(at: LatLon): Promise<Conditions["weather"]> {
 
 export async function getConditions(at: LatLon, placeName: string, regionCode: string | undefined, sensitive: boolean, withSummary = true): Promise<Conditions> {
   const dayAgo = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
-  const [danger, wx, hotspots, perimeters, aqhis, pms] = await Promise.all([
+  const [danger, wx, hotspots, perimeters, aqhis, pms, smoke] = await Promise.all([
     fireDanger(at),
     weather(at),
     near("hotspot", at, HOTSPOT_KM),
     near("fire-perimeter", at, FIRE_KM),
     near("aqhi", at, AQHI_KM),
     near("pm25", at, PM_KM),
+    // The model runs twice a day, so an hour-old forecast is still current.
+    cached(`smoke:${gridKey(at)}`, 60 * 60 * 1000, () => smokeForecast(at).catch(() => undefined)),
   ]);
 
   const recent = hotspots.filter((h) => h.observedAt >= dayAgo).sort((a, b) => km(at, a) - km(at, b));
@@ -131,6 +134,7 @@ export async function getConditions(at: LatLon, placeName: string, regionCode: s
       source: SOURCES.cwfis,
     },
     weather: wx,
+    smoke,
     generatedAt: new Date().toISOString(),
   };
   if (station?.value !== undefined) {

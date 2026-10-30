@@ -3,6 +3,8 @@ import type { FireDanger } from "./observations";
 type Src = { name: string; url: string };
 
 /** Everything the Home screen shows for one place. Every part carries its source and time. */
+import type { SmokeForecast } from "./smoke";
+
 export interface Conditions {
   at: { lat: number; lon: number };
   regionCode?: string;
@@ -13,6 +15,8 @@ export interface Conditions {
   hotspots: { count: number; nearestKm?: number; latestAt?: string; radiusKm: number; source: Src };
   fires: { count: number; nearestKm?: number; areaHa?: number; lastSeen?: string; radiusKm: number; source: Src };
   weather?: { tempC: number; humidity: number; windKmh: number; windFrom: string; observedAt: string; source: Src };
+  /** Wildfire smoke forecast for the next 2 days (ECCC FireWork). */
+  smoke?: SmokeForecast;
   /** Sylvia's plain-language summary (persona voice; this is not an alert). */
   summary?: string;
   generatedAt: string;
@@ -47,6 +51,13 @@ export function conditionsFacts(c: Conditions, placeName: string, sensitive: boo
       : `No mapped fire areas within ${c.fires.radiusKm} km.`,
   );
   if (c.weather) lines.push(`Weather: ${c.weather.tempC} °C, humidity ${c.weather.humidity}%, wind ${c.weather.windKmh} km/h from the ${c.weather.windFrom}.`);
+  if (c.smoke) {
+    lines.push(
+      c.smoke.level === "none"
+        ? "Wildfire smoke forecast (Environment Canada FireWork), next 2 days: no smoke expected."
+        : `Wildfire smoke forecast (Environment Canada FireWork), next 2 days: ${c.smoke.level}, peaking near ${c.smoke.peakUgm3} µg/m³ at ${c.smoke.peakAt}, starting around ${c.smoke.firstAt}.`,
+    );
+  }
   if (sensitive) lines.push("The person is sensitive to smoke.");
   return lines.join("\n");
 }

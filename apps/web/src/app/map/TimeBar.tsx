@@ -9,10 +9,43 @@ export const HEAT_AGE = [
   { upTo: 24, color: "#e8c39e", label: "12–24 h" },
 ] as const;
 
-/** Bottom bar on the map: how many hours of satellite heat to show, the age legend, and the way into a replay. */
-export function TimeBar({ hours, onHours, onReplay }: { hours: number; onHours: (h: number) => void; onReplay: () => void }) {
+const forecastTime = (t: number) => new Date(t).toLocaleString("en-CA", { weekday: "short", hour: "numeric", timeZoneName: "short" });
+
+interface SmokeControl {
+  aheadH: number;
+  at: number;
+  onAhead: (h: number) => void;
+}
+
+/**
+ * Bottom bar on the map: how many hours of satellite heat to show, the age legend, the smoke forecast hour when that
+ * layer is on, and the way into a replay.
+ */
+export function TimeBar({ hours, onHours, onReplay, smoke }: { hours: number; onHours: (h: number) => void; onReplay: () => void; smoke?: SmokeControl }) {
   return (
     <div className={styles.timebar}>
+      {smoke && (
+        <div className={styles.smokeBlock}>
+          <label className={styles.timeLabel} htmlFor="smoke-ahead">
+            Smoke forecast for <b>{forecastTime(smoke.at)}</b>
+          </label>
+          <input
+            id="smoke-ahead"
+            className={styles.range}
+            type="range"
+            min={3}
+            max={48}
+            step={3}
+            value={smoke.aheadH}
+            onChange={(e) => smoke.onAhead(Number(e.target.value))}
+            aria-valuetext={`${smoke.aheadH} hours from now, ${forecastTime(smoke.at)}`}
+          />
+          <p className={styles.smokeKey}>
+            <span className={styles.smokeRamp} aria-hidden="true" />
+            <span>PM2.5 from wildfire smoke: 1 → 30 → 100+ µg/m³ · Environment Canada FireWork</span>
+          </p>
+        </div>
+      )}
       <label className={styles.timeLabel} htmlFor="heat-hours">
         Satellite heat from the last <b>{hours} h</b>
       </label>

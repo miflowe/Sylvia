@@ -3,7 +3,7 @@
 Single source of truth for where the build is. Updated after every chunk.
 
 **Current step:** All Claude build steps done; waiting on team inputs
-**Next action:** Fill the deck's [placeholders] from interview findings (slide 8 validation, slide 10 prices, cover/roadmap team names, slide 9 video links), then film with `docs/kits/video-scripts.md`. Open items: sign-in (waits on the $5k-credit tenant), iPhone push test.
+**Next action (Claude):** waiting on the user's OK for the laptop/tablet layout mockup (side rail, two-column Home, map side panel; phones unchanged), then build it, then refresh the deck for map replay, smoke forecast and Ask Sylvia. **Team:** fill the deck's [placeholders] from interview findings (slide 8 validation, slide 10 prices, cover/roadmap team names, slide 9 video links), then film with `docs/kits/video-scripts.md`. Open items: sign-in (waits on the $5k-credit tenant), iPhone push test.
 
 ## Build order
 - [x] 1 Foundation
@@ -84,6 +84,7 @@ Single source of truth for where the build is. Updated after every chunk.
 - 2026-10-28: Team Sylvia names on the deck and pitch script. Plant-ID accuracy test (`scripts/plant-accuracy.mjs`, 48 licensed iNaturalist photos, 16 species): 83% top-1, 94% top-3, 29/30 right when "sure"; Norway maple is the weak spot (`docs/results/plant-id-accuracy.md`). Sylvia Node cloud path live: IoT Hub `iot-6x6suo5lxjc5o` (F1, enrichments `loc` + `name` from twin tags), `nodeTelemetry` Function, "Sylvia Nodes" map layer; `scripts/node-sim.mjs` reading reached the map in ~14 s (`docs/results/node-cloud-test.md`). Simulated devices are named `sylvia-sim-*`.
 - 2026-10-29: UN SDG targets 3.9, 11.5, 13.1, 15.8 added: a badge row on the roadmap slide (deck v18), one line in the pitch script's close plus a judge Q&A note, and an `SDG target` column in the findings sheet / interview kit (v2) so each target gets a real finding behind it.
 - 2026-10-29: Map taps fixed for phones: one tap handler picks the nearest point within 22 px (a 44 px finger target) instead of needing an exact hit on 8 px dots; a ring marks the selected point; tapping empty map closes the card; zoom/compass controls no longer draw over the card.
+- 2026-10-29: Map: sensor groups that split on zoom, satellite heat shaded by age with a 1–24 h slider, "Replay a real past fire" on the map (heat, estimated area and alerts play hour by hour, `replayTimeline.ts` in core), FireWork smoke forecast layer with a 3–48 h slider. Home: smoke forecast line + 2-day chart (GeoMet `RAQDPS.Sfc_PM2.5-WildfireSmokePlume`), Ask Sylvia (GPT-4o grounded in live readings; route/evacuate/emergency questions get fixed replies; Content Safety + Prompt Shields on questions, rule check + Content Safety on answers; 8 per 10 min). Profile: Appearance System/Light/Dark. Deployed image 7f7cf56; 25/25 e2e.
 - 2026-10-25: Plan approved. Repo initialized.
 - 2026-10-26: Azure tools signed in. Deploy fixes (Maps region, remote build, staged Functions folder). Note: commit 0e5f187 accidentally included the hardware session's in-progress `hardware/` files (no secrets or PDFs).
 - 2026-10-26: First Azure deploy live (web + Functions + Cosmos + Foundry). Interview kit published as a shareable page.

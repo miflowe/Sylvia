@@ -4,17 +4,26 @@ import { useEffect, useState } from "react";
 import type { Place } from "@sylvia/core";
 import { Icon } from "@/components/Icon";
 import { syncAlerts } from "@/lib/alerts";
+import { getTheme, setTheme, type Theme } from "@/lib/theme";
 
-/** Home place, the one health setting, and a way into alerts. */
+const THEMES: { id: Theme; label: string }[] = [
+  { id: "system", label: "System" },
+  { id: "light", label: "Light" },
+  { id: "dark", label: "Dark" },
+];
+
+/** Home place, the one health setting, appearance, and a way into alerts. */
 export function Settings() {
   const [place, setPlace] = useState<Place | undefined>();
   const [sensitive, setSensitive] = useState(false);
+  const [theme, pickTheme] = useState<Theme>("system");
 
   useEffect(() => {
     try {
       setPlace(JSON.parse(localStorage.getItem("sylvia.place") ?? "null") ?? undefined);
       setSensitive(JSON.parse(localStorage.getItem("sylvia.sensitive") ?? "false"));
     } catch {}
+    pickTheme(getTheme());
   }, []);
 
   function toggle() {
@@ -48,6 +57,30 @@ export function Settings() {
               <span className="listSub">Get smoke advice and alerts sooner</span>
             </span>
             <button type="button" role="switch" aria-checked={sensitive} aria-labelledby="sensitive-label" className="switch" onClick={toggle} />
+          </div>
+        </li>
+        <li>
+          <div className="listRow" style={{ flexWrap: "wrap" }}>
+            <span className="listIcon"><Icon name="contrast" size={20} /></span>
+            <span className="listText">
+              <span className="listTitle" id="theme-label">Appearance</span>
+            </span>
+            <div className="segmented" role="radiogroup" aria-labelledby="theme-label" style={{ flexBasis: "100%" }}>
+              {THEMES.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={theme === t.id}
+                  onClick={() => {
+                    pickTheme(t.id);
+                    setTheme(t.id);
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
           </div>
         </li>
         <li>

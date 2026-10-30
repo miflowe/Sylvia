@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
 import { TabBar } from "@/components/TabBar";
 import { ServiceWorker } from "@/components/ServiceWorker";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const sans = Figtree({ subsets: ["latin"], variable: "--font-sans", fallback: ["system-ui", "Segoe UI", "sans-serif"] });
@@ -25,7 +26,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA" className={sans.variable}>
+    // suppressHydrationWarning: THEME_SCRIPT sets data-theme on <html> before React hydrates.
+    <html lang="en-CA" className={sans.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         {children}
         <TabBar />

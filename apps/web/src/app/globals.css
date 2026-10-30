@@ -99,6 +99,10 @@ a.listRow, button.listRow { cursor: pointer; }
 .switch:disabled { opacity: 0.6; }
 @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
 
+/* A theme picked in Settings also sets the browser's own colours (form controls, scrollbars). */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
 /* Segmented control: buttons with role="radio" inside a role="radiogroup". */
 .segmented { display: flex; padding: 4px; border-radius: var(--radius-full); background: var(--paper-sunk); }
 .segmented > button {

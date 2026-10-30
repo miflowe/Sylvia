@@ -4,6 +4,7 @@ import type * as Atlas from "azure-maps-control";
 import type { Place } from "@sylvia/core";
 import { DetailCard, type Selected } from "./DetailCard";
 import { HEAT_AGE, TimeBar } from "./TimeBar";
+import { isDark } from "@/lib/theme";
 import styles from "./map.module.css";
 
 type LayerId = "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
@@ -64,7 +65,7 @@ export function FireMap() {
       try {
         place = JSON.parse(localStorage.getItem("sylvia.place") ?? "null") ?? undefined;
       } catch {}
-      const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+      const dark = isDark();
 
       map = new atlas.Map(el.current, {
         center: place ? [place.lon, place.lat] : [-105, 52],
@@ -80,7 +81,8 @@ export function FireMap() {
         if (!map) return;
         // Development only: lets tests drive the map from the browser console.
         if (process.env.NODE_ENV !== "production") (window as unknown as { __sylviaMap?: Atlas.Map }).__sylviaMap = map;
-        map.controls.add([new atlas.control.ZoomControl(), new atlas.control.CompassControl()], { position: atlas.ControlPosition.BottomRight });
+        const controlStyle = (dark ? "dark" : "light") as Atlas.ControlStyle;
+        map.controls.add([new atlas.control.ZoomControl({ style: controlStyle, zoomDelta: 1 }), new atlas.control.CompassControl({ style: controlStyle, rotationDegreesDelta: 15 })], { position: atlas.ControlPosition.BottomRight });
 
         // Smoke sensors bunch up in towns, so nearby ones merge into a group that splits apart as you zoom in.
         const sources = Object.fromEntries(

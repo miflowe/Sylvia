@@ -23,6 +23,7 @@ const paths = {
   building: "M4 21V5l8-2v18M12 8h8v13M8 8v.01M8 12v.01M8 16v.01M16 12v.01M16 16v.01M3 21h18",
   doc: "M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6",
   store: "M4 10v10h16V10M3 10l2-6h14l2 6zM9 20v-5h6v5",
+  contrast: "M12 21a9 9 0 100-18 9 9 0 000 18zM12 3v18M12 7h4.5M12 11h6M12 15h5.5",
   info: "M12 21a9 9 0 100-18 9 9 0 000 18zM12 11v6M12 7.5v.01",
   check: "M5 12l5 5 9-10",
   close: "M6 6l12 12M18 6L6 18",

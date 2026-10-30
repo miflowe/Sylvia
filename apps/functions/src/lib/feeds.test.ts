@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseAqhi, parseCwfisPerimeters, parseFirmsCsv, parsePurpleAir } from "./feeds";
+import { parseAqhi, parseBcFires, parseCwfisPerimeters, parseFirmsCsv, parseOntarioFires, parsePurpleAir } from "./feeds";
 
 describe("FIRMS", () => {
   const csv = `latitude,longitude,bright_ti4,scan,track,acq_date,acq_time,satellite,instrument,confidence,version,bright_ti5,frp,daynight
@@ -57,5 +57,36 @@ describe("PurpleAir", () => {
     });
     expect(obs).toHaveLength(1);
     expect(obs[0]).toMatchObject({ id: "purpleair:1", value: 7.5, kind: "pm25", props: { corrected: "US EPA" } });
+  });
+});
+
+describe("named fires", () => {
+  it("reads BC fires, names them, and skips fires that are out", () => {
+    const obs = parseBcFires({
+      features: [
+        { geometry: { type: "Point", coordinates: [-119.51, 50.2] }, properties: { FIRE_NUMBER: "K51402", INCIDENT_NAME: "Quilpituk Creek", FIRE_STATUS: "Out of Control", CURRENT_SIZE: 1520.4, FIRE_URL: "https://wildfiresituation.nrs.gov.bc.ca/incidents?fireYear=2026&incidentNumber=K51402", FIRE_OF_NOTE_IND: "Y" } },
+        { geometry: { type: "Point", coordinates: [-118.68, 50.24] }, properties: { FIRE_NUMBER: "K42261", INCIDENT_NAME: "K42261", GEOGRAPHIC_DESCRIPTION: "Richlands Road", FIRE_STATUS: "Being Held", CURRENT_SIZE: 0.009 } },
+        { geometry: { type: "Point", coordinates: [-121.75, 57.39] }, properties: { FIRE_NUMBER: "G80405", FIRE_STATUS: "Out" } },
+      ],
+    });
+    expect(obs.map((o) => [o.label, o.props?.status])).toEqual([
+      ["Quilpituk Creek wildfire", "Out of control"],
+      ["Richlands Road (K42261)", "Being held"],
+    ]);
+    expect(obs[0]).toMatchObject({ kind: "named-fire", value: 1520.4, props: { fireNumber: "K51402", ofNote: true } });
+  });
+
+  it("reads Ontario fires and turns district codes into names", () => {
+    const obs = parseOntarioFires({
+      features: [
+        { geometry: { type: "Point", coordinates: [-89.1, 48.74] }, properties: { FIELD_AGENCY_FIRE_ID: "THU_FIRE_091", FIELD_STAGE_OF_CONTROL_STATUS: "BM", FIELD_FIRE_SIZE: 0.1 } },
+        { geometry: { type: "Point", coordinates: [-93.8, 51.0] }, properties: { FIELD_AGENCY_FIRE_ID: "RED_FIRE_012", FIELD_STAGE_OF_CONTROL_STATUS: "UC", FIELD_FIRE_SIZE: 42 } },
+        { geometry: { type: "Point", coordinates: [-82.55, 46.17] }, properties: { FIELD_AGENCY_FIRE_ID: "CHA_FIRE_029", FIELD_STAGE_OF_CONTROL_STATUS: "EX" } },
+      ],
+    });
+    expect(obs.map((o) => [o.label, o.props?.status])).toEqual([
+      ["Thunder Bay 91", "Being monitored"],
+      ["Red Lake 12", "Under control"],
+    ]);
   });
 });

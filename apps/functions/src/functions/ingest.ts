@@ -22,6 +22,9 @@ app.timer("ingestPurpleAir", { schedule: "0 5,20,35,50 * * * *", handler: async 
 app.timer("ingestCwfis", { schedule: "0 10 * * * *", handler: async (_t, c) => {
     await run("cwfis", c);
   } });
+app.timer("ingestNamedFires", { schedule: "0 12,42 * * * *", handler: async (_t, c) => {
+    await run("fires", c);
+  } });
 app.timer("ingestAqhi", { schedule: "0 25 * * * *", handler: async (_t, c) => {
     await run("aqhi", c);
   } });

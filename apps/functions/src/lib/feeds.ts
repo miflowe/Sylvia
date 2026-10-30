@@ -1,5 +1,5 @@
 // Parsers for the public feeds. Pure functions: raw response in, Observations out.
-import { agreedCf1, cellIdFor, epaCorrectPm25, SOURCES, type Observation } from "@sylvia/core";
+import { agreedCf1, cellIdFor, epaCorrectPm25, SOURCES, type FireStatus, type Observation } from "@sylvia/core";
 
 const HOUR = 3600;
 const point = (lon: number, lat: number) => ({ type: "Point" as const, coordinates: [round(lon, 4), round(lat, 4)] as [number, number] });
@@ -154,4 +154,78 @@ export function parsePurpleAir(body: { fields?: string[]; data?: (number | null)
       props: { corrected: "US EPA" },
       ttl: 2 * HOUR,
     }));
+}
+
+type PointFeature<P> = { geometry: { type: string; coordinates: number[] } | null; properties: P };
+
+const BC_STATUS: Record<string, FireStatus> = { "Out of Control": "Out of control", "Being Held": "Being held", "Under Control": "Under control" };
+
+/** BC Wildfire Service "Fire Locations - Current" (GeoJSON). Fires that are out are skipped. */
+export function parseBcFires(fc: {
+  features?: PointFeature<{ FIRE_NUMBER?: string; INCIDENT_NAME?: string; GEOGRAPHIC_DESCRIPTION?: string; FIRE_STATUS?: string; CURRENT_SIZE?: number; FIRE_URL?: string; FIRE_OF_NOTE_IND?: string; IGNITION_DATE?: number }>[];
+}): Observation[] {
+  const out: Observation[] = [];
+  for (const { geometry, properties: p } of fc.features ?? []) {
+    const status = p.FIRE_STATUS && BC_STATUS[p.FIRE_STATUS];
+    if (!status || geometry?.type !== "Point" || !p.FIRE_NUMBER) continue;
+    const [lon, lat] = geometry.coordinates as [number, number];
+    // BC names larger fires ("Quilpituk Creek"); others are known by number and place.
+    const name = p.INCIDENT_NAME && p.INCIDENT_NAME !== p.FIRE_NUMBER ? `${p.INCIDENT_NAME} wildfire` : `${p.GEOGRAPHIC_DESCRIPTION ?? "Wildfire"} (${p.FIRE_NUMBER})`;
+    out.push({
+      id: `bcws:${p.FIRE_NUMBER}`,
+      cellId: cellIdFor({ lat, lon }),
+      kind: "named-fire",
+      source: SOURCES.bcws,
+      location: point(lon, lat),
+      observedAt: new Date().toISOString(),
+      value: typeof p.CURRENT_SIZE === "number" ? round(p.CURRENT_SIZE, 1) : undefined,
+      label: name,
+      props: {
+        fireNumber: p.FIRE_NUMBER,
+        status,
+        agency: "BC Wildfire Service",
+        url: p.FIRE_URL ?? SOURCES.bcws.url,
+        ofNote: p.FIRE_OF_NOTE_IND === "Y",
+        started: p.IGNITION_DATE ? new Date(p.IGNITION_DATE).toISOString() : "",
+      },
+      ttl: 3 * HOUR,
+    });
+  }
+  return out;
+}
+
+// Ontario stage-of-control codes. EX (extinguished) and anything unknown are skipped.
+const ON_STATUS: Record<string, FireStatus> = { OC: "Out of control", NUC: "Out of control", BH: "Being held", BHG: "Being held", UC: "Under control", UCO: "Under control", BM: "Being monitored", OBS: "Being monitored" };
+// Ontario names fires by district and number, e.g. RED_FIRE_012 is "Red Lake 12".
+const ON_DISTRICTS: Record<string, string> = {
+  AFA: "Atikokan", CHA: "Chapleau", COC: "Cochrane", DRY: "Dryden", FOR: "Fort Frances", HRN: "Hearst", KEN: "Kenora", KLK: "Kirkland Lake",
+  NIP: "Nipigon", NOR: "North Bay", PAR: "Parry Sound", PEM: "Pembroke", RED: "Red Lake", SAU: "Sault Ste. Marie", SLK: "Sioux Lookout",
+  SUD: "Sudbury", THU: "Thunder Bay", TIM: "Timmins", WAW: "Wawa",
+};
+
+/** Ontario MNR "Ontario Fires" layer (GeoJSON). */
+export function parseOntarioFires(fc: {
+  features?: PointFeature<{ FIELD_AGENCY_FIRE_ID?: string; FIELD_STAGE_OF_CONTROL_STATUS?: string; FIELD_FIRE_SIZE?: number; FIELD_STATUS_DATE?: number }>[];
+}): Observation[] {
+  const out: Observation[] = [];
+  for (const { geometry, properties: p } of fc.features ?? []) {
+    const status = ON_STATUS[(p.FIELD_STAGE_OF_CONTROL_STATUS ?? "").trim()];
+    if (!status || geometry?.type !== "Point" || !p.FIELD_AGENCY_FIRE_ID) continue;
+    const [lon, lat] = geometry.coordinates as [number, number];
+    const m = p.FIELD_AGENCY_FIRE_ID.match(/^([A-Z]{3})_FIRE_0*(\d+)$/);
+    const name = m ? `${ON_DISTRICTS[m[1]!] ?? m[1]} ${m[2]}` : p.FIELD_AGENCY_FIRE_ID;
+    out.push({
+      id: `onfire:${p.FIELD_AGENCY_FIRE_ID}`,
+      cellId: cellIdFor({ lat, lon }),
+      kind: "named-fire",
+      source: SOURCES.ontarioFires,
+      location: point(lon, lat),
+      observedAt: p.FIELD_STATUS_DATE ? new Date(p.FIELD_STATUS_DATE).toISOString() : new Date().toISOString(),
+      value: typeof p.FIELD_FIRE_SIZE === "number" && p.FIELD_FIRE_SIZE >= 0 ? round(p.FIELD_FIRE_SIZE, 1) : undefined,
+      label: name,
+      props: { fireNumber: p.FIELD_AGENCY_FIRE_ID, status, agency: "Ontario Ministry of Natural Resources", url: SOURCES.ontarioFires.url, ofNote: false, started: "" },
+      ttl: 3 * HOUR,
+    });
+  }
+  return out;
 }

@@ -1,6 +1,6 @@
 // One function per feed. Each fetches, parses, and upserts; failures are logged and never throw past the timer.
 import { PILOT_AREAS, REGION_BBOX, type Observation } from "@sylvia/core";
-import { parseAqhi, parseCwfisPerimeters, parseFirmsCsv, parsePurpleAir } from "./feeds";
+import { parseAqhi, parseBcFires, parseCwfisPerimeters, parseFirmsCsv, parseOntarioFires, parsePurpleAir } from "./feeds";
 import { upsertObservations } from "./store";
 
 export interface IngestResult {
@@ -45,6 +45,24 @@ export async function ingestCwfis(): Promise<IngestResult> {
   return store("cwfis", items);
 }
 
+/** Named fires with their official stage of control: BC Wildfire Service and Ontario MNR. Fires that are out are left off. */
+export async function ingestNamedFires(): Promise<IngestResult> {
+  const items: Observation[] = [];
+  const notes: string[] = [];
+  const bc =
+    "https://delivery.maps.gov.bc.ca/arcgis/rest/services/mpcm/bcgwpub/MapServer/502/query" +
+    "?where=FIRE_STATUS%3C%3E%27Out%27&outFields=FIRE_NUMBER,INCIDENT_NAME,GEOGRAPHIC_DESCRIPTION,FIRE_STATUS,CURRENT_SIZE,FIRE_URL,FIRE_OF_NOTE_IND,IGNITION_DATE&outSR=4326&f=geojson";
+  const on =
+    "https://ws.lioservices.lrc.gov.on.ca/arcgis1/rest/services/MNRF/Ontario_Fires_Map/MapServer/0/query" +
+    "?where=FIELD_STAGE_OF_CONTROL_STATUS%3C%3E%27EX%27&outFields=FIELD_AGENCY_FIRE_ID,FIELD_STAGE_OF_CONTROL_STATUS,FIELD_FIRE_SIZE,FIELD_STATUS_DATE&outSR=4326&f=geojson";
+  for (const [name, url, parse] of [["BC", bc, parseBcFires], ["ON", on, parseOntarioFires]] as const) {
+    const res = await fetch(url, { headers: UA });
+    if (res.ok) items.push(...parse(await res.json()));
+    else notes.push(`${name} ${res.status}`);
+  }
+  return store("fires", items, notes.join(", ") || undefined);
+}
+
 /** Latest AQHI observations for stations in Ontario and BC. */
 export async function ingestAqhi(): Promise<IngestResult> {
   const items: Observation[] = [];
@@ -82,4 +100,4 @@ export async function ingestPurpleAir(): Promise<IngestResult> {
   return store("purpleair", items);
 }
 
-export const FEEDS = { firms: ingestFirms, cwfis: ingestCwfis, aqhi: ingestAqhi, purpleair: ingestPurpleAir };
+export const FEEDS = { firms: ingestFirms, cwfis: ingestCwfis, fires: ingestNamedFires, aqhi: ingestAqhi, purpleair: ingestPurpleAir };

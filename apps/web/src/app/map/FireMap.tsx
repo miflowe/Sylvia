@@ -8,8 +8,10 @@ import { ReplayAlert, ReplayBar, ReplayHeader } from "./ReplayBar";
 import { isDark } from "@/lib/theme";
 import styles from "./map.module.css";
 
-type LayerId = "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
+type LayerId = "evac" | "named" | "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
 const LAYERS: { id: LayerId; label: string; swatch: string }[] = [
+  { id: "evac", label: "Evacuation areas", swatch: "#9c1c1c" },
+  { id: "named", label: "Named fires", swatch: "#e07a2c" },
   { id: "fires", label: "Fire areas", swatch: "var(--ember)" },
   { id: "hotspots", label: "Satellite heat", swatch: "#e8771a" },
   { id: "aqhi", label: "Air quality", swatch: "var(--sky)" },
@@ -39,8 +41,12 @@ function loadAtlas(): Promise<typeof Atlas> {
 
 // Half a 44 px touch target. Point layers that a tap can pick, by id.
 const TAP_RADIUS = 22;
-const POINT_LAYERS = ["nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots", "replay-heat"];
-const AREA_LAYERS = ["fires-fill", "replay-fill"];
+const POINT_LAYERS = ["named", "nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots", "replay-heat"];
+// Official evacuation areas win over estimated fire areas when a tap lands on both.
+const AREA_LAYERS = ["evac-fill", "fires-fill", "replay-fill"];
+
+// Official stage of control, from most to least urgent.
+const FIRE_STATUS_COLOUR = ["match", ["get", "status"], "Out of control", "#9c1c1c", "Being held", "#e07a2c", "Under control", "#4f7d3a", "#6b7570"] as unknown as string;
 
 const HOUR = 3600 * 1000;
 // Fresh heat is darker and bigger; older detections fade. Shared by live and replay heat.
@@ -66,7 +72,7 @@ export function FireMap() {
   const el = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<Partial<Record<LayerId, Atlas.layer.Layer[]>>>({});
   const ring = useRef<Atlas.source.DataSource | undefined>(undefined);
-  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
+  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ evac: true, named: true, fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
   const [counts, setCounts] = useState<Partial<Record<LayerId, number>>>({});
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
@@ -135,7 +141,20 @@ export function FireMap() {
         const isGroup = ["has", "point_count"] as unknown as Filter;
         const isSingle = ["!", ["has", "point_count"]] as unknown as Filter;
 
+        const isOrder = ["==", ["get", "noticeKind"], "order"] as unknown as boolean;
         layerRefs.current = {
+          evac: [
+            new atlas.layer.PolygonLayer(sources.evac, "evac-fill", { fillColor: ["case", isOrder, "#9c1c1c", "#e8b931"] as unknown as string, fillOpacity: 0.2 }),
+            new atlas.layer.LineLayer(sources.evac, "evac-line", { strokeColor: ["case", isOrder, "#9c1c1c", "#b98a12"] as unknown as string, strokeWidth: 2, strokeDashArray: [3, 2] }),
+          ],
+          named: [
+            new atlas.layer.BubbleLayer(sources.named, "named", { color: FIRE_STATUS_COLOUR, radius: 9, strokeColor: "#ffffff", strokeWidth: 3 }),
+            new atlas.layer.SymbolLayer(sources.named, "named-label", {
+              iconOptions: { image: "none" },
+              minZoom: 7,
+              textOptions: { textField: ["get", "name"], size: 12, font: ["SegoeUi-Bold"], color: "#3a1a0a", haloColor: "#ffffff", haloWidth: 2, anchor: "top", offset: [0, 1] },
+            }),
+          ],
           fires: [
             new atlas.layer.PolygonLayer(sources.fires, "fires-fill", { fillColor: ember, fillOpacity: 0.25, filter: isPolygon }),
             new atlas.layer.LineLayer(sources.fires, "fires-line", { strokeColor: ember, strokeWidth: 1.5, filter: isPolygon }),
@@ -188,7 +207,7 @@ export function FireMap() {
           ],
           sightings: [new atlas.layer.BubbleLayer(sources.sightings, "sightings", { color: css("--moss"), radius: 6, strokeColor: "#ffffff", strokeWidth: 1.5 })],
         };
-        for (const id of ["fires", "hotspots", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
+        for (const id of ["evac", "fires", "hotspots", "named", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
           for (const layer of layerRefs.current[id]!) map.layers.add(layer);
         }
         // Smoke forecast tiles sit under every data layer; off until the chip is turned on.

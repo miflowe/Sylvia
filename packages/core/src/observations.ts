@@ -3,7 +3,7 @@
  * scales used to describe them. Every observation keeps its source and time.
  */
 
-export type ObservationKind = "hotspot" | "fire-perimeter" | "aqhi" | "pm25" | "node";
+export type ObservationKind = "hotspot" | "fire-perimeter" | "named-fire" | "aqhi" | "pm25" | "node";
 
 export interface Observation {
   id: string;
@@ -27,7 +27,12 @@ export const SOURCES = {
   aqhi: { name: "Environment and Climate Change Canada (AQHI)", url: "https://weather.gc.ca/airquality/pages/index_e.html" },
   purpleair: { name: "PurpleAir sensors", url: "https://map.purpleair.com/" },
   openMeteo: { name: "Open-Meteo", url: "https://open-meteo.com/" },
+  bcws: { name: "BC Wildfire Service", url: "https://wildfiresituation.nrs.gov.bc.ca/" },
+  ontarioFires: { name: "Ontario Forest Fires (MNR)", url: "https://www.ontario.ca/page/forest-fires" },
 } as const;
+
+/** A named, agency-managed fire with its official stage of control. */
+export type FireStatus = "Out of control" | "Being held" | "Under control" | "Being monitored";
 
 /** Areas polled for street-level PurpleAir readings: [west, south, east, north]. */
 export const PILOT_AREAS = [

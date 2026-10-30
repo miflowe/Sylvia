@@ -4,7 +4,9 @@ import { aqhiCategory, NODE_SOURCE, pm25Label, SOURCES } from "@sylvia/core";
 import styles from "./map.module.css";
 
 export type Selected =
-  | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; position?: number[] }
+  | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; fireName?: string; fireStatus?: string; fireAgency?: string; position?: number[] }
+  | { kind: "namedFire"; name: string; status: string; areaHa: number | null; agency: string; fireNumber: string; url: string; ofNote?: boolean; updatedAt: string; position?: number[] }
+  | { kind: "evac"; noticeKind: "order" | "alert"; areaName: string; agency: string; issuedAt: string; url: string; sourceName: string; position?: number[] }
   | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; replay?: boolean; position?: number[] }
   | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
   | { kind: "pm25"; value: number; observedAt: string; corrected?: boolean; position?: number[] }
@@ -41,8 +43,12 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
             {item.satellite && <div><dt>Satellite</dt><dd>{SATELLITES[item.satellite] ?? item.satellite}</dd></div>}
             {item.confidence && <div><dt>Confidence</dt><dd>{CONFIDENCE[item.confidence] ?? item.confidence}</dd></div>}
             {item.frp !== null && <div><dt>Heat output</dt><dd>{item.frp} MW</dd></div>}
+            {item.fireName && <div><dt>Likely part of</dt><dd>{item.fireName} ({item.fireStatus?.toLowerCase()}, {item.fireAgency})</dd></div>}
           </dl>
-          <p className={styles.note}>Not a confirmed fire. Satellites also pick up controlled burns, flares and other heat sources. Check official sources.</p>
+          <p className={styles.note}>
+            Not a confirmed fire. Satellites also pick up controlled burns, flares and other heat sources.
+            {item.fireName ? " The link to a named fire is by distance only." : ""} Check official sources.
+          </p>
         </>
       );
       break;
@@ -60,6 +66,40 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
             {item.replay
               ? "Sylvia estimated this outline from the satellite heat seen so far in the replay. It is not an official fire perimeter or evacuation zone."
               : "Outline estimated from satellite detections. It is not an official fire perimeter or evacuation zone."}
+          </p>
+        </>
+      );
+      break;
+    case "namedFire":
+      title = item.name;
+      source = { name: item.agency, url: item.url };
+      body = (
+        <>
+          <p className={styles.reading}>{item.status}</p>
+          <dl className={styles.dl}>
+            {item.areaHa !== null && <div><dt>Size</dt><dd>{item.areaHa < 1 ? "Under 1" : Math.round(item.areaHa).toLocaleString("en-CA")} ha</dd></div>}
+            <div><dt>Fire number</dt><dd>{item.fireNumber}</dd></div>
+            <div><dt>Managed by</dt><dd>{item.agency}</dd></div>
+            {item.ofNote && <div><dt>Note</dt><dd>Wildfire of note</dd></div>}
+          </dl>
+          <p className="muted">Official status from {item.agency}, checked {when(item.updatedAt)}. Sizes are estimates and change through the day.</p>
+        </>
+      );
+      break;
+    case "evac":
+      title = `Evacuation ${item.noticeKind}: ${item.areaName}`;
+      source = { name: item.sourceName, url: item.url };
+      body = (
+        <>
+          <dl className={styles.dl}>
+            <div><dt>Issued by</dt><dd>{item.agency}</dd></div>
+            <div><dt>Issued</dt><dd>{when(item.issuedAt)}</dd></div>
+          </dl>
+          <p className={styles.note}>
+            {item.noticeKind === "order"
+              ? `An official evacuation order covers this area. Follow ${item.agency}'s instructions.`
+              : `An official evacuation alert covers this area: be ready to leave on short notice. Follow ${item.agency}'s instructions.`}{" "}
+            The outline is relayed as published; check the official source for the exact boundary.
           </p>
         </>
       );

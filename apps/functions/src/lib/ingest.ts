@@ -64,7 +64,7 @@ export async function ingestPurpleAir(): Promise<IngestResult> {
   for (const area of PILOT_AREAS) {
     const [w, s, e, n] = area.bbox;
     const params = new URLSearchParams({
-      fields: "pm2.5_10minute,latitude,longitude,last_seen",
+      fields: "pm2.5_cf_1_a,pm2.5_cf_1_b,humidity,latitude,longitude,last_seen",
       location_type: "0", // outdoor
       max_age: "3600",
       nwlng: String(w),

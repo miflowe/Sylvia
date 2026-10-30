@@ -7,7 +7,7 @@ export type Selected =
   | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; position?: number[] }
   | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; replay?: boolean; position?: number[] }
   | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
-  | { kind: "pm25"; value: number; observedAt: string; position?: number[] }
+  | { kind: "pm25"; value: number; observedAt: string; corrected?: boolean; position?: number[] }
   | { kind: "sighting"; commonName: string; date: string; position?: number[] }
   | { kind: "node"; name: string; value?: number; observedAt: string; simulated?: boolean; co?: number; co2?: number; t?: number; rh?: number; soc?: number; cause?: string; position?: number[] };
 
@@ -84,7 +84,9 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
       body = (
         <>
           <p className={styles.reading}>PM2.5 {item.value} µg/m³ · {pm25Label(item.value)}</p>
-          <p className="muted">10-minute average, last reported {when(item.observedAt)}. Community sensors aren&apos;t official monitors.</p>
+          <p className="muted">
+            {item.corrected ? "Corrected with the US EPA formula for PurpleAir sensors. " : ""}Last reported {when(item.observedAt)}. Community sensors aren&apos;t official monitors.
+          </p>
         </>
       );
       break;

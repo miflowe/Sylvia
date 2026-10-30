@@ -56,7 +56,7 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
       })),
     ),
     aqhi: fc(aqhi.map((o) => point(o, { kind: "aqhi", value: o.value, label: o.label ?? "", observedAt: o.observedAt }))),
-    pm25: fc(pm25.map((o) => point(o, { kind: "pm25", value: o.value, observedAt: o.observedAt }))),
+    pm25: fc(pm25.map((o) => point(o, { kind: "pm25", value: o.value, observedAt: o.observedAt, corrected: o.props?.corrected === "US EPA" }))),
     sightings: fc(sightings.map((x) => point(x, { kind: "sighting", commonName: x.commonName, date: x.createdAt }))),
     nodes: fc(nodes.map((o) => point(o, { kind: "node", ...(o.value !== undefined ? { value: o.value } : {}), name: o.label ?? "", observedAt: o.observedAt, ...o.props }))),
   };

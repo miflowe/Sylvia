@@ -45,16 +45,17 @@ describe("AQHI", () => {
 });
 
 describe("PurpleAir", () => {
-  it("maps fields by name and drops broken sensors", () => {
+  it("applies the US EPA correction and drops sensors that fail the channel check", () => {
     const obs = parsePurpleAir({
-      fields: ["sensor_index", "last_seen", "latitude", "longitude", "pm2.5_10minute"],
+      fields: ["sensor_index", "last_seen", "latitude", "longitude", "pm2.5_cf_1_a", "pm2.5_cf_1_b", "humidity"],
       data: [
-        [1, 1793000000, 50.67, -120.33, 12.34],
-        [2, 1793000000, 50.6, -120.3, 4000],
-        [3, 1793000000, null, -120.3, 5],
+        [1, 1793000000, 50.67, -120.33, 10, 10, 40], // 0.524 × 10 − 0.0862 × 40 + 5.75 = 7.5
+        [2, 1793000000, 50.6, -120.3, 4, 40, 40], // channels disagree
+        [3, 1793000000, null, -120.3, 5, 5, 40], // no location
+        [4, 1793000000, 50.6, -120.3, 5, 5, null], // no humidity
       ],
     });
     expect(obs).toHaveLength(1);
-    expect(obs[0]).toMatchObject({ id: "purpleair:1", value: 12.3, kind: "pm25" });
+    expect(obs[0]).toMatchObject({ id: "purpleair:1", value: 7.5, kind: "pm25", props: { corrected: "US EPA" } });
   });
 });

@@ -1,5 +1,5 @@
 // Parsers for the public feeds. Pure functions: raw response in, Observations out.
-import { cellIdFor, SOURCES, type Observation } from "@sylvia/core";
+import { agreedCf1, cellIdFor, epaCorrectPm25, SOURCES, type Observation } from "@sylvia/core";
 
 const HOUR = 3600;
 const point = (lon: number, lat: number) => ({ type: "Point" as const, coordinates: [round(lon, 4), round(lat, 4)] as [number, number] });
@@ -121,22 +121,28 @@ export function parseAqhi(fc: {
   return [...byStation.values()];
 }
 
-/** PurpleAir /v1/sensors response with fields sensor_index, pm2.5_10minute, latitude, longitude, last_seen. */
+/**
+ * PurpleAir /v1/sensors response with fields sensor_index, pm2.5_cf_1_a, pm2.5_cf_1_b, humidity, latitude, longitude,
+ * last_seen. Values are US EPA corrected; sensors whose two channels disagree, or with no humidity, are dropped.
+ */
 export function parsePurpleAir(body: { fields?: string[]; data?: (number | null)[][] }): Observation[] {
   const f = body.fields ?? [];
   const i = (name: string) => f.indexOf(name);
   return (body.data ?? [])
-    .map((row) => ({
-      id: row[i("sensor_index")],
-      pm: row[i("pm2.5_10minute")],
-      lat: row[i("latitude")],
-      lon: row[i("longitude")],
-      seen: row[i("last_seen")],
-    }))
+    .map((row) => {
+      const cf1 = agreedCf1(row[i("pm2.5_cf_1_a")], row[i("pm2.5_cf_1_b")]);
+      const rh = row[i("humidity")];
+      return {
+        id: row[i("sensor_index")],
+        pm: cf1 !== undefined && typeof rh === "number" && cf1 < 1000 ? epaCorrectPm25(cf1, rh) : null,
+        lat: row[i("latitude")],
+        lon: row[i("longitude")],
+        seen: row[i("last_seen")],
+      };
+    })
     .filter((r): r is { id: number; pm: number; lat: number; lon: number; seen: number } =>
       [r.id, r.pm, r.lat, r.lon, r.seen].every((v) => typeof v === "number"),
     )
-    .filter((r) => r.pm >= 0 && r.pm < 1000) // drop obviously broken sensors
     .map((r) => ({
       id: `purpleair:${r.id}`,
       cellId: cellIdFor({ lat: r.lat, lon: r.lon }),
@@ -145,6 +151,7 @@ export function parsePurpleAir(body: { fields?: string[]; data?: (number | null)
       location: point(r.lon, r.lat),
       observedAt: new Date(r.seen * 1000).toISOString(),
       value: round(r.pm, 1),
+      props: { corrected: "US EPA" },
       ttl: 2 * HOUR,
     }));
 }

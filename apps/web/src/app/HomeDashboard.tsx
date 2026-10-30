@@ -360,6 +360,7 @@ function SmokeDetail({ c }: { c: Conditions }) {
         {p.median} <span>µg/m³</span>
       </p>
       <p>{p.label} · median of {p.sensors} sensor{p.sensors === 1 ? "" : "s"} within 10 km</p>
+      <p className="muted">PurpleAir readings are corrected with the US EPA formula, because raw values read high, especially in smoke.</p>
       <Source s={p.source} at={p.observedAt} />
     </>
   );

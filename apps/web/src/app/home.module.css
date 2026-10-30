@@ -123,3 +123,14 @@ button.tile:active { transform: scale(0.98); }
   width: 100%; min-height: 54px; padding: 0 var(--space-4) 0 48px; border-radius: var(--radius-full);
   border: 1.5px solid var(--line-strong); background: var(--paper-raised); color: var(--ink); font: var(--type-body);
 }
+
+/* Two columns from tablet up: conditions on the left, Ask Sylvia and the readings on the right. */
+.cols, .colMain, .colSide { display: contents; }
+@media (min-width: 768px) {
+  .cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+  .colMain, .colSide { display: grid; gap: var(--space-4); align-content: start; }
+}
+@media (min-width: 1100px) {
+  .cols { gap: var(--space-5); }
+  .hero { min-height: 220px; }
+}

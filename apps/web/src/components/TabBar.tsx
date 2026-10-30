@@ -16,6 +16,12 @@ export function TabBar() {
   const path = usePathname();
   return (
     <nav className={styles.bar} aria-label="Main">
+      <Link href="/" className={styles.brand} aria-label="Sylvia home">
+        <span className={styles.brandMark}>
+          <Icon name="leaf" size={20} />
+        </span>
+        <span className={styles.brandName}>Sylvia</span>
+      </Link>
       {tabs.map((t) => {
         const active = t.href === "/" ? path === "/" : path.startsWith(t.href);
         return (
@@ -23,7 +29,7 @@ export function TabBar() {
             <span className={styles.pill}>
               <Icon name={t.icon} />
             </span>
-            <span>{t.label}</span>
+            <span className={styles.label}>{t.label}</span>
           </Link>
         );
       })}

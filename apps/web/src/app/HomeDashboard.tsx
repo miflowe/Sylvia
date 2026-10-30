@@ -133,6 +133,8 @@ export function HomeDashboard() {
 
       {c && (
         <>
+          <div className={styles.cols}>
+          <div className={styles.colMain}>
           <FireDangerHero c={c} />
 
           {c.smoke && <SmokeForecastCard f={c.smoke} place={place} sensitive={sensitive} onOpen={() => setDetail("forecast")} />}
@@ -149,6 +151,8 @@ export function HomeDashboard() {
             </section>
           )}
 
+          </div>
+          <div className={styles.colSide}>
           <AskSylvia place={place} sensitive={sensitive} />
 
           <div className={styles.tiles}>
@@ -188,6 +192,8 @@ export function HomeDashboard() {
               foot={c.pm25 ? `${shortSource(c.pm25.source.name)} · ${ago(c.pm25.observedAt)}` : "Street-level PM2.5"}
               onOpen={() => setDetail("smoke")}
             />
+          </div>
+          </div>
           </div>
 
           <p className={styles.footnote}>

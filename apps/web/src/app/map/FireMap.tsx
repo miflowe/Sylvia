@@ -333,7 +333,7 @@ export function FireMap() {
       map.markers.add(r.marker);
       // Frame the whole fire and the replay home, clear of the alert banner and the bottom bar.
       const pts = [...replay.timeline.detections.map((d) => [d.location.lon, d.location.lat]), [replay.home.lon, replay.home.lat]];
-      map.setCamera({ bounds: atlas.data.BoundingBox.fromPositions(pts), padding: { top: 190, bottom: 250, left: 40, right: 80 }, maxZoom: 11, type: "fly", duration: 1200 });
+      map.setCamera({ bounds: atlas.data.BoundingBox.fromPositions(pts), padding: matchMedia("(min-width: 768px)").matches ? 60 : { top: 190, bottom: 250, left: 40, right: 80 }, maxZoom: 11, type: "fly", duration: 1200 });
     } else {
       if (r.marker) map.markers.remove(r.marker);
       r.marker = undefined;
@@ -392,6 +392,9 @@ export function FireMap() {
 
   return (
     <div className={styles.wrap}>
+      {/* Phones: the panel's children float over the map. Tablet and up: they stack in a side panel. */}
+      <aside className={styles.panel} aria-label="Map controls">
+      <h1 className={styles.panelTitle}>Map</h1>
       {replay && <ReplayHeader name={replay.name} dateLabel={replay.dateLabel} onExit={exitReplay} />}
       {replay && !selected && <ReplayAlert alerts={replayAlerts} open={alertOpen} onToggle={() => setAlertOpen((o) => !o)} />}
       <div className={styles.chips} role="group" aria-label="Map layers" hidden={!!replay}>
@@ -413,10 +416,11 @@ export function FireMap() {
           Smoke forecast
         </button>
       </div>
-      <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
-      {!selected && !replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} />}
-      {!selected && replay && (
+      {/* On phones a card replaces the time bar; on bigger screens both fit in the panel. */}
+      <div className={selected ? styles.phoneHidden : undefined}>
+      {!replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} />}
+      {replay && (
         <ReplayBar
           start={replay.timeline.start}
           end={replay.timeline.end}
@@ -433,7 +437,10 @@ export function FireMap() {
           }}
         />
       )}
+      </div>
       {selected && <DetailCard item={selected} onClose={() => { setSelected(undefined); ring.current?.clear(); }} />}
+      </aside>
+      <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
     </div>
   );
 }

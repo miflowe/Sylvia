@@ -24,3 +24,9 @@
   flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
   border-radius: 50%; border: 0; background: var(--paper-sunk); color: var(--ink); cursor: pointer;
 }
+
+@media (min-width: 768px) {
+  .sheet { margin: auto; border-radius: var(--radius-lg); max-width: 520px; }
+  .grabber { display: none; }
+  .inner { padding-top: var(--space-5); }
+}

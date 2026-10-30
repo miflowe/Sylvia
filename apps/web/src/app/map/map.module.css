@@ -107,3 +107,33 @@
 .reading { font: var(--type-heading); }
 .source { font: var(--type-body-sm); color: var(--ink-muted); }
 .source a { color: inherit; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); }
+
+.panel { display: contents; }
+/* Phones keep the title for screen readers only; the panel shows it. */
+.panelTitle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+.phoneHidden { display: none; }
+
+/* Tablet and up: map beside a scrolling panel; nothing floats over the map except its own controls. */
+@media (min-width: 768px) {
+  .wrap { height: 100dvh; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+  .panel {
+    grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow-y: auto;
+    padding: max(var(--space-4), env(safe-area-inset-top)) var(--space-4) var(--space-4); background: var(--paper); border-right: 1px solid var(--line);
+  }
+  .map { position: relative; grid-column: 2; grid-row: 1; inset: auto; }
+  .phoneHidden { display: contents; }
+  .panelTitle { position: static; width: auto; height: auto; overflow: visible; clip: auto; font: var(--type-display-sm); letter-spacing: var(--type-display-sm-tracking); margin: var(--space-2) 0 var(--space-1); }
+  .chips, .replayHead, .replayAlert, .timebar, .sheet, .status { position: static; inset: auto; transform: none; max-width: none; margin: 0; }
+  .chips { flex-direction: column; overflow: visible; padding: 0; }
+  .chips[hidden] { display: none; }
+  .chip { width: 100%; box-shadow: none; }
+  .chip[aria-pressed="false"] { background: transparent; }
+  .count { margin-left: auto; }
+  .replayHead { padding: 0; }
+  .replayTag > span:last-child { white-space: normal; }
+  .timebar, .sheet { box-shadow: none; border: 1px solid var(--line); }
+  .status { align-self: flex-start; box-shadow: none; }
+}
+@media (min-width: 1100px) {
+  .wrap { grid-template-columns: 360px minmax(0, 1fr); }
+}

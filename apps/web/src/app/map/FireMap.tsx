@@ -36,7 +36,7 @@ function loadAtlas(): Promise<typeof Atlas> {
 
 // Half a 44 px touch target. Point layers that a tap can pick, by id.
 const TAP_RADIUS = 22;
-const POINT_LAYERS = ["nodes", "aqhi", "pm25", "fires-point", "sightings", "hotspots"];
+const POINT_LAYERS = ["nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots"];
 
 const css = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888";
 
@@ -80,12 +80,17 @@ export function FireMap() {
         if (process.env.NODE_ENV !== "production") (window as unknown as { __sylviaMap?: Atlas.Map }).__sylviaMap = map;
         map.controls.add([new atlas.control.ZoomControl(), new atlas.control.CompassControl()], { position: atlas.ControlPosition.BottomRight });
 
-        const sources = Object.fromEntries(LAYERS.map((l) => [l.id, new atlas.source.DataSource()])) as Record<LayerId, Atlas.source.DataSource>;
+        // Smoke sensors bunch up in towns, so nearby ones merge into a group that splits apart as you zoom in.
+        const sources = Object.fromEntries(
+          LAYERS.map((l) => [l.id, new atlas.source.DataSource(undefined, l.id === "pm25" ? { cluster: true, clusterRadius: 36, clusterMaxZoom: 12 } : undefined)]),
+        ) as Record<LayerId, Atlas.source.DataSource>;
         Object.values(sources).forEach((s) => map!.sources.add(s));
         type Filter = Atlas.BubbleLayerOptions["filter"];
         const isPoint = ["==", ["geometry-type"], "Point"] as unknown as Filter;
         const isPolygon = ["any", ["==", ["geometry-type"], "Polygon"], ["==", ["geometry-type"], "MultiPolygon"]] as unknown as Filter;
         const ember = css("--ember");
+        const isGroup = ["has", "point_count"] as unknown as Filter;
+        const isSingle = ["!", ["has", "point_count"]] as unknown as Filter;
 
         layerRefs.current = {
           fires: [
@@ -102,10 +107,24 @@ export function FireMap() {
             }),
           ],
           pm25: [
-            new atlas.layer.BubbleLayer(sources.pm25, "pm25", { color: "#7a5fb3", radius: 9, strokeColor: "#ffffff", strokeWidth: 1 }),
+            new atlas.layer.BubbleLayer(sources.pm25, "pm25", { color: "#7a5fb3", radius: 9, strokeColor: "#ffffff", strokeWidth: 1, filter: isSingle }),
             new atlas.layer.SymbolLayer(sources.pm25, "pm25-label", {
               iconOptions: { image: "none" },
+              filter: isSingle,
               textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 11, allowOverlap: true },
+            }),
+            // A group is white with a purple ring and shows how many sensors it holds, so it never reads as a PM2.5 value.
+            new atlas.layer.BubbleLayer(sources.pm25, "pm25-group", {
+              color: "#ffffff",
+              radius: ["step", ["get", "point_count"], 13, 10, 16, 50, 19] as unknown as number,
+              strokeColor: "#7a5fb3",
+              strokeWidth: 3,
+              filter: isGroup,
+            }),
+            new atlas.layer.SymbolLayer(sources.pm25, "pm25-group-label", {
+              iconOptions: { image: "none" },
+              filter: isGroup,
+              textOptions: { textField: ["get", "point_count_abbreviated"], color: "#5b4391", size: 12, font: ["SegoeUi-Bold"], allowOverlap: true },
             }),
           ],
           nodes: [
@@ -143,6 +162,15 @@ export function FireMap() {
             if (d <= TAP_RADIUS && (!best || d < best.d)) best = { hit, d };
           }
           const area = best ? undefined : (map.layers.getRenderedShapes(e.position, ["fires-fill"]) as Hit[])[0];
+          const group = best && (propsOf(best.hit) as unknown as { cluster?: boolean; cluster_id?: number });
+          if (group?.cluster && group.cluster_id !== undefined) {
+            // Tapping a group zooms in until it splits into single sensors.
+            const center = pointOf(best!.hit);
+            sources.pm25.getClusterExpansionZoom(group.cluster_id).then((zoom) => map?.setCamera({ center, zoom, type: "ease", duration: 350 }));
+            setSelected(undefined);
+            ring.current?.clear();
+            return;
+          }
           const hit = best?.hit ?? area;
           setSelected(hit ? { ...propsOf(hit), position: best ? pointOf(best.hit) : e.position } : undefined);
           ring.current?.setShapes(best ? [new atlas.data.Point(pointOf(best.hit))] : []);

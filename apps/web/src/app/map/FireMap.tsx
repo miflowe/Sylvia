@@ -155,7 +155,7 @@ export function FireMap() {
             new atlas.layer.BubbleLayer(sources.aqhi, "aqhi", { color: css("--sky"), radius: 13, strokeColor: "#ffffff", strokeWidth: 1.5 }),
             new atlas.layer.SymbolLayer(sources.aqhi, "aqhi-label", {
               iconOptions: { image: "none" },
-              textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 13, font: ["SegoeUi-Bold"], allowOverlap: true },
+              textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 13, font: ["SegoeUi-Bold"], anchor: "center", offset: [0, 0], allowOverlap: true, ignorePlacement: true },
             }),
           ],
           pm25: [
@@ -163,7 +163,7 @@ export function FireMap() {
             new atlas.layer.SymbolLayer(sources.pm25, "pm25-label", {
               iconOptions: { image: "none" },
               filter: isSingle,
-              textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 11, allowOverlap: true },
+              textOptions: { textField: ["to-string", ["round", ["get", "value"]]], color: "#ffffff", size: 11, font: ["SegoeUi-Bold"], anchor: "center", offset: [0, 0], allowOverlap: true, ignorePlacement: true },
             }),
             // A group is white with a purple ring and shows how many sensors it holds, so it never reads as a PM2.5 value.
             new atlas.layer.BubbleLayer(sources.pm25, "pm25-group", {
@@ -176,14 +176,14 @@ export function FireMap() {
             new atlas.layer.SymbolLayer(sources.pm25, "pm25-group-label", {
               iconOptions: { image: "none" },
               filter: isGroup,
-              textOptions: { textField: ["get", "point_count_abbreviated"], color: "#5b4391", size: 12, font: ["SegoeUi-Bold"], allowOverlap: true },
+              textOptions: { textField: ["get", "point_count_abbreviated"], color: "#5b4391", size: 12, font: ["SegoeUi-Bold"], anchor: "center", offset: [0, 0], allowOverlap: true, ignorePlacement: true },
             }),
           ],
           nodes: [
             new atlas.layer.BubbleLayer(sources.nodes, "nodes", { color: css("--pine"), radius: 11, strokeColor: "#ffffff", strokeWidth: 2 }),
             new atlas.layer.SymbolLayer(sources.nodes, "nodes-label", {
               iconOptions: { image: "none" },
-              textOptions: { textField: ["case", ["has", "value"], ["to-string", ["round", ["get", "value"]]], ""], color: "#ffffff", size: 11, allowOverlap: true },
+              textOptions: { textField: ["case", ["has", "value"], ["to-string", ["round", ["get", "value"]]], ""], color: "#ffffff", size: 11, font: ["SegoeUi-Bold"], anchor: "center", offset: [0, 0], allowOverlap: true, ignorePlacement: true },
             }),
           ],
           sightings: [new atlas.layer.BubbleLayer(sources.sightings, "sightings", { color: css("--moss"), radius: 6, strokeColor: "#ffffff", strokeWidth: 1.5 })],

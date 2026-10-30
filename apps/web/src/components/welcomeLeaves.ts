@@ -1,7 +1,8 @@
 /**
  * The leaf part of the first-launch intro: leaves fall until the screen is covered, shiver, then a gust sweeps them
  * off to the right (with faint wind lines) and reveals the app underneath. Plain canvas, no libraries.
- * Leaves grow a little on big screens (capped) and there are more of them, so a laptop still looks like leaves, not confetti or giant shapes.
+ * Each leaf colour is drawn once into a small image and stamped every frame (cheap on the GPU); big screens get
+ * somewhat larger leaves and a lower pixel density, so a laptop holds 60 fps.
  */
 const PALETTE = ["#1f4a33", "#66904f", "#8fb36f", "#2f6b46", "#e07a2c", "#e8b931", "#c2410c"];
 const FALL = 1.6;
@@ -16,7 +17,8 @@ interface Leaf {
   x: number;
   y: number;
   s: number;
-  c: string;
+  /** Index into the pre-drawn leaf images (one per palette colour). */
+  ci: number;
   r0: number;
   r: number;
   spin: number;
@@ -46,24 +48,24 @@ interface Streak {
 export function playLeaves(canvas: HTMLCanvasElement, speed: number, onCovered: () => void, onDone: () => void): () => void {
   const W = canvas.clientWidth;
   const H = canvas.clientHeight;
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  // Big screens draw at 1.25× pixel density: leaves are soft shapes in motion, and it's far fewer pixels than 2×.
+  const dpr = Math.min(W * H > 600_000 ? 1.25 : 2, window.devicePixelRatio || 1);
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
-  const ctx = canvas.getContext("2d")!;
-  ctx.scale(dpr, dpr);
-  const k = Math.min(1.6, Math.max(1, Math.sqrt((W * H) / BASE_AREA)));
+  const ctx = canvas.getContext("2d", { desynchronized: true })!;
+  const k = Math.min(2.1, Math.max(1, Math.sqrt((W * H) / BASE_AREA)));
 
   const leaves: Leaf[] = [];
   const add = (tx: number, ty: number) =>
     leaves.push({
-      tx, ty, x: tx, y: -60 * k, s: (17 + Math.random() * 15) * k, c: PALETTE[(Math.random() * PALETTE.length) | 0]!,
+      tx, ty, x: tx, y: -60 * k, s: (17 + Math.random() * 15) * k, ci: (Math.random() * PALETTE.length) | 0,
       r0: Math.random() * 6.28, r: 0, spin: (Math.random() - 0.5) * 3, flip: 0, fs: 1 + Math.random() * 2, sway: (8 + Math.random() * 22) * k,
       d: Math.random(), a: 1, vx: 0, vy: 0, spinV: 0, hit: false, ph: Math.random() * 6.28, tw: 2 + Math.random() * 4,
     });
   // An even grid guarantees full cover; random extras on top hide the grid.
   const step = 15 * k;
   for (let y = -10; y < H + 20; y += step) for (let x = -10; x < W + 20; x += step) add(x + (Math.random() - 0.5) * step, y + (Math.random() - 0.5) * step);
-  const extras = Math.round(leaves.length * 0.3);
+  const extras = Math.round(leaves.length * 0.2);
   for (let i = 0; i < extras; i++) add(Math.random() * (W + 20) - 10, Math.random() * (H + 20) - 10);
   leaves.sort(() => Math.random() - 0.5);
 
@@ -71,28 +73,38 @@ export function playLeaves(canvas: HTMLCanvasElement, speed: number, onCovered: 
     y: Math.random() * H, d: Math.random() * 0.7, len: (80 + Math.random() * 120) * k, amp: (6 + Math.random() * 14) * k, sp: (900 + Math.random() * 500) * (W / 280), w: 0.8 + Math.random() * 1.4,
   }));
 
-  const leafPath = (s: number) => {
-    ctx.beginPath();
-    ctx.moveTo(0, -s);
-    ctx.bezierCurveTo(s * 0.85, -s * 0.5, s * 0.7, s * 0.55, 0, s);
-    ctx.bezierCurveTo(-s * 0.7, s * 0.55, -s * 0.85, -s * 0.5, 0, -s);
-  };
+  // Each colour is drawn once into a small image; every frame then just stamps images with one transform each,
+  // which is far cheaper than building thousands of curved paths 60 times a second.
+  const SPRITE_S = Math.ceil(64 * k * dpr);
+  const sprites = PALETTE.map((colour) => {
+    const c = document.createElement("canvas");
+    c.width = Math.ceil(SPRITE_S * 1.8) + 4;
+    c.height = Math.ceil(SPRITE_S * 2.3) + 4;
+    const g = c.getContext("2d")!;
+    const s = SPRITE_S;
+    g.translate(c.width / 2, s + 2);
+    g.beginPath();
+    g.moveTo(0, -s);
+    g.bezierCurveTo(s * 0.85, -s * 0.5, s * 0.7, s * 0.55, 0, s);
+    g.bezierCurveTo(-s * 0.7, s * 0.55, -s * 0.85, -s * 0.5, 0, -s);
+    g.fillStyle = colour;
+    g.fill();
+    g.strokeStyle = "rgba(0,0,0,.16)";
+    g.lineWidth = Math.max(1, dpr * (SPRITE_S / (32 * dpr)));
+    g.beginPath();
+    g.moveTo(0, -s * 0.85);
+    g.lineTo(0, s * 1.2);
+    g.stroke();
+    return { img: c, cx: c.width / 2, cy: s + 2 };
+  });
   const draw = (l: Leaf) => {
-    ctx.save();
-    ctx.translate(l.x, l.y);
-    ctx.rotate(l.r);
-    ctx.scale(0.35 + 0.65 * Math.abs(Math.cos(l.flip)), 1);
-    ctx.globalAlpha = l.a;
-    ctx.fillStyle = l.c;
-    leafPath(l.s);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(0,0,0,.16)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, -l.s * 0.85);
-    ctx.lineTo(0, l.s * 1.2);
-    ctx.stroke();
-    ctx.restore();
+    const sp = sprites[l.ci]!;
+    const scale = (l.s * dpr) / SPRITE_S;
+    const fx = (0.35 + 0.65 * Math.abs(Math.cos(l.flip))) * scale;
+    const cos = Math.cos(l.r);
+    const sin = Math.sin(l.r);
+    ctx.setTransform(cos * fx, sin * fx, -sin * scale, cos * scale, l.x * dpr, l.y * dpr);
+    ctx.drawImage(sp.img, -sp.cx, -sp.cy);
   };
   const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -103,8 +115,11 @@ export function playLeaves(canvas: HTMLCanvasElement, speed: number, onCovered: 
   const frame = (now: number) => {
     const el = (now - t0) / 1000 / speed;
     const dt = Math.min(0.05, (now - last) / 1000 / speed);
+    // Development only: frame gaps, for checking smoothness on real hardware.
+    if (process.env.NODE_ENV !== "production") ((window as unknown as { __leafFrames?: number[] }).__leafFrames ??= []).push(now - last);
     last = now;
-    ctx.clearRect(0, 0, W, H);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const g = el - FALL - HOLD;
     if (!covered && el > FALL - 0.1) {
       covered = true;
@@ -151,6 +166,7 @@ export function playLeaves(canvas: HTMLCanvasElement, speed: number, onCovered: 
     }
     // Wind lines ride along with the gust.
     if (g > -0.1 && g < GUST) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.save();
       ctx.lineCap = "round";
       for (const s of streaks) {

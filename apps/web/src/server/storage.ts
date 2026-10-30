@@ -37,3 +37,18 @@ export async function movePhoto(fromOwner: string, toOwner: string, scanId: stri
   await putPhoto(toOwner, scanId, photo);
   await deletePhoto(fromOwner, scanId);
 }
+
+// Resident report photos: served only while their report exists (6 hours); a lifecycle rule deletes them after a day.
+const reportBlob = (id: string) => `photos/reports/${id}.jpg`;
+
+export async function putReportPhoto(id: string, jpeg: Buffer): Promise<void> {
+  await container().getBlockBlobClient(reportBlob(id)).uploadData(jpeg, { blobHTTPHeaders: { blobContentType: "image/jpeg" } });
+}
+
+export async function getReportPhoto(id: string): Promise<Buffer | undefined> {
+  try {
+    return await container().getBlockBlobClient(reportBlob(id)).downloadToBuffer();
+  } catch {
+    return undefined;
+  }
+}

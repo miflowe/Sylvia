@@ -5,13 +5,15 @@ import { buildTimeline, replayAt, type Alert, type Place, type ReplayTimeline } 
 import { DetailCard, type Selected } from "./DetailCard";
 import { HEAT_AGE, TimeBar } from "./TimeBar";
 import { ReplayAlert, ReplayBar, ReplayHeader } from "./ReplayBar";
+import { ReportSheet } from "./ReportSheet";
 import { isDark } from "@/lib/theme";
 import styles from "./map.module.css";
 
-type LayerId = "evac" | "named" | "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
+type LayerId = "evac" | "named" | "reports" | "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
 const LAYERS: { id: LayerId; label: string; swatch: string }[] = [
   { id: "evac", label: "Evacuation areas", swatch: "#9c1c1c" },
   { id: "named", label: "Named fires", swatch: "linear-gradient(90deg, #9c1c1c 0 34%, #e07a2c 34% 67%, #4f7d3a 67%)" },
+  { id: "reports", label: "Resident reports", swatch: "#6b7570" },
   { id: "fires", label: "Fire areas", swatch: "var(--ember)" },
   { id: "hotspots", label: "Satellite heat", swatch: "#e8771a" },
   { id: "aqhi", label: "Air quality", swatch: "var(--sky)" },
@@ -41,7 +43,7 @@ function loadAtlas(): Promise<typeof Atlas> {
 
 // Half a 44 px touch target. Point layers that a tap can pick, by id.
 const TAP_RADIUS = 22;
-const POINT_LAYERS = ["named", "nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots", "replay-heat"];
+const POINT_LAYERS = ["reports", "named", "nodes", "aqhi", "pm25", "pm25-group", "fires-point", "sightings", "hotspots", "replay-heat"];
 // Official evacuation areas win over estimated fire areas when a tap lands on both.
 const AREA_LAYERS = ["evac-fill", "fires-fill", "replay-fill"];
 
@@ -77,7 +79,7 @@ export function FireMap() {
   const el = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<Partial<Record<LayerId, Atlas.layer.Layer[]>>>({});
   const ring = useRef<Atlas.source.DataSource | undefined>(undefined);
-  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ evac: true, named: true, fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
+  const [visible, setVisible] = useState<Record<LayerId, boolean>>({ evac: true, named: true, reports: true, fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
   const [counts, setCounts] = useState<Partial<Record<LayerId, number>>>({});
   const [selected, setSelected] = useState<Selected | undefined>();
   const [status, setStatus] = useState("Loading the map…");
@@ -87,6 +89,8 @@ export function FireMap() {
   const [smokeAhead, setSmokeAhead] = useState(24);
   const fwiLayer = useRef<Atlas.layer.TileLayer | undefined>(undefined);
   const [fwiOn, setFwiOn] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const reload = useRef<() => void>(() => {});
   // Replay mode: an archived fire plays on the map with the same alert rules as live.
   const mapRef = useRef<Atlas.Map | undefined>(undefined);
   const atlasRef = useRef<typeof Atlas | undefined>(undefined);
@@ -162,6 +166,18 @@ export function FireMap() {
               textOptions: { textField: ["get", "name"], size: 12, font: ["SegoeUi-Bold"], color: "#3a1a0a", haloColor: "#ffffff", haloWidth: 2, anchor: "top", offset: [0, 1] },
             }),
           ],
+          reports: [
+            new atlas.layer.BubbleLayer(sources.reports, "reports", {
+              color: ["match", ["get", "reportKind"], "flames", "#d9480f", "glow", "#c99a06", "ash", "#3f4441", "#6b7570"] as unknown as string,
+              radius: 11,
+              strokeColor: "#ffffff",
+              strokeWidth: 2,
+            }),
+            new atlas.layer.SymbolLayer(sources.reports, "reports-label", {
+              iconOptions: { image: "none" },
+              textOptions: { textField: ["to-string", ["get", "people"]], color: "#ffffff", size: 11, font: ["SegoeUi-Bold"], anchor: "center", offset: [0, 0], allowOverlap: true, ignorePlacement: true },
+            }),
+          ],
           fires: [
             new atlas.layer.PolygonLayer(sources.fires, "fires-fill", { fillColor: ember, fillOpacity: 0.25, filter: isPolygon }),
             new atlas.layer.LineLayer(sources.fires, "fires-line", { strokeColor: ember, strokeWidth: 1.5, filter: isPolygon }),
@@ -214,7 +230,7 @@ export function FireMap() {
           ],
           sightings: [new atlas.layer.BubbleLayer(sources.sightings, "sightings", { color: css("--moss"), radius: 6, strokeColor: "#ffffff", strokeWidth: 1.5 })],
         };
-        for (const id of ["evac", "fires", "hotspots", "named", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
+        for (const id of ["evac", "fires", "hotspots", "named", "pm25", "aqhi", "nodes", "sightings", "reports"] as LayerId[]) {
           for (const layer of layerRefs.current[id]!) map.layers.add(layer);
         }
         // Smoke forecast tiles sit under every data layer; off until the chip is turned on.
@@ -276,12 +292,16 @@ export function FireMap() {
           map.markers.add(new atlas.HtmlMarker({ position: [place.lon, place.lat], htmlContent: `<div class="${styles.home}" title="Your home"></div>` }));
         }
 
+        // Only the newest request may update the map: a slow earlier one must not overwrite where you've moved to.
+        let latest = 0;
         const load = async () => {
           const cam = map!.getCamera();
           const [w, s, e, n] = cam.bounds as [number, number, number, number];
+          const ticket = ++latest;
           try {
             const res = await fetch(`/api/map?bbox=${w.toFixed(3)},${s.toFixed(3)},${e.toFixed(3)},${n.toFixed(3)}&zoom=${Math.floor(cam.zoom ?? 0)}`);
             const body = await res.json();
+            if (ticket !== latest) return;
             if (!res.ok) throw new Error(body.error);
             const next: Partial<Record<LayerId, number>> = {};
             const now = Date.now();
@@ -296,6 +316,7 @@ export function FireMap() {
             setStatus(err instanceof Error && err.message ? err.message : "Couldn't load map data.");
           }
         };
+        reload.current = load;
         map.events.add("moveend", () => {
           clearTimeout(timer);
           timer = setTimeout(load, 400);
@@ -455,7 +476,7 @@ export function FireMap() {
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
       {/* On phones a card replaces the time bar; on bigger screens both fit in the panel. */}
       <div className={selected ? styles.phoneHidden : undefined}>
-      {!replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} fwi={fwiOn} />}
+      {!replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} onReport={() => setReporting(true)} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} fwi={fwiOn} />}
       {replay && (
         <ReplayBar
           start={replay.timeline.start}
@@ -477,6 +498,17 @@ export function FireMap() {
       {selected && <DetailCard item={selected} onClose={() => { setSelected(undefined); ring.current?.clear(); }} />}
       </aside>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
+      <ReportSheet
+        open={reporting}
+        onClose={() => setReporting(false)}
+        mapCentre={() => {
+          // Before the map has loaded, the home place stands in for the map centre.
+          const c = mapRef.current?.getCamera().center;
+          const home = placeRef.current;
+          return c ? { lon: c[0]!, lat: c[1]! } : home ? { lon: home.lon, lat: home.lat } : undefined;
+        }}
+        onSent={() => reload.current()}
+      />
     </div>
   );
 }

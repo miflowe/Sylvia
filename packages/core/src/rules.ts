@@ -7,6 +7,7 @@ import { assertAlertAuthority, type Alert } from "./alerts";
 import { compass } from "./conditions";
 import { distanceKm, type LatLon } from "./geo";
 import { aqhiCategory, SOURCES } from "./observations";
+import { reportsNote, type ResidentReport } from "./reports";
 
 export interface OfficialNotice {
   id: string;
@@ -28,6 +29,8 @@ export interface RuleInput {
   aqhi?: { value: number; station: string; observedAt: string };
   pm25?: { median: number; sensors: number; observedAt: string };
   officials: OfficialNotice[];
+  /** Unverified resident reports nearby; they can add a Level 1 note, never more. */
+  reports?: ResidentReport[];
   replay?: boolean;
 }
 
@@ -139,6 +142,12 @@ export function evaluateAlerts(input: RuleInput): Alert[] {
         replay,
       });
     }
+  }
+
+  // Resident reports only speak when nothing official or from satellites already covers fire near home.
+  if (input.reports?.length && !out.some((a) => a.official || a.key?.startsWith("hotspot:"))) {
+    const note = reportsNote(home, input.reports, now, input.replay);
+    if (note) out.push(note);
   }
 
   out.forEach(assertAlertAuthority);

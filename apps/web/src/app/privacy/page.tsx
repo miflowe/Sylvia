@@ -36,6 +36,8 @@ export default function PrivacyPage() {
           <tr><td>Alert settings: notification address from your browser, home area rounded to ~1 km, the smoke-sensitive setting</td><td>When you turn on alerts</td><td>Deleted when you turn alerts off</td></tr>
           <tr><td>Alert history</td><td>When an alert is sent to you</td><td>Until you delete your data</td></tr>
           <tr><td>Invasive plant sightings: plant, date, location rounded to ~1 km, with nothing linking it to you</td><td>Only if you tap &quot;Share this sighting&quot;</td><td>Kept for the shared map</td></tr>
+          <tr><td>Resident reports: what you saw, location rounded to ~1 km, an optional note and photo, and a one-way code made from your device so we can count different people and limit floods of reports</td><td>Only if you send a report from the map</td><td>Reports 6 hours; photos deleted within a day</td></tr>
+          <tr><td>Ask Sylvia questions</td><td>When you ask</td><td>Not stored; the question and live readings go to Azure AI to write the answer</td></tr>
           <tr><td>Technical logs (pages requested, errors)</td><td>As you use the app</td><td>30 days</td></tr>
         </tbody>
       </table>
@@ -50,6 +52,7 @@ export default function PrivacyPage() {
         <li><b>Your home area</b> (rounded) is sent to Natural Resources Canada for fire danger, Open-Meteo for weather, and Azure Maps for place names and garden-centre search. They receive a location, not who you are.</li>
         <li><b>Notifications</b> travel through your browser&apos;s push service (Google, Apple or Mozilla).</li>
         <li><b>Towns and regional districts</b> can see anonymous totals on community pages. Any group smaller than 5 is hidden.</li>
+        <li><b>Resident reports</b> are shown to everyone on the map for 6 hours, marked unverified, with the note and photo if you added them. Notes and photos are checked by Azure AI Content Safety first. Photos have their location data removed on your phone before they&apos;re sent. Reports aren&apos;t sent to fire services: call 911 or your province&apos;s fire line.</li>
       </ul>
       <p>Explanations from &quot;Sylvia&quot; are written by AI from verified facts and checked by Azure AI Content Safety. They can still be wrong.</p>
 

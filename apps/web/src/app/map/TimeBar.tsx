@@ -30,8 +30,8 @@ interface SmokeControl {
  * Bottom bar on the map: how many hours of satellite heat to show, the age legend, the smoke forecast hour when that
  * layer is on, and the way into a replay.
  */
-export function TimeBar(props: { hours: number; onHours: (h: number) => void; onReplay: () => void; smoke?: SmokeControl; fwi?: boolean }) {
-  const { hours, onHours, onReplay, smoke, fwi } = props;
+export function TimeBar(props: { hours: number; onHours: (h: number) => void; onReplay: () => void; onReport: () => void; smoke?: SmokeControl; fwi?: boolean }) {
+  const { hours, onHours, onReplay, onReport, smoke, fwi } = props;
   return (
     <div className={styles.timebar}>
       {fwi && (
@@ -92,10 +92,16 @@ export function TimeBar(props: { hours: number; onHours: (h: number) => void; on
           </li>
         ))}
       </ul>
-      <button type="button" className={styles.replayStart} onClick={onReplay}>
-        <Icon name="play" size={16} />
-        Replay a real past fire
-      </button>
+      <div className={styles.barActions}>
+        <button type="button" className={`${styles.replayStart} ${styles.reportStart}`} onClick={onReport}>
+          <Icon name="flame" size={16} />
+          Report what you see
+        </button>
+        <button type="button" className={styles.replayStart} onClick={onReplay}>
+          <Icon name="play" size={16} />
+          Replay a past fire
+        </button>
+      </div>
     </div>
   );
 }

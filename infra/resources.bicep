@@ -118,6 +118,16 @@ resource photoLifecycle 'Microsoft.Storage/storageAccounts/managementPolicies@20
             actions: { baseBlob: { delete: { daysAfterModificationGreaterThan: 30 } } }
           }
         }
+        {
+          // Resident report photos: the report is gone after 6 hours; the photo goes at the next daily sweep.
+          name: 'delete-report-photos-after-1-day'
+          enabled: true
+          type: 'Lifecycle'
+          definition: {
+            filters: { blobTypes: ['blockBlob'], prefixMatch: ['photos/reports/'] }
+            actions: { baseBlob: { delete: { daysAfterModificationGreaterThan: 1 } } }
+          }
+        }
       ]
     }
   }
@@ -162,6 +172,7 @@ var cosmosContainers = [
   { name: 'scans', pk: '/deviceOrUserId', geo: false, ttl: null }
   { name: 'checklists', pk: '/deviceOrUserId', geo: false, ttl: null }
   { name: 'sightings', pk: '/cellId', geo: true, ttl: null }
+  { name: 'reports', pk: '/cellId', geo: true, ttl: 21600 } // resident reports vanish after 6 hours
   { name: 'replayEvents', pk: '/eventId', geo: false, ttl: null }
 ]
 

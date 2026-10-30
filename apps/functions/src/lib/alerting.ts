@@ -10,6 +10,8 @@ import {
   type Observation,
   type OfficialNoticeDoc,
   type OfficialNotice,
+  type ResidentReport,
+  REPORTS_NOTE,
 } from "@sylvia/core";
 import { parseBcOrders, parseNaadAtom } from "./officials";
 import { pushAlert, type StoredSubscription } from "./push";
@@ -99,17 +101,35 @@ async function officialsFor(home: LatLon, regionCode?: string): Promise<Official
     .map((d) => ({ id: d.id, kind: d.kind, agency: d.agency, areaName: d.areaName, issuedAt: d.issuedAt, url: d.url, source: d.source, coversHome: pointInArea(home, d.area) }));
 }
 
+/** Resident reports near home in the last hour (they only ever add an unverified Level 1 note). */
+async function reportsNear(home: LatLon, now: Date): Promise<ResidentReport[]> {
+  const { resources } = await db()
+    .container("reports")
+    .items.query<{ id: string; kind: ResidentReport["kind"]; location: { coordinates: [number, number] }; reporter: string; createdAt: string }>({
+      query: "SELECT c.id, c.kind, c.location, c.reporter, c.createdAt FROM c WHERE ST_DISTANCE(c.location, @p) <= @m AND c.createdAt >= @since",
+      parameters: [
+        { name: "@p", value: { type: "Point", coordinates: [home.lon, home.lat] } },
+        { name: "@m", value: REPORTS_NOTE.km * 1000 },
+        { name: "@since", value: new Date(now.getTime() - REPORTS_NOTE.minutes * 60e3).toISOString() },
+      ],
+    })
+    .fetchAll()
+    .catch(() => ({ resources: [] }));
+  return resources.map((r) => ({ id: r.id, kind: r.kind, reporter: r.reporter, createdAt: r.createdAt, location: { lat: r.location.coordinates[1], lon: r.location.coordinates[0] } }));
+}
+
 const obsPoint = (o: Observation) => ({ lat: o.location.coordinates[1], lon: o.location.coordinates[0] });
 
 export async function alertsForHome(sub: Pick<PushSubscriptionDoc, "home" | "sensitive">, now = new Date()): Promise<Alert[]> {
   const home = { lat: sub.home.lat, lon: sub.home.lon };
   const since12h = new Date(now.getTime() - 12 * 3600e3).toISOString();
   const since2h = new Date(now.getTime() - 2 * 3600e3).toISOString();
-  const [hotspots, aqhis, pms, officials] = await Promise.all([
+  const [hotspots, aqhis, pms, officials, reports] = await Promise.all([
     near("hotspot", home, 25, since12h),
     near("aqhi", home, 120),
     near("pm25", home, 10, since2h),
     officialsFor(home, sub.home.regionCode),
+    reportsNear(home, now),
   ]);
   const station = aqhis.sort((a, b) => distanceKm(home, obsPoint(a)) - distanceKm(home, obsPoint(b)))[0];
   const pmValues = pms.map((p) => p.value!).sort((a, b) => a - b);
@@ -121,6 +141,7 @@ export async function alertsForHome(sub: Pick<PushSubscriptionDoc, "home" | "sen
     aqhi: station?.value !== undefined ? { value: station.value, station: station.label ?? "nearest station", observedAt: station.observedAt } : undefined,
     pm25: pmValues.length ? { median: pmValues[Math.floor(pmValues.length / 2)]!, sensors: pmValues.length, observedAt: pms[0]!.observedAt } : undefined,
     officials,
+    reports,
   });
 }
 

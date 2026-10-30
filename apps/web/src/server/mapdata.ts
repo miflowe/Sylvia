@@ -1,11 +1,12 @@
 import "server-only";
 import type { SqlParameter } from "@azure/cosmos";
-import { matchHeatToFire, type FireStatus, type NamedFireRef, type Observation, type OfficialNoticeDoc, type Sighting } from "@sylvia/core";
+import { groupReports, matchHeatToFire, type FireStatus, type NamedFireRef, type Observation, type OfficialNoticeDoc, type Sighting } from "@sylvia/core";
 import { container } from "./cosmos";
+import { reportsWithin } from "./reports";
 
 type Feature = { type: "Feature"; id: string; geometry: unknown; properties: Record<string, unknown> };
 type Collection = { type: "FeatureCollection"; features: Feature[] };
-export type MapLayers = Record<"evac" | "hotspots" | "fires" | "named" | "aqhi" | "pm25" | "sightings" | "nodes", Collection>;
+export type MapLayers = Record<"evac" | "hotspots" | "fires" | "named" | "reports" | "aqhi" | "pm25" | "sightings" | "nodes", Collection>;
 
 const fc = (features: Feature[]): Collection => ({ type: "FeatureCollection", features });
 
@@ -30,7 +31,7 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
   const wide = { type: "Polygon", coordinates: [[[w - pad, s - pad], [e + pad, s - pad], [e + pad, n + pad], [w - pad, n + pad], [w - pad, s - pad]]] };
   const nowIso = new Date().toISOString();
 
-  const [hotspots, fires, aqhi, pm25, sightings, nodes, named, notices] = await Promise.all([
+  const [hotspots, fires, aqhi, pm25, sightings, nodes, named, notices, reports] = await Promise.all([
     within<Observation>("observations", "AND c.kind = 'hotspot' AND c.observedAt >= @since", [{ name: "@since", value: dayAgo }]),
     within<Observation>("observations", "AND c.kind = 'fire-perimeter'"),
     within<Observation>("observations", "AND c.kind = 'aqhi'"),
@@ -49,6 +50,7 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
       })
       .fetchAll()
       .then((r) => r.resources),
+    reportsWithin(box as { type: "Polygon"; coordinates: number[][][] }).catch(() => []),
   ]);
 
   const refs: NamedFireRef[] = named.map((o) => ({
@@ -105,6 +107,14 @@ export async function mapLayers([w, s, e, n]: [number, number, number, number], 
             updatedAt: o.observedAt,
           }),
         ),
+    ),
+    reports: fc(
+      groupReports(reports).map((g) => ({
+        type: "Feature",
+        id: g.key,
+        geometry: { type: "Point", coordinates: [g.location.lon, g.location.lat] },
+        properties: { kind: "report", reportKind: g.kind, people: g.people, latestAt: g.latestAt, notes: g.notes, photoId: g.photoId ?? "" },
+      })),
     ),
     evac: fc(
       notices.map((x) => ({

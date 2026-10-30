@@ -178,3 +178,11 @@ Mention the source of the reading you rely on.`;
   });
   return res.choices[0]!.message.content.trim();
 }
+
+/** Azure AI Content Safety for images: true when a photo is safe to show other people. */
+export async function isSafeImage(jpeg: Buffer): Promise<boolean> {
+  const res = await call<{ categoriesAnalysis: { category: string; severity: number }[] }>(`/contentsafety/image:analyze?api-version=${SAFETY_API}`, {
+    image: { content: jpeg.toString("base64") },
+  });
+  return res.categoriesAnalysis.every((c) => c.severity < 2);
+}

@@ -18,3 +18,4 @@ export * from "./smoke";
 export * from "./ask";
 export * from "./purpleair";
 export * from "./namedFires";
+export * from "./reports";

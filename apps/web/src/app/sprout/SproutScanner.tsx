@@ -5,6 +5,7 @@ import type { SavedScan, SproutCandidate, SproutResult, SproutSwap, SproutVerdic
 import { Icon } from "@/components/Icon";
 import { ScanThumb } from "@/components/ScanThumb";
 import { ScreenHeader } from "@/components/ScreenHeader";
+import { preparePhoto } from "@/lib/photo";
 import { withDevice } from "@/lib/device";
 import { NearbyNurseries, SaveScan, ShareSighting } from "./ResultActions";
 import styles from "./sprout.module.css";
@@ -21,17 +22,6 @@ type State =
   | { kind: "checking"; preview: string }
   | { kind: "result"; preview: string; photo?: Blob; result: SproutResult }
   | { kind: "error"; preview?: string; message: string };
-
-/** Downscale and re-encode as JPEG. Re-encoding through a canvas also drops EXIF, including GPS location. */
-async function preparePhoto(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, 1280 / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("encode"))), "image/jpeg", 0.85));
-}
 
 export function SproutScanner() {
   const [region, setRegion] = useState<Region>("CA-ON");

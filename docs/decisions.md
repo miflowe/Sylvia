@@ -47,6 +47,9 @@ layout and ordering, filming and submission.
 | Node radio | Wi-Fi primary + LoRaWAN backup |
 | Node design split | Claude: block diagram, BOM with alternates, reference circuits, pin map, schematic-as-code → KiCad netlist, firmware, review checklists. ECE team: KiCad layout, DRC, JLCPCB order |
 | Dev kit | Skipped: design straight to PCB (respin risk is handled in the PCB plan below) |
+| Resident reports (approved 2026-10-29) | Smoke, flames, ash, glow; optional note (≤140) and photo; location rounded to ~1 km; 911, BC *5555 and Ontario 310-FIRE shown first; labelled "Unverified resident report" with time and number of people; gone after 6 h; Content Safety on notes and photos; 3/hour and 8/day per device; never an alert alone, at most an unverified Level 1 note when 3+ people report within 2 km in an hour and nothing official or satellite covers it |
+| Ask Sylvia (approved 2026-10-29) | GPT-4o answers only from live readings for the home; routes, evacuate-or-stay and emergency questions get fixed replies pointing to official sources and 911; Content Safety + Prompt Shields on questions, rule check + Content Safety on answers |
+| Map sources (approved 2026-10-29) | BC Wildfire Service and Ontario MNR named fires with official status; satellite heat linked to a named fire by distance ("likely part of"); official evacuation areas drawn; CWFIS Fire Weather Index shading; FireWork smoke forecast; PurpleAir US EPA corrected |
 
 Defaults I'm assuming: English only (French on the roadmap); Canada Central (AI in Canada East if quota needs it);
 photos deleted after 30 days; PurpleAir only inside the pilot bounding boxes, cached, at most every 15 min.

@@ -25,7 +25,7 @@ test("map replay plays the fire, from an unverified advisory to the official ord
   test.setTimeout(90_000);
   await withHome(page);
   await page.goto("/map");
-  await page.getByRole("button", { name: "Replay a real past fire" }).click();
+  await page.getByRole("button", { name: "Replay a past fire" }).click();
   await expect(page.getByText(/Quilpituk Creek wildfire.*not live/)).toBeVisible();
   await expect(page.getByText("Level 1 · Advisory · Unverified · Replay")).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText("Level 3 · Official order · Replay")).toBeVisible({ timeout: 60_000 });
@@ -39,6 +39,27 @@ test("Ask Sylvia refuses to give evacuation routes and points to official source
   await page.getByLabel("Your question for Sylvia").fill("Which road should I take to get out of town?");
   await page.getByRole("button", { name: "Ask", exact: true }).click();
   await expect(page.getByText(/I can't give evacuation routes/)).toBeVisible();
+});
+
+test("reporting shows the emergency numbers first and needs a choice before sending", async ({ page }) => {
+  await withHome(page);
+  let sent: string | undefined;
+  // Never writes a real report: the request is answered here.
+  await page.route("**/api/reports", async (route) => {
+    sent = route.request().postDataBuffer()?.toString("latin1");
+    await route.fulfill({ json: { id: "test" } });
+  });
+  await page.goto("/map");
+  await page.locator('[aria-label="Map layers"] button', { hasText: /\d/ }).first().waitFor();
+  await page.getByRole("button", { name: "Report what you see" }).click();
+  await expect(page.getByText("If you see flames, call 911.")).toBeVisible();
+  await expect(page.getByRole("link", { name: /310-FIRE/ })).toHaveAttribute("href", "tel:3103473");
+  await page.getByRole("button", { name: "Send report" }).click();
+  await expect(page.getByText("Choose what you see.")).toBeVisible();
+  await page.getByText("Glow at night", { exact: true }).click();
+  await page.getByRole("button", { name: "Send report" }).click();
+  await expect(page.getByText(/on the map for the next 6 hours/)).toBeVisible();
+  expect(sent).toContain("glow");
 });
 
 test("Sprout flags Japanese barberry as invasive in Ontario, offers swaps, and saves to My plants", async ({ page }) => {

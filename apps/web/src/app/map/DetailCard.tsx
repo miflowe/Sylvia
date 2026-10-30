@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { aqhiCategory, NODE_SOURCE, pm25Label, SOURCES } from "@sylvia/core";
+import { aqhiCategory, NODE_SOURCE, pm25Label, REPORT_KINDS, SOURCES } from "@sylvia/core";
 import styles from "./map.module.css";
 
 export type Selected =
   | { kind: "hotspot"; observedAt: string; frp: number | null; satellite: string; confidence: string; fireName?: string; fireStatus?: string; fireAgency?: string; position?: number[] }
   | { kind: "namedFire"; name: string; status: string; areaHa: number | null; agency: string; fireNumber: string; url: string; ofNote?: boolean; updatedAt: string; position?: number[] }
+  | { kind: "report"; reportKind: string; people: number; latestAt: string; notes: string[]; photoId: string; position?: number[] }
   | { kind: "evac"; noticeKind: "order" | "alert"; areaName: string; agency: string; issuedAt: string; url: string; sourceName: string; position?: number[] }
   | { kind: "fire"; areaHa: number | null; firstSeen: string; lastSeen: string; replay?: boolean; position?: number[] }
   | { kind: "aqhi"; value: number; label: string; observedAt: string; position?: number[] }
@@ -86,6 +87,32 @@ export function DetailCard({ item, onClose }: { item: Selected; onClose: () => v
         </>
       );
       break;
+    case "report": {
+      const label = REPORT_KINDS.find((k) => k.kind === item.reportKind)?.label ?? "Something";
+      title = `Resident report: ${label}`;
+      source = { name: "Sylvia resident reports (unverified)", url: "/map" };
+      body = (
+        <>
+          <p className={styles.reading}>
+            {item.people} {item.people === 1 ? "person" : "people"} reported this
+          </p>
+          <p className="muted">Latest {when(item.latestAt)}. Location rounded to about 1 km. Reports disappear after 6 hours.</p>
+          {item.notes?.length > 0 && (
+            <ul className={styles.notes}>
+              {item.notes.map((n, i) => (
+                <li key={i}>&ldquo;{n}&rdquo;</li>
+              ))}
+            </ul>
+          )}
+          {item.photoId && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className={styles.reportPhoto} src={`/api/reports/${item.photoId}/photo`} alt={`Photo shared with a ${label.toLowerCase()} report`} />
+          )}
+          <p className={styles.note}>Unverified: not checked by officials or by Sylvia. If you see flames, call 911.</p>
+        </>
+      );
+      break;
+    }
     case "evac":
       title = `Evacuation ${item.noticeKind}: ${item.areaName}`;
       source = { name: item.sourceName, url: item.url };

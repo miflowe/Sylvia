@@ -9,6 +9,15 @@ export const HEAT_AGE = [
   { upTo: 24, color: "#e8c39e", label: "12–24 h" },
 ] as const;
 
+// CWFIS's FWI classes (the colours its map tiles use).
+const FWI_CLASSES = [
+  { color: "#2b44ff", label: "0–5 low" },
+  { color: "#2fd12f", label: "5–10 moderate" },
+  { color: "#ffff2e", label: "10–20 high" },
+  { color: "#e0a000", label: "20–30 very high" },
+  { color: "#ff2a2a", label: "30+ extreme" },
+] as const;
+
 const forecastTime = (t: number) => new Date(t).toLocaleString("en-CA", { weekday: "short", hour: "numeric", timeZoneName: "short" });
 
 interface SmokeControl {
@@ -21,9 +30,24 @@ interface SmokeControl {
  * Bottom bar on the map: how many hours of satellite heat to show, the age legend, the smoke forecast hour when that
  * layer is on, and the way into a replay.
  */
-export function TimeBar({ hours, onHours, onReplay, smoke }: { hours: number; onHours: (h: number) => void; onReplay: () => void; smoke?: SmokeControl }) {
+export function TimeBar(props: { hours: number; onHours: (h: number) => void; onReplay: () => void; smoke?: SmokeControl; fwi?: boolean }) {
+  const { hours, onHours, onReplay, smoke, fwi } = props;
   return (
     <div className={styles.timebar}>
+      {fwi && (
+        <div className={styles.smokeBlock}>
+          <p className={styles.timeLabel}>Fire Weather Index, today</p>
+          <ul className={styles.legend} aria-label="Fire Weather Index classes">
+            {FWI_CLASSES.map((c) => (
+              <li key={c.label}>
+                <span className={styles.swatch} style={{ background: c.color }} aria-hidden="true" />
+                {c.label}
+              </li>
+            ))}
+          </ul>
+          <p className={styles.smokeKey}>How easily fires start and spread with today&apos;s weather · Natural Resources Canada (CWFIS)</p>
+        </div>
+      )}
       {smoke && (
         <div className={styles.smokeBlock}>
           <label className={styles.timeLabel} htmlFor="smoke-ahead">

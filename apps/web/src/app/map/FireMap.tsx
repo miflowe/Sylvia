@@ -11,7 +11,7 @@ import styles from "./map.module.css";
 type LayerId = "evac" | "named" | "fires" | "hotspots" | "aqhi" | "pm25" | "nodes" | "sightings";
 const LAYERS: { id: LayerId; label: string; swatch: string }[] = [
   { id: "evac", label: "Evacuation areas", swatch: "#9c1c1c" },
-  { id: "named", label: "Named fires", swatch: "#e07a2c" },
+  { id: "named", label: "Named fires", swatch: "linear-gradient(90deg, #9c1c1c 0 34%, #e07a2c 34% 67%, #4f7d3a 67%)" },
   { id: "fires", label: "Fire areas", swatch: "var(--ember)" },
   { id: "hotspots", label: "Satellite heat", swatch: "#e8771a" },
   { id: "aqhi", label: "Air quality", swatch: "var(--sky)" },
@@ -59,6 +59,11 @@ const smokeTiles = (aheadH: number) =>
   "https://geo.weather.gc.ca/geomet?service=WMS&version=1.3.0&request=GetMap&layers=RAQDPS.Sfc_PM2.5-WildfireSmokePlume&styles=PM2.5_0to100ugm3_Dis" +
   `&crs=EPSG:3857&bbox={bbox-epsg-3857}&width=256&height=256&format=image/png&transparent=true&time=${new Date(HOUR_NOW() + aheadH * HOUR).toISOString().replace(".000", "")}`;
 
+// Natural Resources Canada's Fire Weather Index for today (CWFIS), as map tiles.
+const FWI_TILES =
+  "https://cwfis.cfs.nrcan.gc.ca/geoserver/public/wms?service=WMS&version=1.3.0&request=GetMap&layers=public:fwi_current&styles=" +
+  "&crs=EPSG:3857&bbox={bbox-epsg-3857}&width=256&height=256&format=image/png&transparent=true";
+
 interface Replay {
   name: string;
   dateLabel: string;
@@ -80,6 +85,8 @@ export function FireMap() {
   const smokeLayer = useRef<Atlas.layer.TileLayer | undefined>(undefined);
   const [smokeOn, setSmokeOn] = useState(false);
   const [smokeAhead, setSmokeAhead] = useState(24);
+  const fwiLayer = useRef<Atlas.layer.TileLayer | undefined>(undefined);
+  const [fwiOn, setFwiOn] = useState(false);
   // Replay mode: an archived fire plays on the map with the same alert rules as live.
   const mapRef = useRef<Atlas.Map | undefined>(undefined);
   const atlasRef = useRef<typeof Atlas | undefined>(undefined);
@@ -213,6 +220,8 @@ export function FireMap() {
         // Smoke forecast tiles sit under every data layer; off until the chip is turned on.
         smokeLayer.current = new atlas.layer.TileLayer({ tileUrl: smokeTiles(24), tileSize: 256, opacity: 0.55, visible: false }, "smoke-forecast");
         map.layers.add(smokeLayer.current, "fires-fill");
+        fwiLayer.current = new atlas.layer.TileLayer({ tileUrl: FWI_TILES, tileSize: 256, opacity: 0.35, visible: false }, "fwi");
+        map.layers.add(fwiLayer.current, "smoke-forecast");
 
         // Replay layers stay hidden until a replay starts.
         const replayHeat = new atlas.source.DataSource();
@@ -311,6 +320,10 @@ export function FireMap() {
   useEffect(() => {
     smokeLayer.current?.setOptions({ visible: smokeOn && !replay, tileUrl: smokeTiles(smokeAhead) });
   }, [smokeOn, smokeAhead, replay, counts]);
+
+  useEffect(() => {
+    fwiLayer.current?.setOptions({ visible: fwiOn && !replay });
+  }, [fwiOn, replay, counts]);
 
   async function startReplay() {
     setStatus("Loading the replay…");
@@ -434,11 +447,15 @@ export function FireMap() {
           <span className={styles.swatch} style={{ background: "linear-gradient(90deg, #22c4f0, #ffe933, #ff3333)" }} aria-hidden="true" />
           Smoke forecast
         </button>
+        <button type="button" className={styles.chip} aria-pressed={fwiOn} onClick={() => setFwiOn((s) => !s)}>
+          <span className={styles.swatch} style={{ background: "linear-gradient(90deg, #2b44ff, #2fd12f, #ffff2e, #e0a000, #ff2a2a)" }} aria-hidden="true" />
+          Fire Weather Index
+        </button>
       </div>
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
       {/* On phones a card replaces the time bar; on bigger screens both fit in the panel. */}
       <div className={selected ? styles.phoneHidden : undefined}>
-      {!replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} />}
+      {!replay && <TimeBar hours={heatHours} onHours={setHeatHours} onReplay={startReplay} smoke={smokeOn ? { aheadH: smokeAhead, at: HOUR_NOW() + smokeAhead * HOUR, onAhead: setSmokeAhead } : undefined} fwi={fwiOn} />}
       {replay && (
         <ReplayBar
           start={replay.timeline.start}

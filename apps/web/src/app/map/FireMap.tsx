@@ -34,11 +34,16 @@ function loadAtlas(): Promise<typeof Atlas> {
   return atlasPromise;
 }
 
+// Half a 44 px touch target. Point layers that a tap can pick, by id.
+const TAP_RADIUS = 22;
+const POINT_LAYERS = ["nodes", "aqhi", "pm25", "fires-point", "sightings", "hotspots"];
+
 const css = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888";
 
 export function FireMap() {
   const el = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<Partial<Record<LayerId, Atlas.layer.Layer[]>>>({});
+  const ring = useRef<Atlas.source.DataSource | undefined>(undefined);
   const [visible, setVisible] = useState<Record<LayerId, boolean>>({ fires: true, hotspots: true, aqhi: true, pm25: true, nodes: true, sightings: true });
   const [counts, setCounts] = useState<Partial<Record<LayerId, number>>>({});
   const [selected, setSelected] = useState<Selected | undefined>();
@@ -113,15 +118,35 @@ export function FireMap() {
           sightings: [new atlas.layer.BubbleLayer(sources.sightings, "sightings", { color: css("--moss"), radius: 6, strokeColor: "#ffffff", strokeWidth: 1.5 })],
         };
         for (const id of ["fires", "hotspots", "pm25", "aqhi", "nodes", "sightings"] as LayerId[]) {
-          for (const layer of layerRefs.current[id]!) {
-            map.layers.add(layer);
-            map.events.add("click", layer, (e: Atlas.MapMouseEvent) => {
-              const shape = e.shapes?.[0];
-              const props = shape && ("getProperties" in shape ? (shape as Atlas.Shape).getProperties() : (shape as Atlas.data.Feature<Atlas.data.Geometry, Record<string, unknown>>).properties);
-              if (props) setSelected({ ...(props as Selected), position: e.position });
-            });
-          }
+          for (const layer of layerRefs.current[id]!) map.layers.add(layer);
         }
+        // Ring around the tapped point, so it's clear which dot in a cluster the card is about.
+        ring.current = new atlas.source.DataSource();
+        map.sources.add(ring.current);
+        map.layers.add(new atlas.layer.BubbleLayer(ring.current, "selected", { color: "transparent", radius: 18, strokeColor: css("--ink"), strokeWidth: 3 }));
+
+        // One tap handler for the whole map. A finger covers ~44 px, far more than a 8 px heat dot, so a tap picks
+        // the nearest point within TAP_RADIUS; fire areas count only when no point is near. Empty map closes the card.
+        type Hit = Atlas.Shape | Atlas.data.Feature<Atlas.data.Geometry, Record<string, unknown>>;
+        const propsOf = (s: Hit) => ("getProperties" in s ? s.getProperties() : s.properties) as Selected;
+        const pointOf = (s: Hit) => ("getCoordinates" in s ? s.getCoordinates() : s.geometry.coordinates) as Atlas.data.Position;
+        map.events.add("click", (e: Atlas.MapMouseEvent) => {
+          if (!map || !e.pixel || !e.position) return;
+          const [x, y] = e.pixel;
+          const corners = map.pixelsToPositions([[x - TAP_RADIUS, y + TAP_RADIUS], [x + TAP_RADIUS, y - TAP_RADIUS]]);
+          const box = atlas.data.BoundingBox.fromPositions(corners);
+          const points = map.layers.getRenderedShapes(box, POINT_LAYERS) as Hit[];
+          let best: { hit: Hit; d: number } | undefined;
+          for (const hit of points) {
+            const [px, py] = map.positionsToPixels([pointOf(hit)])[0];
+            const d = Math.hypot(px - x, py - y);
+            if (d <= TAP_RADIUS && (!best || d < best.d)) best = { hit, d };
+          }
+          const area = best ? undefined : (map.layers.getRenderedShapes(e.position, ["fires-fill"]) as Hit[])[0];
+          const hit = best?.hit ?? area;
+          setSelected(hit ? { ...propsOf(hit), position: best ? pointOf(best.hit) : e.position } : undefined);
+          ring.current?.setShapes(best ? [new atlas.data.Point(pointOf(best.hit))] : []);
+        });
 
         if (place) {
           map.markers.add(new atlas.HtmlMarker({ position: [place.lon, place.lat], htmlContent: `<div class="${styles.home}" title="Your home"></div>` }));
@@ -185,7 +210,7 @@ export function FireMap() {
       </div>
       <div ref={el} className={styles.map} role="region" aria-label="Map of fires, smoke and air quality" />
       {status && <p className={styles.status} aria-live="polite">{status}</p>}
-      {selected && <DetailCard item={selected} onClose={() => setSelected(undefined)} />}
+      {selected && <DetailCard item={selected} onClose={() => { setSelected(undefined); ring.current?.clear(); }} />}
     </div>
   );
 }

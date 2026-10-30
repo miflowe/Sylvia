@@ -1,6 +1,7 @@
 /* Full-screen map; layer chips and cards float above it. */
 .wrap { position: relative; height: calc(100dvh - 72px - env(safe-area-inset-bottom)); }
-.map { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* z-index 0 keeps the map's own zoom and compass controls under the chips and the detail card. */
+.map { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
 
 .chips {
   position: absolute; top: 0; left: 0; right: 0; z-index: 2;
